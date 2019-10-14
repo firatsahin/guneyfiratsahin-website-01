@@ -1,0 +1,194 @@
+﻿//@nice-blue: #5B83AD; // variable example
+@ease-elastic: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+@default-yazi-renk: #151b1e;
+@default-yazi-font: "normal Helvetica", Arial, sans-serif; // dar bi font, kullanılabilir
+
+//FONTS
+@font-zcool-kuaile: 'ZCOOL KuaiLe', cursive;
+@font-site: 'Open Sans', sans-serif;
+@font-title: 'Raleway', sans-serif;
+
+
+// PRIVATE RULES (which cannot be used directly as classes) - BEGIN
+.title-font() {
+  /*font-family: Myriad Pro;*/
+  font-family: @font-title;
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(192, 28, 28);
+}
+// PRIVATE RULES (which cannot be used directly as classes) - END
+
+
+// COMMON RULES - BEGIN
+html, body {
+  margin: 0px;
+  font-family: @font-site;
+  color: @default-yazi-renk;
+  height: 100%;
+
+  &.frt-cloak {
+    display: none;
+  }
+}
+
+div {
+  //overflow: hidden;
+}
+
+input {
+  border: 0px;
+}
+
+a {
+  color: #005498;
+  text-decoration: none;
+
+  &.cizili:hover {
+    text-decoration: underline;
+  }
+}
+
+.shadow {
+  box-shadow: 2px 2px 2px #CCC;
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
+.gradient {
+  background: linear-gradient(to bottom, hsla(0, 0%, 93%, 1) 10%, hsla(0, 0%, 90%, 1) 90%);
+}
+
+.text-shadow-white {
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.4);
+}
+.text-shadow-black {
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.clear {
+  clear: both;
+}
+
+.mobile-menu-opener {
+  display: none;
+}
+// COMMON RULES - END
+
+
+
+// LANDING PAGE - BEGIN
+body > div.root-div {
+  height: 100%;
+
+  div.landing-box-div {
+    overflow: hidden;
+    float: left;
+    width: ~"calc(100% / 3)";
+    height: 100%;
+    text-align: center;
+
+    &:not(:nth-child(3)) {
+      width: ~"calc((100% / 3) - 1px)";
+      border-right: 1px lightgrey dashed;
+    }
+
+    //position: relative;
+
+    div.landing-box-div-inner {
+      //display: none;
+      padding: 12px;
+    }
+  }
+
+}
+// LANDING PAGE - END
+
+
+
+// GENEL YAZI TİPLERİ - BEGIN
+.yazi {
+  /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
+  font-family: @font-site;
+  font-size: 14px;
+  color: @default-yazi-renk;
+  text-shadow: 1px 1px 0px rgba(255,255,255,0.4);
+}
+
+.yazi_buyuk {
+  .yazi;
+  font-size: 16px;
+}
+
+.yazi_mavi {
+  .yazi;
+  color:#005498;
+}
+
+.yazi_gri {
+  .yazi;
+  color:#777777;
+}
+
+.yazi_kucuk {
+  .yazi;
+  font-size: 12px;
+  /*font-family: Tahoma, Geneva, sans-serif;*/
+}
+
+.sarki_sozu {
+  font-size: 16px;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+// GENEL YAZI TİPLERİ - END
+
+
+
+// RESPONSIVE DESIGN RULES (3 MODES: STANDARD, TABLET, PHONE)
+[view-mode='3'] { /* Mode: PC */
+  span[name=view-mode]:after{content: 'PC';}
+
+  [visible-on='1']{display: none;}
+  [visible-on='2']{display: none;}
+  [visible-on='12']{display: none;}
+}
+
+[view-mode='2'] { /* Mode: Tablet */
+  span[name=view-mode]:after{content: 'Tablet';}
+
+  [visible-on='1']{display: none;}
+  [visible-on='3']{display: none;}
+  [visible-on='13']{display: none;}
+}
+
+[view-mode='1'] { /* Mode: Phone */
+  span[name=view-mode]:after{content: 'Phone';}
+
+  [visible-on='2']{display: none;}
+  [visible-on='3']{display: none;}
+  [visible-on='23']{display: none;}
+
+  div.root-div {
+    height: unset;
+    overflow: unset;
+    div.landing-box-div {
+      float: unset;
+      width: unset;
+      &:not(:nth-child(3)) {
+        width: unset;
+        border-right: unset;
+        border-bottom: 1px lightgrey dashed;
+      }
+    }
+  }
+
+}

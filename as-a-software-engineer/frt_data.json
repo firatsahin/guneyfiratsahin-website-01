@@ -1,0 +1,135 @@
+{
+  "siteInfo": {
+    "domainName": {
+      "short": "guneyfiratsahin.com",
+      "full": "www.guneyfiratsahin.com"
+    }
+  },
+  "personalInfo": {
+    "name": {
+      "local": "Güney Fırat",
+      "global": "Guney Firat"
+    },
+    "surname": {
+      "local": "Şahin",
+      "global": "Sahin"
+    },
+    "preferredName": {
+      "local": "Fırat",
+      "global": "Firat"
+    },
+    "title": "Full-Stack Software Engineer",
+    "city": "Istanbul",
+    "country": "Turkey",
+    "birthDate": {
+      "day": 15,
+      "month": 9,
+      "year": 1987
+    },
+    "profileDesc": [
+      "CS Graduate (B.Sc. / Yıldız Technical University, Istanbul) | 5+ years USA company experienced Full Stack Software Engineer (ERP, eCommerce) (Web & Mobile)"
+    ],
+    "aboutMeText": [
+      "CS Graduate (B.Sc. / Yıldız Technical University, Istanbul)",
+      "5+ years USA company experienced Full Stack Software Engineer (ERP, eCommerce) (Web & Mobile)"
+    ],
+    "socialProfiles": [
+      {
+        "name": "facebook",
+        "nameFancy": "Facebook",
+        "link": "https://www.facebook.com/{{username}}",
+        "faIcon": "facebook"
+      },
+      {
+        "name": "linkedin",
+        "nameFancy": "LinkedIn",
+        "link": "https://www.linkedin.com/in/{{username}}",
+        "faIcon": "linkedin"
+      },
+      {
+        "name": "github",
+        "nameFancy": "GitHub",
+        "link": "https://github.com/{{username}}",
+        "faIcon": "github"
+      },
+      {
+        "name": "instagram",
+        "nameFancy": "Instagram",
+        "link": "https://www.instagram.com/{{username}}",
+        "faIcon": "instagram"
+      },
+      {
+        "name": "youtube",
+        "nameFancy": "YouTube",
+        "link": "https://www.youtube.com/channel/{{username}}",
+        "faIcon": "youtube"
+      }
+    ]
+  },
+  "contactInfo": {
+    "email": "guneyfiratsahin@gmail.com",
+    "skype": "firatsahin87",
+    "github": "firatsahin",
+    "linkedin": "guneyfiratsahin",
+    "facebook": "fsahin87",
+    "soundcloud": "firatsahin",
+    "instagram": "firatsahin87",
+    "youtube": "UCMcECEH2XqEBEclPOjhaS5g"
+  },
+  "landingPageInfo": {
+    "title": "YTÜ Computer Engineer & Musician & Human",
+    "sections": [
+      {
+        "id": "as-a-software-engineer",
+        "socialLinks": [
+          {
+            "name": "linkedin",
+            "nameFancy": "LinkedIn",
+            "link": "https://www.linkedin.com/in/{{username}}",
+            "faIcon": "linkedin"
+          },
+          {
+            "name": "github",
+            "nameFancy": "GitHub",
+            "link": "https://github.com/{{username}}",
+            "faIcon": "github"
+          }
+        ]
+      },
+      {
+        "id": "as-a-musician",
+        "socialLinks": [
+          {
+            "name": "youtube",
+            "nameFancy": "YouTube",
+            "link": "https://www.youtube.com/channel/{{username}}",
+            "faIcon": "youtube"
+          },
+          {
+            "name": "soundcloud",
+            "nameFancy": "SoundCloud",
+            "link": "https://soundcloud.com/{{username}}",
+            "faIcon": "soundcloud"
+          }
+        ]
+      },
+      {
+        "id": "as-a-human",
+        "socialLinks": [
+          {
+            "name": "facebook",
+            "nameFancy": "Facebook",
+            "link": "https://www.facebook.com/{{username}}",
+            "faIcon": "facebook"
+          },
+          {
+            "name": "instagram",
+            "nameFancy": "Instagram",
+            "link": "https://www.instagram.com/{{username}}",
+            "faIcon": "instagram"
+          }
+        ]
+      }
+    ]
+  }
+}
