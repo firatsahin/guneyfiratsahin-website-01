@@ -323,7 +323,7 @@ h2.resp-accordion:first-child {
     }
 
     .tiltle_contacts {
-        margin-bottom: 0 !important;
+        /*margin-bottom: 0 !important;*/
     }
     .wrapper {
         position: relative !important;
@@ -445,7 +445,7 @@ h2.resp-accordion:hover {
 ---------------------------------------------------*/
 
 #contact-user {
-    padding: 30px 0;
+    padding: 0px 0;
     overflow: hidden;
 }
 .contact-info, .contact-form {
@@ -660,7 +660,7 @@ h2.resp-accordion:hover {
 }
 
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 768px) {
 
     #portfoliolist .portfolio {
         width:48%;
@@ -682,7 +682,7 @@ h2.resp-accordion:hover {
     }
 
     #profile .cycle-slideshow {
-        display: none;
+        /*display: none;*/
     }
 
 }
@@ -1082,7 +1082,7 @@ ul.about {
     }
 }
 
-@media only screen  and (max-width: 766px) {
+@media only screen  and (max-width: 767px) {
     .widget-profil{ 	
         height: 285px !important;
         margin-bottom: 20px;
@@ -1105,7 +1105,7 @@ ul.about {
     }
 }
 
-@media only screen and (min-width : 766px) and (max-width: 800px) {
+@media only screen and (min-width : 768px) and (max-width: 800px) {
     .widget-profil{ 	
         height: 210px !important;
         margin-bottom: 20px;
@@ -1116,7 +1116,7 @@ ul.about {
     }
 }
 
-@media only screen and (min-width : 550px) and (max-width : 991px) {
+@media only screen and (max-width : 991px) {
     #profile .cycle-slideshow {
         margin-left: auto !important;
         margin-right: auto !important;
@@ -2485,7 +2485,7 @@ ul.info-post li {
 
 @media screen and (max-width: 554px) {
     .resp-tabs-container h1 {
-        font-size: 15px;
+        /*font-size: 15px;*/
     }
 
     .blog-article .info li:first-child {

@@ -9,9 +9,9 @@ $(window).resize(function () {
     // mode calculation based on window width
     var width = $(window).outerWidth(), height = $(window).outerHeight(), mode;
     // Display Modes: [3: PC | 2: Tablet | 1: Phone]
-    if (width >= 1010) {
+    if (width >= 1150) {
         mode = 3;
-    } else if (width >= 694) {
+    } else if (width >= 800) {
         mode = 2;
     } else {
         mode = 1;
@@ -38,5 +38,16 @@ $(function () {
 
     less.pageLoadFinished.then(function () { // after LESS compile done
         $(window).resize(); // trigger once on first load
+    });
+
+    // landing box link action to the related inner page
+    $("div.landing-box-div.has-link").click(function () {
+        var linkToGo = $(this).attr('link');
+        if (linkToGo) location.href = linkToGo;
+    });
+
+    // social media links click
+    $("div.landing-box-div div.landing-box-div-inner div.socmed-icons-container a.socmed-link").click(function (e) {
+        e.stopPropagation();
     });
 });

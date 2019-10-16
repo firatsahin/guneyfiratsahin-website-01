@@ -18,7 +18,7 @@
       "local": "Fırat",
       "global": "Firat"
     },
-    "title": "Full-Stack Software Engineer",
+    "title": "Full Stack Software Engineer",
     "city": "Istanbul",
     "country": "Turkey",
     "birthDate": {
@@ -81,52 +81,55 @@
     "sections": [
       {
         "id": "as-a-software-engineer",
+        "title": "As a Software Engineer",
+        "backgroundImg": "/img/landing-page/laptopncoffee.jpg",
+        "linkActive": true,
         "socialLinks": [
           {
             "name": "linkedin",
             "nameFancy": "LinkedIn",
-            "link": "https://www.linkedin.com/in/{{username}}",
-            "faIcon": "linkedin"
+            "link": "https://www.linkedin.com/in/{{username}}"
           },
           {
             "name": "github",
             "nameFancy": "GitHub",
-            "link": "https://github.com/{{username}}",
-            "faIcon": "github"
+            "link": "https://github.com/{{username}}"
           }
         ]
       },
       {
         "id": "as-a-musician",
+        "title": "As a Musician",
+        "backgroundImg": "/img/landing-page/homestudio.jpg",
+        "linkActive": false,
         "socialLinks": [
           {
             "name": "youtube",
             "nameFancy": "YouTube",
-            "link": "https://www.youtube.com/channel/{{username}}",
-            "faIcon": "youtube"
+            "link": "https://www.youtube.com/channel/{{username}}"
           },
           {
             "name": "soundcloud",
             "nameFancy": "SoundCloud",
-            "link": "https://soundcloud.com/{{username}}",
-            "faIcon": "soundcloud"
+            "link": "https://soundcloud.com/{{username}}"
           }
         ]
       },
       {
         "id": "as-a-human",
+        "title": "As a Human",
+        "backgroundImg": "/img/landing-page/bicycles.jpg",
+        "linkActive": false,
         "socialLinks": [
           {
             "name": "facebook",
             "nameFancy": "Facebook",
-            "link": "https://www.facebook.com/{{username}}",
-            "faIcon": "facebook"
+            "link": "https://www.facebook.com/{{username}}"
           },
           {
             "name": "instagram",
             "nameFancy": "Instagram",
-            "link": "https://www.instagram.com/{{username}}",
-            "faIcon": "instagram"
+            "link": "https://www.instagram.com/{{username}}"
           }
         ]
       }

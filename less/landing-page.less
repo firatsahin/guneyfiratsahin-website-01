@@ -1,6 +1,7 @@
 ﻿//@nice-blue: #5B83AD; // variable example
 @ease-elastic: cubic-bezier(0.68, -0.55, 0.27, 1.55);
 @default-yazi-renk: #151b1e;
+@default-yazi-mavi-renk: #005498;
 @default-yazi-font: "normal Helvetica", Arial, sans-serif; // dar bi font, kullanılabilir
 
 //FONTS
@@ -87,22 +88,124 @@ body > div.root-div {
   height: 100%;
 
   div.landing-box-div {
+    position: relative;
     overflow: hidden;
     float: left;
     width: ~"calc(100% / 3)";
     height: 100%;
     text-align: center;
+    cursor: default;
 
     &:not(:nth-child(3)) {
       width: ~"calc((100% / 3) - 1px)";
       border-right: 1px lightgrey dashed;
     }
 
-    //position: relative;
+    &.has-link{
+      cursor: pointer;
+      &:hover{
+        div.box-title-container {
+          //text-decoration: underline;
+        }
+      }
+    }
+
+    div.landing-box-div-background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+      transition: .4s transform ease-in-out;
+    }
 
     div.landing-box-div-inner {
       //display: none;
       padding: 12px;
+      position: relative;
+
+      div.box-title-container {
+        //background: radial-gradient(circle, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .7) 70%, rgba(255, 255, 255, 0) 100%);
+        background: radial-gradient(circle, rgba(255, 255, 255, .8) 0%, rgba(255, 255, 255, .8) 70%, rgba(255, 255, 255, 0) 100%);
+        color: @default-yazi-mavi-renk;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 21px;
+        font-weight: bold;
+        padding: 6px 6px;
+        .text-shadow-white;
+      }
+
+      div.socmed-icons-container {
+        background: radial-gradient(circle, rgba(255, 255, 255, .8) 0%, rgba(255, 255, 255, .8) 70%, rgba(255, 255, 255, 0) 100%);
+        padding-top: 4px;
+
+        a.socmed-link {
+          display: inline-block;
+          width: 48px;
+          height: 48px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          margin: 2px 7px;
+          transition: .4s transform ease-out;
+
+          &:hover {
+            transform: rotate(360deg);
+          }
+        }
+      }
+
+      div.go-to-details-container {
+        margin-top: 25px;
+        margin-left: -50px;
+        background: radial-gradient(circle, rgba(255, 255, 255, .8) 0%, rgba(255, 255, 255, .8) 70%, rgba(255, 255, 255, 0) 100%);
+        font-size: 14px;
+        font-weight: bold;
+        opacity: 0;
+        transition: .2s opacity ease-in-out, .2s margin-left ease-in-out;
+
+        span.go-to-details-icon {
+          position: relative;
+          top: 2px;
+          display: inline-block;
+          width: 26px;
+          height: 26px;
+          background: url('/img/socmed-icons/www.png') no-repeat center;
+          background-size: contain;
+        }
+
+        span.go-to-details-text {
+          position: relative;
+          top: -7px;
+          .text-shadow-white;
+        }
+      }
+    }
+
+    &:before { // pattern
+      content: '';
+      background: transparent url('/as-a-software-engineer/images/images-fullscreen/pattern.png') repeat top left;
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: .4;
+    }
+
+    &:hover {
+      div.landing-box-div-background {
+        opacity: .8;
+        transform: scale(1.1) rotate(1.5deg);
+      }
+    }
+    &.has-link:hover {
+      div.landing-box-div-inner {
+        div.go-to-details-container {
+          margin-left: 0px;
+          opacity: 1;
+        }
+      }
     }
   }
 
@@ -180,13 +283,36 @@ body > div.root-div {
   div.root-div {
     height: unset;
     overflow: unset;
+
     div.landing-box-div {
       float: unset;
       width: unset;
+
       &:not(:nth-child(3)) {
         width: unset;
         border-right: unset;
         border-bottom: 1px lightgrey dashed;
+      }
+
+      div.landing-box-div-background {
+        width: 100%;
+        height: 100%;
+      }
+
+      div.landing-box-div-inner {
+      }
+
+      &:before { // pattern
+        width: 100%;
+        height: 100%;
+      }
+
+      &.has-link {
+        div.landing-box-div-inner {
+          div.go-to-details-container {
+            opacity: 1;
+          }
+        }
       }
     }
   }

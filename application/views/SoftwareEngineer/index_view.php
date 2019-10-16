@@ -42,8 +42,9 @@
 
 		<!-- CSS | Google Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="images/favicon/favicon.ico">
+
+        <!-- favicon -->
+        <link rel="shortcut icon" type="image/png" href="/img/frt-favicon.png"/>
 
         <!--[if IE 7]>
                 <link rel="stylesheet" type="text/css" href="css/icons/font-awesome-ie7.min.css"/>
@@ -56,7 +57,7 @@
                 }
             }
 			
-			@media only screen and (min-width : 800px) and (max-width : 991px){
+			@media only screen and (min-width : 801px) and (max-width : 991px){
                 .resp-vtabs .resp-tabs-container {
                     margin-left: 13px;
 					width:89%;
@@ -76,7 +77,7 @@
         <!-- Laoding page -->
         <div id="preloader"><div id="spinner"></div></div>
 
-        <!-- .slideshow -->
+        <?php /*<!-- .slideshow -->
         <ul class="cb-slideshow" id="cb_slideshow" style="display: none;">
             <li><span>Image 01</span><div></div></li>
             <li><span>Image 02</span><div></div></li>
@@ -85,7 +86,7 @@
             <li><span>Image 05</span><div></div></li>
             <li><span>Image 06</span><div></div></li>
         </ul> 
-        <!-- /.slideshow --> 
+        <!-- /.slideshow -->*/ ?>
 
         <!-- .wrapper --> 
         <div class="wrapper">
@@ -108,7 +109,7 @@
     	 
 		 
                                 
-         <div class="image-holder one" id="pic_prof_1" style="display:none">
+         <?php /*<div class="image-holder one" id="pic_prof_1" style="display:none">
         
                 <img class="head-image up circle" src="images/img/up.png" width="150" height="150" alt="" />
                 <img class="head-image up-left circle" src="images/img/upleft.png" width="150" height="150" alt="" />
@@ -120,7 +121,7 @@
                 <img class="head-image up-right circle" src="images/img/upright.png" width="150" height="150" alt="" />
                 <img class="head-image front circle" src="images/img/front.png" width="150" height="150" alt="" />
                 
-        </div>
+        </div>*/ ?>
         
         <!-- style for simple image profile -->		
    		<div class="circle-img" id="pic_prof_2" style="display:block"></div>
@@ -184,17 +185,17 @@
                                                 <i class="fa fa-user icon_menu icon_menu_active"></i>
                                             </li>
 
-                                            <li class="tabs-resume hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="resume"> 
+                                            <li class="tabs-resume hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="resume" style="display: none;">
                                                 <span class="tite-list">resume</span>
                                                 <i class="fa fa-tasks icon_menu"></i>
                                             </li>
 
-                                            <li class="tabs-portfolio hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="portfolio"> 
+                                            <li class="tabs-portfolio hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="portfolio" style="display: none;">
                                                 <span class="tite-list">portfolio</span>
                                                 <i class="fa fa-briefcase icon_menu"></i>
                                             </li>
 
-                                            <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog">
+                                            <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" style="display: none;">
                                                 <span class="tite-list">blog</span>
                                                 <i class="fa fa-bullhorn icon_menu"></i>
                                             </li>
@@ -204,8 +205,8 @@
                                                 <i class="fa fa-envelope icon_menu"></i> 
                                             </li>
 
-                                            <a href="#" id="print"><i class="fa fa-print icon_print"></i> </a>
-                                            <a href="#" id="downlowd"><i class="fa fa-download icon_print"></i> </a>
+                                            <a href="#" id="print" style="display: none;"><i class="fa fa-print icon_print"></i> </a>
+                                            <a href="#" id="downlowd" style="display: none;"><i class="fa fa-download icon_print"></i> </a>
                                         </ul>
                                         <!-- /resp-tabs-list -->
 
@@ -301,7 +302,7 @@
     <div class="clear"></div>
 
 
-    <div class="row" id="services">
+    <div class="row" id="services" style="display: none;">
 		<div class="col-md-12">
             <div class="title_content">
                 <div class="text_content">My Services 1</div>
@@ -341,9 +342,9 @@
 
 
     <div class="clear"></div>
-    <div class="border-list"></div>
+    <div class="border-list" style="display: none;"></div>
 	
-    <div class="row">
+    <div class="row" style="display: none;">
     <div class="col-md-12">
         <div class="bottom-p">
             <div class="title_content">
@@ -409,7 +410,7 @@
                                             <!-- End .profile -->
 
                                             <!-- .resume -->
-                                            <div id="resume" class="content_2">
+                                            <div id="resume" class="content_2" style="display: none;">
                                                 <!-- .title -->
 <h1 class="h-bloc">Resume - Personal Info</h1> 
 
@@ -2022,7 +2023,7 @@
 
                                         <div class="row">
 
-                                            <div class="col-lg-12">
+                                            <div class="col-lg-12" style="display: none;">
                                                 <div id="map"></div>
                                             </div>  
 
@@ -2038,13 +2039,22 @@
                                                             </div>
 
                                                             <ul>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-map-marker"></i> Adress:</span> San Francisco , CA.<br /><br /></li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-envelope"></i> Email:</span> brown.smith@gmail.com</li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-phone"></i> Phone:</span> +123 456 789 111</li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-globe"></i> Website:</span> www.brown-smith.com</li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-comment"></i> Skype:</span> brown-smith-skype</li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-thumbs-up"></i> G. Drive:</span> brown-s-gm@gmail.com</li>
-                                                                <li><span class="span-info"><i class="glyphicon glyphicon-unchecked"></i> Skydrive:</span> brown-s-sk@hotmail.com</li>
+                                                                <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to see where <?= $data->personalInfo->city ?> is"><i class="glyphicon glyphicon-map-marker"></i>&nbsp; Location:&nbsp;
+                                                                    <a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a>
+                                                                    <br /><br />
+                                                                </span></li>
+                                                                <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to e-mail me about anything"><i class="glyphicon glyphicon-envelope"></i>&nbsp; Email:&nbsp;
+                                                                    <a href="mailto:<?= $data->contactInfo->email ?>?subject=<?= 'E-mail from '.$data->siteInfo->domainName->short.' visitor' ?>&body=<?= 'Hey '.$data->personalInfo->preferredName->global.'! I just visited your web site and I would like to talk to you about...' ?>"><?= $data->contactInfo->email ?></a>
+                                                                </span></li>
+                                                                <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to add me as a contact on Skype"><i class="glyphicon glyphicon-comment"></i>&nbsp; Skype:&nbsp;
+                                                                    <a href="skype:<?= $data->contactInfo->skype ?>?userinfo"><?= $data->contactInfo->skype ?></a>
+                                                                </span></li>
+                                                                <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to take a look at my GitHub account"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
+                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank">github.com/<?= $data->contactInfo->github ?></a>
+                                                                </span></li>
+                                                                <li><span class="span-info" title="Click to take a look at my LinkedIn account"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
+                                                                    <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
+                                                                </span></li>
                                                             </ul>
                                                         </div>
                                                         <!-- /Contact Info -->
@@ -2059,12 +2069,15 @@
 
                                                     
 
-                                                            <div id="profile_social">
-                                                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                                            <div id="profile_social" style="display: block !important; margin-bottom: 30px;">
+                                                                <?php /*<a href="#"><i class="fa fa-facebook"></i></a>
                                                                 <a href="#"><i class="fa fa-twitter"></i></a>
                                                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                                                 <a href="#"><i class="fa fa fa-dribbble"></i></a>
-                                                                <a href="#"><i class="fa fa-foursquare"></i></a>
+                                                                <a href="#"><i class="fa fa-foursquare"></i></a>*/ ?>
+                                                                <?php foreach ($data->personalInfo->socialProfiles as $p) { ?>
+                                                                    <a href="<?= $p->link ? $p->link : '#' ?>" target="_blank" title="Visit my <?= $p->nameFancy ?> profile"><i class="fa fa-<?= $p->faIcon ?>"></i></a>
+                                                                <?php } ?>
                                                                 <div class="clear"></div>
                                                             </div>
                                               
@@ -2141,7 +2154,7 @@
         </div>
         <!-- End wrapper -->
 
-        <!-- Switcher -->
+        <?php /*<!-- Switcher -->
         <div id="custumize-style">
             <h2>Style Selector<a href="#" class="switcher"><i class="fa fa-cogs icon-switcher"></i></a></h2>
             <div>
@@ -2262,7 +2275,7 @@
 
             <div id="button-reset"><a href="#" class="button color blue boxed">Reset</a></div>
         </div>
-        <!-- End Switcher -->
+        <!-- End Switcher -->*/ ?>
 
 
 
@@ -2281,11 +2294,11 @@
         <!-- jquery | rotate and portfolio -->
         <!-- Credits: http://jquery.com -->
         <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
-        <script type="text/javascript" src="js/HeadImage.js"></script>
+        <?php /*<script type="text/javascript" src="js/HeadImage.js"></script>*/ ?>
 
         <!-- Js | easyResponsiveTabs -->
         <!-- Credits: http://webtrendset.com/demo/easy-responsive-tabs/Index.html -->
-        <script type="text/javascript" src="js/easyResponsiveTabs.min.js"></script> 
+        <script type="text/javascript" src="js/easyResponsiveTabs.min.js"></script>
 
         <!-- Js | jquery.cookie -->
         <!-- Credits: https://github.com/carhartl/jquery-cookie -->
@@ -2304,62 +2317,74 @@
         
         <!-- Js | gmaps -->
         <!-- Credits: http://maps.google.com/maps/api/js?sensor=true-->
-        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
-        <script type="text/javascript" src="js/gmaps.min.js"></script>
+        <?php /*<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+        <script type="text/javascript" src="js/gmaps.min.js"></script>*/ ?>
 
  		<!-- Js | Js -->
         <script type="text/javascript" src="js/main.js"></script>
         
         <!-- code js for image rotate -->
         <script type="text/javascript">
+            (function () {
+                var mouseX;
+                var mouseY;
+                var imageOne;
 
-            var mouseX;
-            var mouseY;
-            var imageOne;
+                /* Calling the initialization function */
+                $(init);
 
-            /* Calling the initialization function */
-            $(init);
+                /* The images need to re-initialize on load and on resize, or else the areas
+                 * where each image is displayed will be wrong. */
+                $(window).load(init);
+                $(window).resize(init);
 
-            /* The images need to re-initialize on load and on resize, or else the areas
-             * where each image is displayed will be wrong. */
-            $(window).load(init);
-            $(window).resize(init);
+                /* Setting the mousemove event caller */
+                $(window).mousemove(getMousePosition);
 
-            /* Setting the mousemove event caller */
-            $(window).mousemove(getMousePosition);
+                /* This function is called on document ready, on load and on resize
+                 * and initiallizes all the images */
+                function init() {
 
-            /* This function is called on document ready, on load and on resize
-             * and initiallizes all the images */
-            function init() {
+                    /* Instanciate the mouse position variables */
+                    mouseX = 0;
+                    mouseY = 0;
 
-                /* Instanciate the mouse position variables */
-                mouseX = 0;
-                mouseY = 0;
+                    /* Instanciate a HeadImage class for every image */
+                    imageOne = new HeadImage("one");
 
-                /* Instanciate a HeadImage class for every image */
-                imageOne = new HeadImage("one");
+                }
 
-            }
+                /* This function is called on mouse move and gets the mouse position.
+                 * It also calls the HeadImage function to display the correct image*/
+                function getMousePosition(event) {
 
-            /* This function is called on mouse move and gets the mouse position. 
-             * It also calls the HeadImage function to display the correct image*/
-            function getMousePosition(event) {
+                    /* Setting the mouse position variables */
+                    mouseX = event.pageX;
+                    mouseY = event.pageY;
 
-                /* Setting the mouse position variables */
-                mouseX = event.pageX;
-                mouseY = event.pageY;
+                    /*Calling the setImageDirection function of the HeadImage class
+                     * to display the correct image*/
+                    imageOne.setImageDirection();
 
-                /*Calling the setImageDirection function of the HeadImage class
-                 * to display the correct image*/
-                imageOne.setImageDirection();
-
-            }
-
+                }
+            })/*()*/;
         </script>
 
 
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+
+        <script type="text/javascript">
+            $(function () {
+                //console.log($("#verticalTab div.resp-tabs-container h2"));
+
+                // hide some unused tabs (for mobile mode)
+                $("#verticalTab div.resp-tabs-container h2").eq(1).hide();
+                $("#verticalTab div.resp-tabs-container h2").eq(2).hide();
+                $("#verticalTab div.resp-tabs-container h2").eq(3).hide();
+            });
+        </script>
+
     </body>
 </html>

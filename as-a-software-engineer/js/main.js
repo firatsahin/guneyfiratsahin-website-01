@@ -292,6 +292,7 @@ jQuery(document).ready(function($) {
 
     var map;
     function initialize() {
+        return;///////////////
         map = new GMaps({
             div: '#map',
             lat: -37.817917,
