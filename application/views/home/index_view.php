@@ -34,7 +34,7 @@
     <div class="root-div">
 
         <?php foreach ($data->landingPageInfo->sections as $section) { ?>
-            <div class="landing-box-div <?= $section->linkActive ? 'has-link' : '' ?>" <?= $section->linkActive ? 'link="/' . $section->id . '/index.html" title="Go to [' . $section->title . '] section"' : '' ?>>
+            <div class="landing-box-div <?= $section->linkActive ? 'has-link' : '' ?>" <?= $section->linkActive ? 'link="/' . $section->id . '/index.html" title="Go to [' . $section->title . '] section"' : '' ?> link-target="<?= $section->linkTarget ?>">
                 <div class="landing-box-div-background" style="<?= isset($section->backgroundImg) && $section->backgroundImg ? 'background-image:url(\'' . $section->backgroundImg . '\');' : '' ?>"></div>
                 <div class="landing-box-div-inner">
                     <div class="box-title-container"><?= $section->title ?></div>
@@ -49,7 +49,7 @@
 
                     <div class="go-to-details-container">
                         <span class="go-to-details-icon"></span>
-                        <span class="go-to-details-text">Go to inner site &nbsp;></span>
+                        <span class="go-to-details-text"><?= $section->linkActive ? 'Details &nbsp;>' : '' ?></span>
                     </div>
                 </div>
             </div>

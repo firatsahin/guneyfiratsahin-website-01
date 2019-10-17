@@ -34,7 +34,7 @@ $(window).resize(function () {
 });
 
 $(function () {
-    log("doc ready", $("body"));
+    //log("doc ready", $("body"));
 
     less.pageLoadFinished.then(function () { // after LESS compile done
         $(window).resize(); // trigger once on first load
@@ -42,8 +42,10 @@ $(function () {
 
     // landing box link action to the related inner page
     $("div.landing-box-div.has-link").click(function () {
-        var linkToGo = $(this).attr('link');
-        if (linkToGo) location.href = linkToGo;
+        var linkToGo = $(this).attr('link'), target = $(this).attr('link-target');
+        if (linkToGo) {
+            if (target == '_blank') window.open(linkToGo); else location.href = linkToGo;
+        }
     });
 
     // social media links click

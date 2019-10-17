@@ -73,6 +73,7 @@
     "linkedin": "guneyfiratsahin",
     "facebook": "fsahin87",
     "soundcloud": "firatsahin",
+    "soundcloud2": "frtshnrecords",
     "instagram": "firatsahin87",
     "youtube": "UCMcECEH2XqEBEclPOjhaS5g"
   },
@@ -84,6 +85,7 @@
         "title": "As a Software Engineer",
         "backgroundImg": "/img/landing-page/laptopncoffee.jpg",
         "linkActive": true,
+        "linkTarget": "_self",
         "socialLinks": [
           {
             "name": "linkedin",
@@ -100,8 +102,9 @@
       {
         "id": "as-a-musician",
         "title": "As a Musician",
-        "backgroundImg": "/img/landing-page/homestudio.jpg",
-        "linkActive": false,
+        "backgroundImg": "/img/landing-page/acousticguitar.jpg",
+        "linkActive": true,
+        "linkTarget": "_blank",
         "socialLinks": [
           {
             "name": "youtube",
@@ -112,6 +115,11 @@
             "name": "soundcloud",
             "nameFancy": "SoundCloud",
             "link": "https://soundcloud.com/{{username}}"
+          },
+          {
+            "name": "soundcloud2",
+            "nameFancy": "second SoundCloud",
+            "link": "https://soundcloud.com/{{username}}"
           }
         ]
       },
@@ -119,7 +127,8 @@
         "id": "as-a-human",
         "title": "As a Human",
         "backgroundImg": "/img/landing-page/bicycles.jpg",
-        "linkActive": false,
+        "linkActive": true,
+        "linkTarget": "_blank",
         "socialLinks": [
           {
             "name": "facebook",

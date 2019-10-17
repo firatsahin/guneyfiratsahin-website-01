@@ -56,11 +56,11 @@ $route['default_controller'] = 'home';
 // as a software engineer part
 $route['as-a-software-engineer/(:any).html'] = "SoftwareEngineer/$1";
 
-// musician part
-//...
+// as a musician part
+$route['as-a-musician/(:any).html'] = "Musician/$1";
 
-// human part
-//...
+// as a human part
+$route['as-a-human/(:any).html'] = "Human/$1";
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
