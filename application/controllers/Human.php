@@ -25,7 +25,7 @@ class Human extends CI_Controller {
 
         $socialProfileToGo = 'instagram';
 
-        // redirect to youtube profile
+        // redirect to profile
         foreach ($data->landingPageInfo->sections as $s) {
             if ($s->id == "as-a-human") { // select musician section
                 foreach ($s->socialLinks as $sl) {

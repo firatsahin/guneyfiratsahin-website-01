@@ -25,7 +25,7 @@ class Musician extends CI_Controller {
 
         $socialProfileToGo = 'youtube';
 
-        // redirect to youtube profile
+        // redirect to profile
         foreach ($data->landingPageInfo->sections as $s) {
             if ($s->id == "as-a-musician") { // select musician section
                 foreach ($s->socialLinks as $sl) {
