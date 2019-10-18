@@ -21,7 +21,7 @@ class SoftwareEngineer extends CI_Controller {
 
     public function index()
     {
-        $data = json_decode(file_get_contents('as-a-software-engineer/frt_data.json'));
+        $data = json_decode(file_get_contents('frt_data.json'));
 
         // generate formatted date
         $data->personalInfo->birthDate->formatted = DateTime::createFromFormat('!m', $data->personalInfo->birthDate->month)->format('F') . ' ' . $data->personalInfo->birthDate->day . ', ' . $data->personalInfo->birthDate->year;

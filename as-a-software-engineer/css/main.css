@@ -1063,6 +1063,24 @@ ul.about {
 
 }
 
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .widget-profil h1 {
+        line-height: 34px;
+        margin: 6px 0px 10px 0px;
+    }
+
+    .widget-profil #profile_social a {
+        width: 37px;
+        height: 37px;
+    }
+
+    #profile_social a{
+        width: 42px;
+        height: 42px;
+        line-height: 42px;
+    }
+}
+
 @media only screen and (max-width: 260px) {
     .widget-profil h1 {
         font-size: 25px !important;
@@ -1218,10 +1236,10 @@ ul.about {
 ---------------------- Resume ----------------------
 ---------------------------------------------------*/
 
-#resume .col-md-6 span.duration {
+#resume span.duration {
     float: right;
 }
-#resume .col-md-6 ul li {
+#resume ul li {
     list-style: none;
     margin-top: 20px;
 }
@@ -1229,7 +1247,7 @@ ul.about {
     padding-bottom: 10px;
 }
 
-#resume .attributes li.first{
+#resume .attributes li:nth-child(1){
     margin-top: 0 !important;
 }
 
@@ -2566,7 +2584,7 @@ ul.info-post li {
 @media screen and (max-width: 1200px) {
 
     ul.about li span.value {
-        width: 196px;
+        width: 182px;
     }
 }
 

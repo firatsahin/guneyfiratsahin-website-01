@@ -21,7 +21,7 @@ class Home extends CI_Controller {
 
 	public function index()
     {
-        $data = json_decode(file_get_contents('as-a-software-engineer/frt_data.json'));
+        $data = json_decode(file_get_contents('frt_data.json'));
 
         // fix social profile links
         foreach ($data->landingPageInfo->sections as $s) {

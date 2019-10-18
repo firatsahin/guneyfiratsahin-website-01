@@ -1,0 +1,286 @@
+{
+  "siteInfo": {
+    "domainName": {
+      "short": "guneyfiratsahin.com",
+      "full": "www.guneyfiratsahin.com"
+    }
+  },
+  "personalInfo": {
+    "name": {
+      "local": "Güney Fırat",
+      "global": "Guney Firat"
+    },
+    "surname": {
+      "local": "Şahin",
+      "global": "Sahin"
+    },
+    "preferredName": {
+      "local": "Fırat",
+      "global": "Firat"
+    },
+    "title": "Full Stack Software Engineer",
+    "city": "Istanbul",
+    "country": "Turkey",
+    "birthDate": {
+      "day": 15,
+      "month": 9,
+      "year": 1987
+    },
+    "profileDesc": [
+      "CS Graduate (B.Sc. / Yıldız Technical University, Istanbul) | 5+ years USA company experienced Full Stack Software Engineer (ERP, eCommerce) (Web & Mobile)"
+    ],
+    "aboutMeText": {
+      "left": [
+        "Hi, this is Firat. I’m an Istanbul, Turkey based Full Stack Software Developer / Engineer who has <u>5+ years of experience</u> and here is my story;",
+        "I graduated from <u>Yıldız Technical University (Istanbul)</u> with a <u>Bachelor’s Degree on Computer Engineering</u> in 2011. I developed school and freelance projects during my university education period (which I have explained some on Projects section)."
+      ],
+      "center": [
+        "In 2013, I went to <u>United States (Los Angeles)</u> with an internship program as a <u>Web Developer Intern</u> and worked for <u>1 year</u> over there. Although the company had offered me to stay at the end of that period, I preferred coming back to my home country for personal reasons. However, that didn’t end our relationship and I continued working as a <u>Remote Software Developer / Engineer</u> from Istanbul."
+      ],
+      "wkodeiam": [
+        "I’m a pretty passionate engineer when it comes to developing <u>well-organized</u>, <u>smartly structured</u> & <u>valuable</u> features / products. I get enthusiastic when I’m discussing about the <u>architecture of the software</u> or <u>building the backbone of an application</u> which all the other functionalities will be based on.",
+        "I’m more of a <u>project person</u> rather than 9-to-5 mentality. I <u>take ownership</u> of the product I’ve been working on and my point of view while development is “<u>adding value to the product</u>” rather than just “writing code”. So that being said, I’m a kind of developer that can be considered for <u>Team Lead</u>, <u>Project Lead</u> or <u>Principle Developer</u> kind of roles as well (now or future).",
+        "Coding is one of the things that I don’t get bored of. I do <u>coding just for fun</u> in my free times. The idea of making the device do something for you or devices talk to each other gets me excited. I also <u>follow the software trends</u> and try my best to be up-to-date about the new approaches / tools (even though things change rapidly in IT sector).",
+        "To wrap up, I’m a software developer/engineer who produces efficient, well-structured, clean, understandable, easy-to-maintain and well-commented code which solves some kind of real world problems. Besides coding, I prepare <u>good documentation</u> too if needed.",
+        "Also, I am the kind of guy who is a <u>good researcher</u>, <u>self-learner</u> and does his job with a <u>minimum need of supervision</u>. Lastly, I’m also <u>familiar with remote meetings</u> (screen sharing, presenting/discussing things over it etc.) because of being a remote developer over the past years."
+      ]
+    },
+    "socialProfiles": [
+      {
+        "name": "facebook",
+        "nameFancy": "Facebook",
+        "link": "https://www.facebook.com/{{username}}",
+        "faIcon": "facebook"
+      },
+      {
+        "name": "linkedin",
+        "nameFancy": "LinkedIn",
+        "link": "https://www.linkedin.com/in/{{username}}",
+        "faIcon": "linkedin"
+      },
+      {
+        "name": "github",
+        "nameFancy": "GitHub",
+        "link": "https://github.com/{{username}}",
+        "faIcon": "github"
+      },
+      {
+        "name": "instagram",
+        "nameFancy": "Instagram",
+        "link": "https://www.instagram.com/{{username}}",
+        "faIcon": "instagram"
+      },
+      {
+        "name": "youtube",
+        "nameFancy": "YouTube",
+        "link": "https://www.youtube.com/channel/{{username}}",
+        "faIcon": "youtube"
+      }
+    ]
+  },
+  "contactInfo": {
+    "email": "guneyfiratsahin@gmail.com",
+    "skype": "firatsahin87",
+    "github": "firatsahin",
+    "linkedin": "guneyfiratsahin",
+    "facebook": "fsahin87",
+    "soundcloud": "firatsahin",
+    "soundcloud2": "frtshnrecords",
+    "instagram": "firatsahin87",
+    "youtube": "UCMcECEH2XqEBEclPOjhaS5g"
+  },
+  "landingPageInfo": {
+    "title": "YTÜ Computer Engineer & Musician & Human",
+    "sections": [
+      {
+        "id": "as-a-software-engineer",
+        "title": "As a Software Engineer",
+        "backgroundImg": "/img/landing-page/laptopncoffee.jpg",
+        "linkActive": true,
+        "linkTarget": "_self",
+        "socialLinks": [
+          {
+            "name": "linkedin",
+            "nameFancy": "LinkedIn",
+            "link": "https://www.linkedin.com/in/{{username}}"
+          },
+          {
+            "name": "github",
+            "nameFancy": "GitHub",
+            "link": "https://github.com/{{username}}"
+          }
+        ]
+      },
+      {
+        "id": "as-a-musician",
+        "title": "As a Musician",
+        "backgroundImg": "/img/landing-page/acousticguitar.jpg",
+        "linkActive": true,
+        "linkTarget": "_blank",
+        "socialLinks": [
+          {
+            "name": "youtube",
+            "nameFancy": "YouTube",
+            "link": "https://www.youtube.com/channel/{{username}}"
+          },
+          {
+            "name": "soundcloud",
+            "nameFancy": "SoundCloud",
+            "link": "https://soundcloud.com/{{username}}"
+          },
+          {
+            "name": "soundcloud2",
+            "nameFancy": "second SoundCloud",
+            "link": "https://soundcloud.com/{{username}}"
+          }
+        ]
+      },
+      {
+        "id": "as-a-human",
+        "title": "As a Human",
+        "backgroundImg": "/img/landing-page/bicycles.jpg",
+        "linkActive": true,
+        "linkTarget": "_blank",
+        "socialLinks": [
+          {
+            "name": "facebook",
+            "nameFancy": "Facebook",
+            "link": "https://www.facebook.com/{{username}}"
+          },
+          {
+            "name": "instagram",
+            "nameFancy": "Instagram",
+            "link": "https://www.instagram.com/{{username}}"
+          }
+        ]
+      }
+    ]
+  },
+  "resume": {
+    "experience": [
+      {
+        "title": "Full Stack Software Engineer (Remote)",
+        "companyName": "NHN Global",
+        "companyLocation": "Los Angeles, California, USA",
+        "startDate": "01.2018",
+        "endDate": "05.2019",
+        "description": [
+          "Since our company (CompSolution) was merged into NHN Global as of 2018, we have turned into NHN Global developers. Our team structure and responsibilities didn’t change dramatically and we kept running our development / bug fixing / maintenance tasks same as before.",
+          "In addition to regular tasks, we also worked on Mobile App, Integration API etc. kind of side projects on this period of time."
+        ]
+      },
+      {
+        "title": "Full Stack Software Engineer (Remote)",
+        "companyName": "3 Stars Mentoring, Inc. (dba. CompSolution)",
+        "companyLocation": "Buena Park, California, USA",
+        "startDate": "07.2015",
+        "endDate": "12.2017",
+        "description": [
+          "After finishing my mandatory military obligation in my home country, I continued working as a full stack software engineer (remote) at the company that I had gone for the internship program in 2013.",
+          "My responsibilities basically were;",
+          "- Contributing to the regular maintenance / bug fixing processes and doing new feature / module developments for our existing projects.",
+          "- Playing an active role on software architecture planning & the code development processes for our new projects.",
+          "- Performing some of server maintenance, database migration, software deployment kind of operations whenever they were needed. My working hours in Istanbul were non-business hours in LA, we used that time difference as an advantage to get those critical/operational tasks performed by me securely out of LA business hours.",
+          "- Doing research about things that are new for us (it could be a new tool, 3rd party library, API etc.). Figuring out what it is and how we can get benefit from that for our project & preparing documentation/presentation about that topic."
+        ]
+      },
+      {
+        "title": "Web Developer Intern",
+        "companyName": "3 Stars Mentoring, Inc. (dba. CompSolution)",
+        "companyLocation": "La Habra, California, USA",
+        "startDate": "02.2013",
+        "endDate": "07.2014",
+        "description": [
+          "Worked as a web developer intern back in 2013 which was the starting point of my career. I was physically at the office in US for the first 1 year of period, then I continued 6 more months remotely from my home country. We developed majority of the eLAMBS project in that while which was the cloud-based, SaaS version of LAMBS Desktop ERP program.",
+          "I worked on front-end and back-end parts both on an ASP.NET project stack. On front-end, developed robust and reusable structures for different purposes and used those structures when necessary. On back-end, generally developed ASP.NET Web Service functions which were consumed by the front-end."
+        ]
+      },
+      {
+        "title": "Software Internship",
+        "companyName": "Yıldız Technical University / Natural Language Processing Team (Kemik)",
+        "companyLocation": "Beşiktaş, Istanbul",
+        "startDate": "07.2011",
+        "endDate": "08.2011",
+        "description": [
+          "4 Weeks of Mandatory Software Internship."
+        ]
+      },
+      {
+        "title": "Hardware Internship",
+        "companyName": "Arçelik-LG Klima Sanayi ve Ticaret A.Ş.",
+        "companyLocation": "Gebze, Izmit",
+        "startDate": "03.2011",
+        "endDate": "04.2011",
+        "description": [
+          "5 Weeks of Mandatory Hardware / System & Network Internship."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "degreeName": "Bachelor's degree",
+        "majorName": "Computer Science & Engineering",
+        "schoolName": "Yıldız Technical University",
+        "startDate": "2005",
+        "endDate": "2011",
+        "description": [
+          "University Education on Computer Science & Engineering."
+        ]
+      },
+      {
+        "degreeName": "High School",
+        "schoolName": "Kartal Lisesi",
+        "startDate": "2001",
+        "endDate": "2004",
+        "description": [
+          "High School Education."
+        ]
+      },
+      {
+        "degreeName": "Elementary School",
+        "schoolName": "Ortadogu College",
+        "startDate": "1993",
+        "endDate": "2001",
+        "description": [
+          "Elementary School Education."
+        ]
+      }
+    ],
+    "skillsets": [
+      {
+        "skillsetName": "set1",
+        "skills": [
+          {
+            "skillName": "sk1",
+            "percent": 85
+          },
+          {
+            "skillName": "sk2",
+            "percent": 65
+          },
+          {
+            "skillName": "sk3",
+            "percent": 35
+          }
+        ]
+      },
+      {
+        "skillsetName": "set2",
+        "skills": [
+          {
+            "skillName": "sk11",
+            "percent": 95
+          },
+          {
+            "skillName": "sk22",
+            "percent": 75
+          },
+          {
+            "skillName": "sk33",
+            "percent": 15
+          }
+        ]
+      }
+    ]
+  }
+}

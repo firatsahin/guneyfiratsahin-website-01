@@ -34,7 +34,7 @@ a {
 #contactform .submit:hover, #comment_form .submit:hover {
     webkit-filter: brightness(98%) !important;
 }
-#profile .col-md-5 h2, #profile .col-md-5 h4, #resume .col-md-6 p, #resume .col-md-6 span.duration {
+#profile .col-md-5 h2, #profile .col-md-5 h4, #resume p, #resume span.duration {
     color: #43B6B1;
 }
 #resume .resume-left ul li h5 {
@@ -84,7 +84,7 @@ a.readmore:hover, a.readmore:focus, a.readmore:active {
 }
 .resp-tabs-container h1 {
     color: #43B6B1 !important;
-    background: url(../../images/arrows-h3/arrow-lightseagreen-h3.png) no-repeat 0px 3px;
+    background: url(../../images/arrows-h3/arrow-lightseagreen-h3.png) no-repeat 0px 5px;
 }
 
 @media screen and (max-width:540px) {

@@ -30,11 +30,11 @@
         <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css" />
        	
         <!-- CSS | Colors -->
-        <link rel="stylesheet" type="text/css" href="css/colors/lightseagreen.css" id="colors-style" />
+        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference('/as-a-software-engineer/css/colors/DarkBlue.css') ?>" id="colors-style" /><!-- [DarkBlue,lightseagreen] -->
         <!--<link rel="stylesheet" type="text/css" href="css/switcher.css" />-->
         
         <!-- CSS | Style -->
-        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference('/as-a-software-engineer/css/main.css') ?>" />
 
         <!-- CSS | prettyPhoto -->
         <!-- Credits: http://www.no-margin-for-errors.com/ -->
@@ -106,26 +106,9 @@
 
     <!-- Profile Image -->
     <div class="col-lg-12 col-md-12 col-sm-3 col-xs-12 ">
-    	 
-		 
-                                
-         <?php /*<div class="image-holder one" id="pic_prof_1" style="display:none">
-        
-                <img class="head-image up circle" src="images/img/up.png" width="150" height="150" alt="" />
-                <img class="head-image up-left circle" src="images/img/upleft.png" width="150" height="150" alt="" />
-                <img class="head-image left circle" src="images/img/left.png" width="150" height="150" alt="" />
-                <img class="head-image down-left circle" src="images/img/downleft.png" width="150" height="150" alt="" />
-                <img class="head-image down circle" src="images/img/down.png" width="150" height="150" alt="" />
-                <img class="head-image down-right circle" src="images/img/downright.png" width="150" height="150" alt="" />
-                <img class="head-image right circle" src="images/img/right.png" width="150" height="150" alt="" />
-                <img class="head-image up-right circle" src="images/img/upright.png" width="150" height="150" alt="" />
-                <img class="head-image front circle" src="images/img/front.png" width="150" height="150" alt="" />
-                
-        </div>*/ ?>
         
         <!-- style for simple image profile -->		
    		<div class="circle-img" id="pic_prof_2" style="display:block"></div>
-       
     
     </div>
     <!-- End Profile Image -->
@@ -185,7 +168,7 @@
                                                 <i class="fa fa-user icon_menu icon_menu_active"></i>
                                             </li>
 
-                                            <li class="tabs-resume hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="resume" style="display: none;">
+                                            <li class="tabs-resume hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="resume">
                                                 <span class="tite-list">resume</span>
                                                 <i class="fa fa-tasks icon_menu"></i>
                                             </li>
@@ -277,10 +260,9 @@
 
         </ul>
 
-        <?php foreach ($data->personalInfo->aboutMeText as $a) { ?>
+        <?php foreach ($data->personalInfo->aboutMeText->left as $a) { ?>
             <p style="margin-bottom:20px">
-                <i class="fa fa-quote-left"></i>&nbsp;
-                <?= $a ?>
+                <i class="fa fa-quote-left"></i>&nbsp;&nbsp;<?= $a ?>
             </p>
         <?php } ?>
 
@@ -298,6 +280,27 @@
     </div>
 
 </div>
+
+                                                <div>
+                                                    <?php foreach ($data->personalInfo->aboutMeText->center as $a) { ?>
+                                                        <p style="margin-bottom:20px">
+                                                            <i class="fa fa-quote-left"></i>&nbsp;&nbsp;<?= $a ?>
+                                                        </p>
+                                                    <?php } ?>
+                                                </div>
+
+                                                <div class="title_content">
+                                                    <div class="text_content">What kind of developer / engineer am I..?</div>
+                                                    <div class="clear"></div>
+                                                </div>
+
+                                                <div>
+                                                    <?php foreach ($data->personalInfo->aboutMeText->wkodeiam as $a) { ?>
+                                                        <p style="margin-bottom:20px">
+                                                            <i class="fa fa-quote-left"></i>&nbsp;&nbsp;<?= $a ?>
+                                                        </p>
+                                                    <?php } ?>
+                                                </div>
 
     <div class="clear"></div>
 
@@ -410,225 +413,113 @@
                                             <!-- End .profile -->
 
                                             <!-- .resume -->
-                                            <div id="resume" class="content_2" style="display: none;">
+                                            <div id="resume" class="content_2">
                                                 <!-- .title -->
 <h1 class="h-bloc">Resume - Personal Info</h1> 
 
 <div class="row">
 
-   <!-- .resume-right -->
-    <div class="col-md-6">
+    <!-- .resume-left -->
+    <div class="col-md-12 resume-left">
+        <!-- .title_content -->
+        <div class="title_content">
+            <div class="text_content">Experience</div>
+            <div class="clear"></div>
+        </div>
+        <!-- /.title_content -->
+
+        <!-- .attributes -->
+        <ul class="attributes">
+
+            <?php foreach ($data->resume->experience as $e) { ?>
+                <li>
+                    <h5><?= $e->title ?> <span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
+                    <h6><span class="fa fa-briefcase"></span>&nbsp;&nbsp; <?= $e->companyName ?><span class="duration"><i class="fa fa-map-marker color"></i> <?= $e->companyLocation ?></span></h6>
+                    <?php foreach ($e->description as $d) { ?>
+                        <p style="margin-bottom: 10px;"><?= $d ?></p>
+                    <?php } ?>
+                </li>
+            <?php } ?>
+
+        </ul>
+        <!-- /.attributes -->
+        <br>
 
         <!-- .title_content -->
-        <div class="title_content" style="float: none;">
-            <div class="text_content">Designs skills</div>
+        <div class="title_content">
+            <div class="text_content">Education</div>
             <div class="clear"></div>
         </div>
         <!-- /.title_content -->
-        
-        <div class="skills">
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="95%">
-                <div class="skillbar-title"><span>Photoshop</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">95%</div>
-            </div>
-    
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="90%">
-                <div class="skillbar-title"><span>Illustrateur</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">90%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="65%">
-                <div class="skillbar-title"><span>Indesign</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">65%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="35%">
-                <div class="skillbar-title"><span>Flash</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">35%</div>
-            </div>
-            <!-- /.skillbar -->
-        </div>
-        
-        
-        <!-- .title_content -->
-        <div class="title_content" style="float: none;">
-            <div class="text_content">Programming Skills</div>
+
+        <!-- .attributes -->
+        <ul class="attributes">
+
+            <?php foreach ($data->resume->education as $e) { ?>
+                <li>
+                    <h5><?= $e->degreeName ?><?= isset($e->majorName) && $e->majorName ? ', ' . $e->majorName : '' ?> <span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
+                    <h6><span class="fa fa-book"></span>&nbsp;&nbsp; <?= $e->schoolName ?></h6>
+                    <?php foreach ($e->description as $d) { ?>
+                        <p style="margin-bottom: 10px;"><?= $d ?></p>
+                    <?php } ?>
+                </li>
+            <?php } ?>
+
+        </ul>
+        <!-- /.attributes -->
+        <br>
+
+
+        <?php /*<!-- .title_content -->
+        <div class="title_content">
+            <div class="text_content">Awards</div>
             <div class="clear"></div>
         </div>
         <!-- /.title_content -->
-        
-        <div class="skills">
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="85%">
-                <div class="skillbar-title"><span>Wordpress</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">85%</div>
+
+        <!-- .attributes -->
+        <ul class="attributes">
+            <li class="first">
+                <h5>Graphic &amp; Art Direction <span class="duration"><i class="fa fa-calendar color"></i> 2013 - 2014</span></h5>
+                <h6><span class="fa fa-trophy"></span> Name of Institute</h6>
+                <p>Emi Phasellus congue auctor risuspon, eget males. Pellentes que un imperdiet, odio quis orn sollicitud. Sed vitae lectus elementum mauris.</p>
+            </li>
+            <li>
+                <h5>Design &amp; Art Direction <span class="duration"><i class="fa fa-calendar color"></i> 2012 - 2013</span></h5>
+                <h6><span class="fa fa-trophy"></span> Name of Institute</h6>
+                <p>Emi Phasellus congue auctor risuspon, eget males. Pellentes que un imperdiet, odio quis orn sollicitud. Sed vitae lectus elementum mauris.</p>
+            </li>
+
+        </ul>
+        <!-- /.attributes -->
+        <br>*/ ?>
+
+    </div>
+    <!-- /.resume-left -->
+
+   <!-- .resume-right -->
+    <div class="col-md-12">
+
+        <?php foreach ($data->resume->skillsets as $ss) { ?>
+            <!-- .title_content -->
+            <div class="title_content" style="float: none;">
+                <div class="text_content"><?= $ss->skillsetName ?> skills</div>
+                <div class="clear"></div>
             </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="75%">
-                <div class="skillbar-title"><span>Joomla</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">75%</div>
+            <!-- /.title_content -->
+
+            <div class="skills">
+                <?php foreach ($ss->skills as $ss) { ?>
+                    <!-- .skillbar -->
+                    <div class="skillbar clearfix" data-percent="<?= $ss->percent ?>%">
+                        <div class="skillbar-title"><span><?= $ss->skillName ?></span></div>
+                        <div class="skillbar-bar"></div>
+                        <div class="skill-bar-percent"><?= $ss->percent ?>%</div>
+                    </div>
+                    <!-- /.skillbar -->
+                <?php } ?>
             </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="60%">
-                <div class="skillbar-title"><span>Drupal</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">60%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-             <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="89%">
-                <div class="skillbar-title"><span>Php</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">89%</div>
-            </div>
-            <!-- /.skillbar --> 
-        </div>
-        
-         
-        <!-- .title_content -->
-        <div class="title_content" style="float: none;">
-            <div class="text_content">Office Skills</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-            
-        <div class="skills">       
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="85%">
-                <div class="skillbar-title"><span>MS Excel</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">85%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="95%">
-                <div class="skillbar-title"><span>MS Word</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">95%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="60%">
-                <div class="skillbar-title"><span>Powerpoint</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">60%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="40%">
-                <div class="skillbar-title"><span>SharePoint</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">40%</div>
-            </div>
-            <!-- /.skillbar -->   
-		</div>
-        
-        
-        <!-- .title_content -->
-        <div class="title_content" style="float: none;">
-            <div class="text_content">Hobbies Skills</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-        
-        <div class="skills">
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="60%">
-                <div class="skillbar-title"><span>Music</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">60%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="95%">
-                <div class="skillbar-title"><span>Sport</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">95%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="85%">
-                <div class="skillbar-title"><span>Reading</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">85%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="70%">
-                <div class="skillbar-title"><span>Travelling</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">70%</div>
-            </div>
-            <!-- /.skillbar -->
-        </div>
-        
-        
-        <!-- .title_content -->
-        <div class="title_content" style="float: none;">
-            <div class="text_content">Language Skills</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-        
-        <div class="skills">
-            <!-- .skillbar -->
-            <div class="skillbar clearfix" data-percent="90%">
-                <div class="skillbar-title"><span>English</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">90%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="80%">
-                <div class="skillbar-title"><span>French</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">80%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="50%">
-                <div class="skillbar-title"><span>Spanish</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">50%</div>
-            </div>
-            <!-- /.skillbar -->
-            
-            <!-- .skillbar -->
-            <div class="skillbar clearfix " data-percent="60%">
-                <div class="skillbar-title"><span>Swiss</span></div>
-                <div class="skillbar-bar"></div>
-                <div class="skill-bar-percent">60%</div>
-            </div>
-            <!-- /.skillbar -->
-        </div>
-        
+        <?php } ?>
         
         <!-- .title_content -->
         <div class="title_content" style="float: none;">
@@ -645,91 +536,13 @@
 
     </div>
      <!-- /.resume-right -->
-     
-     
-     
-     <!-- .resume-left -->
-    <div class="col-md-6 resume-left">    
-        <!-- .title_content -->
-        <div class="title_content" style="margin-bottom:5px">
-            <div class="text_content">Experience</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-        
-        <!-- .attributes -->
-        <ul class="attributes">
-            <li class="first">
-                <h5>Web Developer <span class="duration"><i class="fa fa-calendar color"></i> 2011 - 2013</span></h5>
-                <h6><span class="fa fa-briefcase"></span> Name of Company</h6>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscingVivamus sit amet ligula non lectus cursus egestas. Cras erat lorem, fringilla quis sagittis in, sagittis inNam leo tortor Nam leo tortor Vivamus.</p>
-            </li>
-            <li>
-                <h5>Front-End Developer <span class="duration"><i class="fa fa-calendar color"></i> 2010 - 2011</span></h5>
-                <h6><span class="fa fa-briefcase"></span> Name of Company</h6>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscingVivamus sit amet ligula non lectus cursus egestas. Cras erat lorem, fringilla quis sagittis in, sagittis inNam leo tortor Nam leo tortor Vivamus.</p>
-            </li>
 
-        </ul>
-        <!-- /.attributes -->
-        <br>
-        
-        <!-- .title_content -->
-        <div class="title_content">
-            <div class="text_content">Education</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-        
-        <!-- .attributes -->
-        <ul class="attributes">
-            <li class="first">
-                <h5>Master of Engineering <span class="duration"><i class="fa fa-calendar color"></i> 2011 - 2013</span></h5>
-                <h6><span class="fa fa-book"></span> Name of University</h6>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscingVivamus sit amet ligula non lectus cursus egestas. Cras erat lorem, fringilla quis sagittis in, sagittis inNam leo tortor Nam leo tortor Vivamus.</p>
-            </li>
-            <li>
-                <h5>Bachelor of Engineering <span class="duration"><i class="fa fa-calendar color"></i> 2010 - 2011</span></h5>
-                <h6><span class="fa fa-book"></span> Name of University</h6>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscingVivamus sit amet ligula non lectus cursus egestas. Cras erat lorem, fringilla quis sagittis in, sagittis inNam leo tortor Nam leo tortor Vivamus.</p>
-            </li>
-        </ul>
-        <!-- /.attributes -->
-        <br>  
-        
-        
-          <!-- .title_content -->
-        <div class="title_content">
-            <div class="text_content">Awards</div>
-            <div class="clear"></div>
-        </div>
-        <!-- /.title_content -->
-        
-        <!-- .attributes -->
-        <ul class="attributes">
-            <li class="first">
-                <h5>Graphic &amp; Art Direction <span class="duration"><i class="fa fa-calendar color"></i> 2013 - 2014</span></h5>
-                <h6><span class="fa fa-trophy"></span> Name of Institute</h6>
-                <p>Emi Phasellus congue auctor risuspon, eget males. Pellentes que un imperdiet, odio quis orn sollicitud. Sed vitae lectus elementum mauris.</p>
-            </li>
-            <li>
-                <h5>Design &amp; Art Direction <span class="duration"><i class="fa fa-calendar color"></i> 2012 - 2013</span></h5>
-                <h6><span class="fa fa-trophy"></span> Name of Institute</h6>
-                <p>Emi Phasellus congue auctor risuspon, eget males. Pellentes que un imperdiet, odio quis orn sollicitud. Sed vitae lectus elementum mauris.</p>
-            </li>
-  
-        </ul>
-        <!-- /.attributes -->
-        <br>  
-        
-    </div>
-    <!-- /.resume-left -->
 </div>
 
   <div style="clear: both"></div>  
   
   
-<!-- client reference -->
+<?php /*<!-- client reference -->
 <div class="row">
     <div class="col-md-12">   
     
@@ -767,7 +580,7 @@
      
      
      <div style="clear: both"></div>   
-</div>
+</div>*/ ?>
 
                                             </div>
                                             <!-- End .resume -->
@@ -2154,129 +1967,6 @@
         </div>
         <!-- End wrapper -->
 
-        <?php /*<!-- Switcher -->
-        <div id="custumize-style">
-            <h2>Style Selector<a href="#" class="switcher"><i class="fa fa-cogs icon-switcher"></i></a></h2>
-            <div>
-                <h3>Theme Color</h3>
-                <ul class="colors-style" id="color1">
-
-                    <li><a href="#" class="gray"></a></li>
-                    <li><a href="#" class="green"></a></li>
-                    <li><a href="#" class="blue"></a></li>
-                    <li><a href="#" class="red"></a></li>
-                    <li><a href="#" class="yellow"></a></li>
-
-                    <li><a href="#" class="DarkBlue"></a></li>
-                    <li><a href="#" class="orange"></a></li>
-                    <li><a href="#" class="rose"></a></li>
-                    <li><a href="#" class="lightseagreen"></a></li>
-                    <li><a href="#" class="darkolivegreen"></a></li>
-
-                </ul>
-            </div>
-            <div> 
-
-                <h3 class="layouts">Profile Image</h3>
-                <div id="show">
-
-                    <div class="clean-check">
-
-                        <input type="radio" id="r1" name="style_profile" value="style_profile_1" checked="checked" />
-                        <label for="r1"><span></span>Rotating image</label>
-
-                        <input type="radio" id="r2" name="style_profile" value="style_profile_2" />
-                        <label for="r2"><span></span>Fixed image</label>
-
-                    </div>
-                </div>
-
-
-                
-                <h3 class="layouts">Page Builder</h3>
-                <div id="show">
-                    <div class="clean-check" style="padding-left: 30px;">
-
-                        <input type="radio" id="pb1" name="page_builder" value="index.html"  checked />
-                        <label for="pb1"><span></span>Style 1</label>
-
-                        <input type="radio" id="pb2" name="page_builder" value="page-builder-2.html"  />
-                        <label for="pb2"><span></span>Style 2</label>
-
-                        <input type="radio" id="pb3" name="page_builder" value="page-builder-3.html"  />
-                        <label for="pb3"><span></span>Style 3</label>
-
-                        <input type="radio" id="pb4" name="page_builder" value="page-builder-4.html"  />
-                        <label for="pb4"><span></span>Style 4</label>
-                    </div>
-                </div>      
-
-                <h3 class="layouts">Page Animation</h3>
-                <div id="show">
-
-                    <select name="one" class="dropdown-select">
-                        <optgroup label="Bouncing Entrances">
-                            <option value="bounceIn" selected>bounceIn</option>
-                            <option value="bounceInDown">bounceInDown</option>
-                            <option value="bounceInLeft">bounceInLeft</option>
-                            <option value="bounceInRight">bounceInRight</option>
-                            <option value="bounceInUp">bounceInUp</option>
-                        </optgroup>
-
-                        <optgroup label="Fading Entrances">
-                            <option value="fadeIn">fadeIn</option>
-                            <option value="fadeInDown">fadeInDown</option>
-                            <option value="fadeInLeft">fadeInLeft</option>
-                            <option value="fadeInRight">fadeInRight</option>
-                            <option value="fadeInUp">fadeInUp</option>
-                        </optgroup>      
-                    </select>
-
-                </div>
-
-                <h3 class="layouts" style="padding-top:5px">Background Style</h3>
-                <div id="show">
-
-                    <div class="clean-check">
-
-						<input type="radio" id="s1" name="layout" value="bg_color" checked="checked" />
-                        <label for="s1"><span></span>Color</label>
-                        
-                        <input type="radio" id="s2" name="layout" value="bg_slider" />
-                        <label for="s2"><span></span>Slider</label>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div> 
-                <h3>Background Color</h3>
-                <ul class="colors-style bgsolid" id="bgsolid">
-                    <li><a href="#" class="gray-bg"></a></li>
-                    <li><a href="#" class="green-bg"></a></li>
-                    <li><a href="#" class="blue-bg"></a></li>
-                    <li><a href="#" class="red-bg"></a></li>
-                    <li><a href="#" class="yellow-bg"></a></li>
-                </ul>
-            </div> 
-
-            <div>  
-                <h3>Background Image</h3>
-                <ul class="colors-style bg" id="bg">
-                    <li><a href="#" class="bg1"></a></li>
-                    <li><a href="#" class="bg2"></a></li>
-                    <li><a href="#" class="bg3"></a></li>
-                    <li><a href="#" class="bg4"></a></li>
-                    <li><a href="#" class="bg5"></a></li>
-                </ul>
-            </div>
-
-            <div id="button-reset"><a href="#" class="button color blue boxed">Reset</a></div>
-        </div>
-        <!-- End Switcher -->*/ ?>
-
 
 
         <!-- jquery | jQuery 1.11.0 -->
@@ -2293,19 +1983,11 @@
         
         <!-- jquery | rotate and portfolio -->
         <!-- Credits: http://jquery.com -->
-        <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
-        <?php /*<script type="text/javascript" src="js/HeadImage.js"></script>*/ ?>
+        <script type="text/javascript" src="js/jquery.mixitup.min.js"></script>
 
         <!-- Js | easyResponsiveTabs -->
         <!-- Credits: http://webtrendset.com/demo/easy-responsive-tabs/Index.html -->
         <script type="text/javascript" src="js/easyResponsiveTabs.min.js"></script>
-
-        <!-- Js | jquery.cookie -->
-        <!-- Credits: https://github.com/carhartl/jquery-cookie -->
-        <!-- <script type="text/javascript" src="js/jsSwitcher/jquery.cookie.js"></script> -->
-
-        <!-- Js | switcher -->
-        <!-- <script type="text/javascript" src="js/jsSwitcher/switcher.js"></script> -->
 
         <!-- Js | mCustomScrollbar -->
         <!-- Credits: http://manos.malihu.gr/jquery-custom-content-scroller -->
@@ -2321,55 +2003,7 @@
         <script type="text/javascript" src="js/gmaps.min.js"></script>*/ ?>
 
  		<!-- Js | Js -->
-        <script type="text/javascript" src="js/main.js"></script>
-        
-        <!-- code js for image rotate -->
-        <script type="text/javascript">
-            (function () {
-                var mouseX;
-                var mouseY;
-                var imageOne;
-
-                /* Calling the initialization function */
-                $(init);
-
-                /* The images need to re-initialize on load and on resize, or else the areas
-                 * where each image is displayed will be wrong. */
-                $(window).load(init);
-                $(window).resize(init);
-
-                /* Setting the mousemove event caller */
-                $(window).mousemove(getMousePosition);
-
-                /* This function is called on document ready, on load and on resize
-                 * and initiallizes all the images */
-                function init() {
-
-                    /* Instanciate the mouse position variables */
-                    mouseX = 0;
-                    mouseY = 0;
-
-                    /* Instanciate a HeadImage class for every image */
-                    imageOne = new HeadImage("one");
-
-                }
-
-                /* This function is called on mouse move and gets the mouse position.
-                 * It also calls the HeadImage function to display the correct image*/
-                function getMousePosition(event) {
-
-                    /* Setting the mouse position variables */
-                    mouseX = event.pageX;
-                    mouseY = event.pageY;
-
-                    /*Calling the setImageDirection function of the HeadImage class
-                     * to display the correct image*/
-                    imageOne.setImageDirection();
-
-                }
-            })/*()*/;
-        </script>
-
+        <script type="text/javascript" src="<?= utility_helper::includeVersionedReference('/as-a-software-engineer/js/main.js') ?>"></script>
 
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -2380,7 +2014,7 @@
                 //console.log($("#verticalTab div.resp-tabs-container h2"));
 
                 // hide some unused tabs (for mobile mode)
-                $("#verticalTab div.resp-tabs-container h2").eq(1).hide();
+                //$("#verticalTab div.resp-tabs-container h2").eq(1).hide();
                 $("#verticalTab div.resp-tabs-container h2").eq(2).hide();
                 $("#verticalTab div.resp-tabs-container h2").eq(3).hide();
             });

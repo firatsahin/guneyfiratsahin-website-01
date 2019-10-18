@@ -66,15 +66,19 @@ jQuery(document).ready(function($) {
     /* --------------------------- Scroll tabs ------------------------------ */
     /* ---------------------------------------------------------------------- */
 
-    $(".content_2").mCustomScrollbar({
-        theme: "dark-2",
-        contentTouchScroll: true,
-        advanced: {
-            updateOnContentResize: true,
-            updateOnBrowserResize: true,
-            autoScrollOnFocus: false
-        }
-    });
+    function setCustomScrollbars() {
+        $(".content_2").mCustomScrollbar({
+            theme: "dark-2",
+            contentTouchScroll: true,
+            scrollInertia: 100,
+            advanced: {
+                updateOnContentResize: true,
+                updateOnBrowserResize: true,
+                autoScrollOnFocus: false
+            }
+        });
+    }
+    setCustomScrollbars();
 
     /* ---------------------------------------------------------------------- */
     /* ------------------------- Effect tabs -------------------------------- */
@@ -97,15 +101,7 @@ jQuery(document).ready(function($) {
         });
 
         $(".content_2").mCustomScrollbar("destroy");
-        $(".content_2").mCustomScrollbar({
-            theme: "dark-2",
-            contentTouchScroll: true,
-            advanced: {
-                updateOnContentResize: true,
-                updateOnBrowserResize: true,
-                autoScrollOnFocus: false
-            }
-        });
+        setCustomScrollbars();
 
         if (tab_name == "contact")
             initialize();
@@ -132,15 +128,7 @@ jQuery(document).ready(function($) {
             $(".resp-vtabs .resp-tabs-container").css("height", "580px");
             $(".content_2").css("height", "580px");
             $(".content_2").mCustomScrollbar("destroy");
-            $(".content_2").mCustomScrollbar({
-                theme: "dark-2",
-                contentTouchScroll: true,
-                advanced: {
-                    updateOnContentResize: true,
-                    updateOnBrowserResize: true,
-                    autoScrollOnFocus: false
-                }
-            });
+            setCustomScrollbars();
 
         }
 
@@ -462,6 +450,9 @@ jQuery(document).ready(function($) {
         return false;
     });
 
-
+    // FRT ADDITIONS - BEGIN
+    // to prevent [scroll to top] action on "#" links
+    $(document).on("click", "a[href='#']", function (e) { e.preventDefault(); });
+    // FRT ADDITIONS - END
 
 });
