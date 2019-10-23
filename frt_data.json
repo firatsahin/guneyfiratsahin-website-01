@@ -87,7 +87,8 @@
     "soundcloud": "firatsahin",
     "soundcloud2": "frtshnrecords",
     "instagram": "firatsahin87",
-    "youtube": "UCMcECEH2XqEBEclPOjhaS5g"
+    "youtube": "UCMcECEH2XqEBEclPOjhaS5g",
+    "stackoverflow": "firatsahin"
   },
   "landingPageInfo": {
     "title": "YTÜ Computer Engineer & Musician & Human",
@@ -108,6 +109,11 @@
             "name": "github",
             "nameFancy": "GitHub",
             "link": "https://github.com/{{username}}"
+          },
+          {
+            "name": "stackoverflow",
+            "nameFancy": "StackOverflow",
+            "link": "https://stackoverflow.com/cv/{{username}}"
           }
         ]
       },
@@ -166,7 +172,7 @@
         "endDate": "05.2019",
         "description": [
           "Since our company (CompSolution) was merged into NHN Global as of 2018, we have turned into NHN Global developers. Our team structure and responsibilities didn’t change dramatically and we kept running our development / bug fixing / maintenance tasks same as before.",
-          "In addition to regular tasks, we also worked on Mobile App, Integration API etc. kind of side projects on this period of time."
+          "In addition to regular tasks, we also worked on Mobile App, Integration API etc. kind of side projects in this period of time."
         ]
       },
       {
@@ -248,38 +254,325 @@
     ],
     "skillsets": [
       {
-        "skillsetName": "set1",
+        "skillsetName": "Front-End Development",
         "skills": [
           {
-            "skillName": "sk1",
+            "skillName": "HTML5 / CSS3 (Less) / JavaScript",
+            "percent": 95
+          },
+          {
+            "skillName": "jQuery / jQuery UI / Kendo UI",
+            "percent": 90
+          },
+          {
+            "skillName": "AngularJS / Angular / Bootstrap",
             "percent": 85
           },
           {
-            "skillName": "sk2",
-            "percent": 65
+            "skillName": "XHR / AJAX / XML / JSON / DOM",
+            "percent": 80
           },
           {
-            "skillName": "sk3",
-            "percent": 35
+            "skillName": "Reactive / Asynchronous Programming",
+            "percent": 75
           }
         ]
       },
       {
-        "skillsetName": "set2",
+        "skillsetName": "Back-End Development",
         "skills": [
           {
-            "skillName": "sk11",
+            "skillName": "C# / ASP.NET / MVC / Web API",
             "percent": 95
           },
           {
-            "skillName": "sk22",
-            "percent": 75
+            "skillName": "Visual Studio / MS SQL",
+            "percent": 90
           },
           {
-            "skillName": "sk33",
-            "percent": 15
+            "skillName": "PHP / CodeIgniter (MVC) / MySQL",
+            "percent": 85
+          },
+          {
+            "skillName": "Java / OOP / NetBeans / Eclipse",
+            "percent": 80
+          },
+          {
+            "skillName": "C / C++",
+            "percent": 75
           }
         ]
+      },
+      {
+        "skillsetName": "Database Development / Management",
+        "skills": [
+          {
+            "skillName": "MSSQL / MySQL / Oracle",
+            "percent": 85
+          },
+          {
+            "skillName": "Relational DB Design",
+            "percent": 80
+          },
+          {
+            "skillName": "SQL / Transact-SQL / PL/SQL",
+            "percent": 75
+          }
+        ]
+      },
+      {
+        "skillsetName": "3rd Party API / Integration",
+        "skills": [
+          {
+            "skillName": "Shipping (UPS & Fedex APIs)",
+            "percent": 90
+          },
+          {
+            "skillName": "Payment Gateway (Spreedly & Elavon APIs)",
+            "percent": 85
+          }
+        ]
+      },
+      {
+        "skillsetName": "Mobile App Development",
+        "skills": [
+          {
+            "skillName": "iOS Development (Swift 4)",
+            "percent": 80
+          },
+          {
+            "skillName": "Hybrid Mobile App Development (Ionic)",
+            "percent": 75
+          }
+        ]
+      },
+      {
+        "skillsetName": "CI / CD",
+        "skills": [
+          {
+            "skillName": "TFS / Git / GitHub",
+            "percent": 90
+          },
+          {
+            "skillName": "Jenkins",
+            "percent": 85
+          }
+        ]
+      },
+      {
+        "skillsetName": "Additional",
+        "skills": [
+          {
+            "skillName": "B2B / ERP / E-Commerce",
+            "percent": 90
+          },
+          {
+            "skillName": "Reports / Documentation",
+            "percent": 85
+          },
+          {
+            "skillName": "NodeJS / npm / socket.io",
+            "percent": 80
+          },
+          {
+            "skillName": "Dreamweaver / Photoshop",
+            "percent": 70
+          },
+          {
+            "skillName": "SEO Basics",
+            "percent": 60
+          }
+        ]
+      }
+    ]
+  },
+  "portfolio": {
+    "filters": [
+      {
+        "key": "frontEndDev",
+        "value": "Front-End Development"
+      },
+      {
+        "key": "backEndDev",
+        "value": "Back-End Development"
+      },
+      {
+        "key": "databaseDev",
+        "value": "Database Development"
+      },
+      {
+        "key": "apiDev",
+        "value": "API Development"
+      },
+      {
+        "key": "3rdPartyApiIntegration",
+        "value": "3rd Party API Integration"
+      },
+      {
+        "key": "maintenance",
+        "value": "Maintenance"
+      },
+      {
+        "key": "projectManagement",
+        "value": "Project Management"
+      },
+      {
+        "key": "uiUxDesign",
+        "value": "UI/UX Design"
+      },
+      {
+        "key": "mobileAppDev",
+        "value": "Mobile App Development"
+      },
+      {
+        "key": "contentManagement",
+        "value": "Content Management"
+      }
+    ],
+    "projects": [
+      {
+        "id": "mobile-app-development",
+        "name": "Mobile App Development Projects (Hybrid & Native Apps)",
+        "startDate": "2018",
+        "endDate": "2019",
+        "image": "",
+        "categories": [
+          "mobileAppDev",
+          "apiDev",
+          "uiUxDesign"
+        ],
+        "description": [
+          "Hybrid Mobile App Development (w/Ionic Framework): I contributed to a hybrid mobile app development project with the Ionic Framework (so with Angular & TypeScript too). It was a simple app but was enough to make me get familiar with the basics of the hybrid mobile app development with Ionic.",
+          "Native iOS App Development (w/Swift 4): I also contributed to a native iOS App development project (which was a Warehouse Management System) with Swift 4. Our target device for that project was iPad. So, I have familiarity with Mac & XCode and some knowledge on Native iOS Development with Swift 4."
+        ],
+        "projectLink": ""
+      },
+      {
+        "id": "3rd-party-integration",
+        "name": "Integration Projects (Shipping, Payment Gateway & Other Solution)",
+        "startDate": "2016",
+        "endDate": "2018",
+        "image": "",
+        "categories": [
+          "backEndDev",
+          "databaseDev",
+          "3rdPartyApiIntegration"
+        ],
+        "description": [
+          "After the eLAMBS ERP & Shop solutions were developed and they became stable, we started to apply integrations between some 3rd party solutions / services and our ERP solution to extend its functionality. Those were mainly;",
+          "- Shipping Integrations (UPS & Fedex): We have implemented UPS Integration to our solution which allows our customers use features such as getting estimated rates for a particular planned shipment, creating a shipment, tracking a shipment after creation, canceling it etc. just by using our solution and without any need of UPS website usage. I played an active role on that UPS Integration process from planning to implementation phase, I used UPS REST API with JSON type request to interact with UPS Services and stored necessary data to the related tables on our db.",
+          "For another project (.NET project), I also implemented Fedex integration too which was pretty similar to UPS integration process.",
+          "- Payment Gateway Integrations (Spreedly & Elavon-Converge): We have also integrated our ERP’s credit card payment option to a real payment process. I played an active role on Spreedly Payment Gateway Integration for Tokenize (Add New Card), Authorize, Capture, CancelAuth, Auth&Capture, Refund actions by using Spreedly’s RESTful API and our db as well. I also set up their iFrame solution to our front for transporting the card number from front to their service in most secure way.",
+          "After Spreedly integration was done, we also applied Elavon’s Converge service integration too which was a similar process to Spreedly.",
+          "- Other Solution Integrations: I have also contributed to some of our 2 different solution integration processes (by designing an integration API for other party to call and also adding other party’s integration API calls whenever they were needed in our solution)."
+        ],
+        "projectLink": ""
+      },
+      {
+        "id": "elambs-shop-ecommerce",
+        "name": "eLAMBS Shop Project (ERP Integrated E-Commerce Solution)",
+        "startDate": "2015",
+        "endDate": "2018",
+        "image": "images/portfolio/elambs-shop.jpg",
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "apiDev",
+          "maintenance"
+        ],
+        "description": [
+          "eLAMBS Shop is the e-commerce solution that we provide to our existing eLAMBS ERP customers. The common advantage of choosing our e-commerce solution over their independent web sites for our customers is; our e-commerce solution data made fully integrated with the ERP system. In other words, when they make a change on ERP (sales, invoice, inventory etc.), it directly takes effect on their e-commerce site. So they don’t need to update the same stuff twice.",
+          "Other than that, we provide multiple design layouts for our shop system (since customers are not willing to use the same design with each other), our customers can pick among the designs we provide and customize their shop sites by using the ERP’s Mall module. Or if they have their own design, we can apply the shop system on their own design too.",
+          "For the system background, we used ASP.NET MVC5 project for the shop web site and ASP.NET Web API 2 as the data serving API for multiple instances of the shop site. That means multiple shop web site instances will be consuming one API to get their data. I implemented most of the parts of the App and also API’s authentication procedure which was kind of critical.",
+          "For the front-end, we used AngularJS 1.x with Controllers, Factories, Services & Directives which were written by us. Also used jQuery & Bootstrap plugins / components on needed designs. I implemented mostly the root / page / partial controllers, factories (to interact with API) and data-binding expressions for the presentation of the data.",
+          "Several live instances (PC / Mobile) of that project can be checked on http://info.elambs.com/OnlineShop address."
+        ],
+        "projectLink": "http://info.elambs.com/OnlineShop"
+      },
+      {
+        "id": "elambs-erp",
+        "name": "eLAMBS Project (ERP Solution for Apparel Industry)",
+        "startDate": "2013",
+        "endDate": "2018",
+        "image": "images/portfolio/elambs.jpg",
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "3rdPartyApiIntegration",
+          "maintenance"
+        ],
+        "description": [
+          "Project Description:",
+          "- eLAMBS is the web version of the LAMBS program which is a B2B ERP solution (manufacturing & wholesale distribution software) specified for the garment industry needs. It handles main ERP functions such as Sales Order, Invoicing, Accounts Receivable, Purchase Order, Inventory Control and Customer Management. It is commonly used by the companies located in Los Angeles Fashion District.",
+          "My responsibilities were;",
+          "- Implementing page level actions using Javascript / JQuery / Ajax on data intense pages. Testing front-end code on common browsers and optimization for cross browser support / consistence.",
+          "- Writing ASP.NET Web Services for the AJAX requests coming from the pages to interact with application's data access layer through them.",
+          "- Development of custom JQuery UI widgets for some specified needs such as Auto-Complete Dropdown List, Form Validation, Popup, Pagination, User Dialog, Multiple File Upload, Progress Display etc. in object oriented Javascript development structure to be able to reuse in any other projects too.",
+          "- Doing research about third party tools we are willing to use, testing and preparing reports based on the test results, giving presentations and suggestions to my supervisors in order to decide which one we're gonna use.",
+          "- Development of front-end data reading / writing / caching / processing policies for various data & field types. Implementation of common utility functions on front and a little HTML / CSS development when necessary.",
+          "- Reporting daily work and doing daily check-ins to the TFS. Besides, preparing detailed documentations about the widgets / modules that I have developed to make them clear for the people who will use / maintain them in the future.",
+          "This project is in use on https://www.elambs.com address and information about the product can be gotten here; http://info.elambs.com"
+        ],
+        "projectLink": "https://www.elambs.com"
+      },
+      {
+        "id": "personal-portfolio",
+        "name": "Olcay Saymar Architecture & Visualization | Web-Based Portfolio",
+        "startDate": "12.2011",
+        "endDate": "02.2012",
+        "image": "images/portfolio/olcysymr.jpg",
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "maintenance",
+          "uiUxDesign",
+          "contentManagement"
+        ],
+        "description": [
+          "I have developed a web application that allows Architect Olcay Saymar to share his architecture and/or 3D visualization projects with their rendered images as a personal portfolio on his web address.",
+          "By using the administration panel which was developed with PHP, MySQL, jQuery and Ajax technologies, he can add / delete / update his projects and he can also add / delete / show / hide and sort the images (by setting a priority value) which belong to the projects. An admin panel which supplies that kind of management tasks was also written by me.",
+          "The site is in use on http://www.olcaysaymar.com address."
+        ],
+        "projectLink": "http://www.olcaysaymar.com"
+      },
+      {
+        "id": "vehicle-shopping-system",
+        "name": "Web Based Vehicle Shopping System | Freelance Project",
+        "startDate": "10.2011",
+        "endDate": "01.2012",
+        "image": "",
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "uiUxDesign",
+          "projectManagement"
+        ],
+        "description": [
+          "The main purpose of that project is to make vehicle sellers & buyers find each other on the internet and sell/buy vehicles by using this system. We have vehicle categories which are cars, motorcycles and trucks in our system and those vehicles can be for sale or rental. Buyers can filter vehicles by using the tools on our search page, access the detail information of his/her desired vehicles and contact information of the sellers of those vehicles.",
+          "For its technical background, I made HTML and CSS coding in order to create pages from the PSD design and on back-end side I used CodeIgniter framework which is a modular, scalable, secure and high performance PHP framework for PHP/MySQL based systems. Thanks to that MVC framework, I was able to do business logic, data modeling / access and user interface coding on separate sources and build clean, understandable and multi-tiered code structure which is useful for teamwork."
+        ],
+        "projectLink": ""
+      },
+      {
+        "id": "alumni-portal-senior-project",
+        "name": "Yıldız Technical University Alumni Portal | University Senior Project",
+        "startDate": "10.2009",
+        "endDate": "02.2010",
+        "image": "",
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "uiUxDesign",
+          "projectManagement"
+        ],
+        "description": [
+          "I have developed an application to my University as my Senior Project to provide a social networking portal for Yıldız Technical University graduates. In this project which I used PHP / MySQL technologies for its back-end, graduates can sign up with their personal information and build their profile pages. They can set privacy levels to each of their data to restrict the community that may access that data and they can communicate to each other by using the messaging module of our system.",
+          "In addition to the graduate role, we also have faculty, department and rector administrative roles in that system. The users who have the privilege of those roles can perform some administrative actions like approval / denial of their graduate signup requests, management of the graduate accounts that they are responsible for, importing data of the new graduates at the end of each semester and getting some statistics / reports about their graduates."
+        ],
+        "projectLink": ""
       }
     ]
   }

@@ -345,7 +345,7 @@ h2.resp-accordion:first-child {
         left: 10px;
     }
     .widget-profil #profile_desc{
-        border-top: 0 !important;
+        /*border-top: 0 !important;*/
         border-bottom: 0 !important;
     }
 
@@ -586,7 +586,7 @@ h2.resp-accordion:hover {
 
 #filters li span {
     display: block;
-    padding:5px 20px;		
+    padding:2px 9px;
     text-decoration:none;
     color:#fff;
     cursor: pointer;
@@ -619,6 +619,9 @@ h2.resp-accordion:hover {
 .portfolio img {
     max-width:100%;
     position: relative;
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
 }
 
 .portfolio .label {
@@ -648,15 +651,60 @@ h2.resp-accordion:hover {
 .portfolio .text-title {
     display:block;
     font-size:13px;
-    margin: 1px;
+    margin: -1px 1px 5px 1px;
     color : #fff;
-    text-transform:capitalize;
+    /*text-transform:capitalize;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #fancybox-title {
     margin-left: 10px !important;
     width: 380px !important;
     bottom: 10px !important;
     display: block !important;
+}
+
+#portfolio .container-portfolio-detail {
+    padding: 0px 10px 0px 0px;
+}
+#portfolio .container-portfolio-detail div.text_content {
+    text-transform: unset;
+    width: calc(100% - 136px);
+    text-align: left;
+}
+#portfolio .container-portfolio-detail span.duration {
+    float: right;
+    color: #3B5998;
+    font-size: 14px;
+    margin-top: 14px;
+}
+#portfolio .container-portfolio-detail a.portfolio-backbutton {
+    background: #577285;
+    color: #fff;
+    padding: 6px 22px;
+}
+#portfolio .container-portfolio-detail a.portfolio-backbutton:hover {
+    background: #3B5998;
+}
+#portfolio .container-portfolio-detail a.portfolio-seeprojectbutton {
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+#portfolio .container-portfolio-detail a.portfolio-seeprojectbutton:hover {
+    text-decoration: underline !important;
+}
+#portfolio [entity=project][column=categories] span{
+    background: #577285;
+    color: #fff;
+    padding: 2px 9px;
+    margin: 2px;
+    cursor: pointer;
+    display: inline-block;
+}
+#portfolio [entity=project][column=categories] span:hover {
+    transition: all .3s ease-in;
+    background: #3B5998;
 }
 
 
@@ -1149,7 +1197,7 @@ ul.about {
 
     .widget-profil{ 	
         height: 210px !important;	
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         float: none;
     }
 
@@ -1236,6 +1284,14 @@ ul.about {
 ---------------------- Resume ----------------------
 ---------------------------------------------------*/
 
+#resume span.experience-title {
+    display: inline-block;
+    width: calc(100% - 136px);
+}
+#resume span.education-title {
+    display: inline-block;
+    width: calc(100% - 98px);
+}
 #resume span.duration {
     float: right;
 }
@@ -1309,12 +1365,12 @@ ul.about {
     left: 0;
     font-size: 11px;
     color: #fff;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
 }
 .skillbar-title span {
     display: block;
     background: rgba(0, 0, 0, 0.1);
-    padding: 0 20px;
+    padding: 0 10px;
     height: 22px;
     line-height: 22px;
 }
@@ -2474,7 +2530,7 @@ ul.info-post li {
         margin:0;
     }
     ul.about li span.value {
-        float: none;
+        /*float: none;*/
     }
     .text_content {
         font-size: 12px;

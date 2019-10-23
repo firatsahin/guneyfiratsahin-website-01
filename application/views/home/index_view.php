@@ -43,7 +43,7 @@
 
                     <div class="socmed-icons-container">
                         <?php foreach ($section->socialLinks as $sl) { ?>
-                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->name->global ?>'s <?= $sl->nameFancy ?> profile"></a>
+                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->preferredName->global ?>'s <?= $sl->nameFancy ?> profile"></a>
                         <?php } ?>
                     </div>
 

@@ -39,4 +39,20 @@ class SoftwareEngineer extends CI_Controller {
         ));
     }
 
+    public function contact()
+    {
+        $outputs = [];
+
+        if (!isset($_POST['name']) || !$_POST['name']) $outputs[] = "error-name";
+        if (!isset($_POST['email']) || !$_POST['email']) $outputs[] = "error-email";
+        if (!isset($_POST['message']) || !$_POST['message']) $outputs[] = "error-message";
+
+        if (count($outputs) == 0) {
+            // do something here
+            $outputs[] = "success";
+        }
+
+        echo implode(",", $outputs);
+    }
+
 }

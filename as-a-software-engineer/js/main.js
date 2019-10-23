@@ -1,3 +1,42 @@
+// GLOBAL HELPER FUNCTIONS - BEGIN
+var log = console.log;
+
+function getViewMode() {
+    return window.matchMedia("(max-width: 800px)").matches ? "mobile" : "pc";
+}
+
+function windowScrollTo(scrollTop) {
+    $("html, body").animate({scrollTop: scrollTop}, 700);
+}
+
+// hash helper functions
+function hashHasData() {
+    return (location.hash != "" && location.hash.indexOf("#!") == 0 && location.hash != "#!");
+}
+function readHashAsObject() {
+    var hashObj = {};
+    if (!hashHasData()) return hashObj;
+    location.hash.substring(2, location.hash.length).split("&").forEach(function (item) {
+        var kvArray = item.split("=");
+        if (kvArray[0] !== "") hashObj[kvArray[0]] = kvArray[1] || "";
+    });
+    return hashObj;
+}
+function writeObjectToHash(hashObj) {
+    if (!jQuery.isPlainObject(hashObj)) return;
+    var hashVal = "#!";
+    var i = 0;
+    for (var key in hashObj) {
+        if (hashObj.hasOwnProperty(key)) {
+            hashVal += (i > 0 ? "&" : "") + key + "=" + hashObj[key];
+            i++;
+        }
+    }
+    //log(hashVal);
+    location.href = hashVal;
+}
+// GLOBAL HELPER FUNCTIONS - END
+
 jQuery(document).ready(function($) {
 
     /* ---------------------------------------------------------------------- */
@@ -90,28 +129,69 @@ jQuery(document).ready(function($) {
         animation_style = $('.dropdown-select').val();
     });
 
-
+    // tab change event (PC mode)
     $('ul.resp-tabs-list li[class^=tabs-]').click(function() {
 
-        var tab_name = $(this).attr('data-tab-name');
+        var tabName = $(this).attr('data-tab-name');
 
         $('.resp-tabs-container').addClass('animated ' + animation_style);
-        $('.resp-tabs-container').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+        $('.resp-tabs-container').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $('.resp-tabs-container').removeClass('animated ' + animation_style);
         });
 
         $(".content_2").mCustomScrollbar("destroy");
         setCustomScrollbars();
 
-        if (tab_name == "contact")
-            initialize();
+        var hashObj = readHashAsObject();
+        if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
 
         return false;
     });
 
-    $("#verticalTab h2.resp-accordion").click(function() {
-        initialize();
+    // tab change event (Mobile mode)
+    $("#verticalTab h2.resp-accordion").click(function () {
+        var tabName = $(this).find("span.tite-list-resp").text().trim();
+
+        var hashObj = readHashAsObject();
+        if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
     });
+
+    // hash change event
+    var defaultHashObj = {tab: "profile"};
+    var possibleTabs = ["profile", "resume", "portfolio", "contact"];
+    $(window).bind("hashchange", function (e) {
+        log("hash changed to: " + location.hash);
+
+        if (!hashHasData()) {
+            writeObjectToHash(defaultHashObj);
+            return;
+        } // hash shouldn't be empty AND should start with #! AND shouldn't be exactly "#!"
+
+        var hashObj = readHashAsObject();
+        log(hashObj);
+
+        if (!hashObj.tab || possibleTabs.indexOf(hashObj.tab) == -1) { // "tab" parameter is necessary
+            writeObjectToHash(defaultHashObj);
+            return;
+        }
+
+        log("change tab to: " + hashObj.tab);
+        var tabToGo = [];
+        if (getViewMode() == "mobile") {
+            tabToGo = $("#verticalTab h2.resp-accordion").not(".resp-tab-active").find("span.tite-list-resp").filter(function () {
+                return $(this).text().trim() === hashObj.tab;
+            });
+        } else {
+            tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']")/*.not(".resp-tab-active")*/;
+        }
+        tabToGo.click();
+
+        // tab specific logic: [portfolio]
+        if (hashObj.tab == "portfolio") {
+            if (hashObj.projectId) loadProjectDetails(hashObj.projectId);
+            else portfolioChangeStep(1);
+        }
+    }).trigger("hashchange");
 
     /* ---------------------------------------------------------------------- */
     /* ---------------------- redimensionnement ----------------------------- */
@@ -119,7 +199,7 @@ jQuery(document).ready(function($) {
 
     function redimensionnement() {
 
-        if (window.matchMedia("(max-width: 800px)").matches) {
+        if (getViewMode()=="mobile") {
             $(".content_2").mCustomScrollbar("destroy");
             $(".resp-vtabs .resp-tabs-container").css("height", "100%");
             $(".content_2").css("height", "100%");
@@ -138,10 +218,6 @@ jQuery(document).ready(function($) {
     window.addEventListener('load', redimensionnement, false);
     window.addEventListener('resize', redimensionnement, false);
 
-    $("#verticalTab h2.resp-accordion").click(function() {
-        initialize();
-    });
-
     /* ---------------------------------------------------------------------- */
     /* -------------------------- Contact Form ------------------------------ */
     /* ---------------------------------------------------------------------- */
@@ -151,9 +227,12 @@ jQuery(document).ready(function($) {
             $success = ' Your message has been sent. Thank you!';
 
     $contactform.submit(function() {
+        console.log("contact form submitted!", "data:", $(this).serialize());
+
+        //return false;
         $.ajax({
             type: "POST",
-            url: "php/contact.php",
+            url: "contact.html",
             data: $(this).serialize(),
             success: function(msg)
             {
@@ -260,17 +339,78 @@ jQuery(document).ready(function($) {
     // Run the show!
     filterList.init();
 
+    // each portfolio item click
+    $("#portfolio a[rel^='portfolio']").click(function (e) {
+        e.preventDefault();
+
+        // add project id to hash
+        var hashObj = readHashAsObject();
+        hashObj.projectId = $(this).closest(".portfolio").attr('project-id');
+        writeObjectToHash(hashObj);
+    });
+
+    function loadProjectDetails(projectId){
+        var p = JSON.parse($("#portfoliolist .portfolio[project-id='" + projectId + "']").attr('data-project')); //log(p);
+
+        portfolioChangeStep(2);
+
+        // data binding to detail section
+        $("#portfolio [entity=project][column]").each(function () {
+            $(this).html(p[$(this).attr('column')]);
+        });
+
+        // description binding
+        $("#portfolio [entity=project][column=description]").empty();
+        p.description.forEach(function (desc) {
+            $("#portfolio [entity=project][column=description]").append('<p style="margin-bottom:20px;">' + desc + '</p>')
+        });
+
+        // project link binding
+        $("#portfolio a.portfolio-seeprojectbutton")[p.projectLink ? 'show' : 'hide']().attr('href', p.projectLink || '#');
+
+        // categories binding
+        $("#portfolio [entity=project][column=categories]").empty();
+        p.categories.forEach(function (cat) {
+            var catName = $("#portfolio ul#filters li span[data-filter='" + cat + "']").text();
+            $("#portfolio [entity=project][column=categories]").append('<span cat-key="' + cat + '">' + catName + '</span>');
+        });
+
+        // scroll to top of project detail
+        if (getViewMode() == "mobile") windowScrollTo(564); //windowScrollTo($("a.portfolio-backbutton").offset().top - 14);
+    }
+    function portfolioChangeStep(step){
+        switch (step) {
+            case 1:$("#portfolio .container-portfolio-detail").hide().siblings(".container-portfolio").show();break;
+            case 2:$("#portfolio .container-portfolio").hide().siblings(".container-portfolio-detail").show();break;
+        }
+    }
+
+    // back button click
+    $("#portfolio a.portfolio-backbutton").click(function () {
+        // remove project id from hash
+        var hashObj = readHashAsObject();
+        delete hashObj.projectId;
+        writeObjectToHash(hashObj);
+    });
+
+    // My roles part items click (canceled)
+    /*$(document).on("click", "#portfolio div.container-portfolio-detail [entity=project][column=categories] span[cat-key]", function () {
+        $("#portfolio a.portfolio-backbutton").click();
+        $("#portfolio ul#filters li span[data-filter='" + $(this).attr('cat-key') + "']").click();
+    });*/
+
     /* ---------------------------------------------------------------------- */
     /* ----------------------------- prettyPhoto ---------------------------- */
     /* ---------------------------------------------------------------------- */
 
-    $("a[rel^='portfolio']").prettyPhoto({
-        animation_speed: 'fast', /* fast/slow/normal */
-        social_tools: '',
-        theme: 'pp_default',
-        horizontal_padding: 5,
-        deeplinking: false,
-    });
+    //$("a[rel^='portfolio']").prettyPhoto({
+    //    animation_speed: 'fast', /* fast/slow/normal */
+    //    social_tools: '',
+    //    theme: 'pp_default',
+    //    horizontal_padding: 5,
+    //    deeplinking: false,
+    //    allow_resize: false,
+    //});
 
 
 
@@ -280,7 +420,6 @@ jQuery(document).ready(function($) {
 
     var map;
     function initialize() {
-        return;///////////////
         map = new GMaps({
             div: '#map',
             lat: -37.817917,

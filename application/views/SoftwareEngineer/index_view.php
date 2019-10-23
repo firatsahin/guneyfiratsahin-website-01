@@ -31,7 +31,6 @@
        	
         <!-- CSS | Colors -->
         <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference('/as-a-software-engineer/css/colors/DarkBlue.css') ?>" id="colors-style" /><!-- [DarkBlue,lightseagreen] -->
-        <!--<link rel="stylesheet" type="text/css" href="css/switcher.css" />-->
         
         <!-- CSS | Style -->
         <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference('/as-a-software-engineer/css/main.css') ?>" />
@@ -61,6 +60,10 @@
                 .resp-vtabs .resp-tabs-container {
                     margin-left: 13px;
 					width:89%;
+                }
+                .wrapper {
+                    top: unset;
+                    margin: 10px auto;
                 }
             }		
 
@@ -173,7 +176,7 @@
                                                 <i class="fa fa-tasks icon_menu"></i>
                                             </li>
 
-                                            <li class="tabs-portfolio hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="portfolio" style="display: none;">
+                                            <li class="tabs-portfolio hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="portfolio">
                                                 <span class="tite-list">portfolio</span>
                                                 <i class="fa fa-briefcase icon_menu"></i>
                                             </li>
@@ -273,8 +276,8 @@
 
         <div class="cycle-slideshow">
             <img src="images/img-profile/about_1.jpg" alt="" />
-            <img src="images/img-profile/about_2.png" alt="" />
-            <img src="images/img-profile/about_3.png" alt="" />
+            <img src="images/img-profile/about_2.jpg" alt="" />
+            <img src="images/img-profile/about_3.jpg" alt="" />
         </div>
 
     </div>
@@ -433,8 +436,9 @@
 
             <?php foreach ($data->resume->experience as $e) { ?>
                 <li>
-                    <h5><?= $e->title ?> <span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
-                    <h6><span class="fa fa-briefcase"></span>&nbsp;&nbsp; <?= $e->companyName ?><span class="duration"><i class="fa fa-map-marker color"></i> <?= $e->companyLocation ?></span></h6>
+                    <h5><span class="experience-title"><?= $e->title ?></span><span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
+                    <h6><span class="fa fa-briefcase"></span>&nbsp;&nbsp; <?= $e->companyName ?></h6>
+                    <h6><span><i class="fa fa-map-marker color"></i>&nbsp;&nbsp; <?= $e->companyLocation ?></span></h6>
                     <?php foreach ($e->description as $d) { ?>
                         <p style="margin-bottom: 10px;"><?= $d ?></p>
                     <?php } ?>
@@ -457,7 +461,7 @@
 
             <?php foreach ($data->resume->education as $e) { ?>
                 <li>
-                    <h5><?= $e->degreeName ?><?= isset($e->majorName) && $e->majorName ? ', ' . $e->majorName : '' ?> <span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
+                    <h5><span class="education-title"><?= $e->degreeName ?><?= isset($e->majorName) && $e->majorName ? ', ' . $e->majorName : '' ?></span> <span class="duration"><i class="fa fa-calendar color"></i> <?= $e->startDate ?> - <?= $e->endDate ?></span></h5>
                     <h6><span class="fa fa-book"></span>&nbsp;&nbsp; <?= $e->schoolName ?></h6>
                     <?php foreach ($e->description as $d) { ?>
                         <p style="margin-bottom: 10px;"><?= $d ?></p>
@@ -596,247 +600,36 @@
 
                                                     <!-- #filters -->
                                                     <ul id="filters" class="clearfix">
-                                                        <li><span class="filter active" data-filter="catWeb catGraphic catMotion logo">All</span></li>
-                                                        <li><span class="filter" data-filter="catWeb">Web Design</span></li>
-                                                        <li><span class="filter" data-filter="catGraphic">Graphic Design</span></li>
-                                                        <li><span class="filter" data-filter="catMotion">Motion Graphic</span></li>
-                                                        <li><span class="filter" data-filter="logo">Logo</span></li>
+                                                        <li><span class="filter active" data-filter="all">All</span></li>
+                                                        <?php foreach ($data->portfolio->filters as $f) { ?>
+                                                            <li><span class="filter" data-filter="<?= $f->key ?>"><?= $f->value ?></span></li>
+                                                        <?php } ?>
                                                     </ul>
                                                     <!-- /#filters -->
                                     
                                                     <!-- #portfoliolist -->
                                                     <div id="portfoliolist">
 
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio logo" data-cat="logo">	
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">		
-                                                                <a href="images/portfolio/1.jpg" rel="portfolio" title="Lorem ipsum dolor sit amet, consectetur adipiscing Vivamus sit amet ligula non lectus.consectetur adipiscingVivamus sit amet">
-                                                                    <img src="images/portfolio/1.jpg" alt="Visual Infography" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Logo</span>
+                                                        <?php foreach ($data->portfolio->projects as $p) { ?>
+                                                            <!-- .portfolio -->
+                                                            <div class="portfolio <?= implode(" ", $p->categories) ?>" data-cat="<?= implode(" ", $p->categories) ?>" project-id="<?= $p->id ?>" data-project="<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>">
+                                                                <!-- .portfolio-wrapper -->
+                                                                <div class="portfolio-wrapper">
+                                                                    <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" rel="portfolio" title="<?= $p->name ?>">
+                                                                        <img src="<?= isset($p->image) && $p->image ? $p->image : '/img/no-img.jpg' ?>" alt="alt text" />
+                                                                        <div class="label">
+                                                                            <div class="label-text">
+                                                                                <a class="text-title"><?= $p->name ?></a>
+                                                                                <span class="text-category"><?= $p->startDate ?> – <?= $p->endDate ?></span>
+                                                                            </div>
+                                                                            <div class="label-bg"></div>
                                                                         </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
+                                                                    </a>
+                                                                </div>
+                                                                <!-- /.portfolio-wrapper -->
                                                             </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>		
-                                                        <!-- /.portfolio -->
-
- 
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catWeb" data-cat="catWeb">	
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">		
-                                                                <a href="http://www.youtube.com/watch?v=c9MnSeYYtYY" rel="portfolio">
-
-                                                                    <img src="images/portfolio/2.jpg" alt="Visual Infography" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Web Design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>		
-                                                        <!-- /.portfolio -->
- 
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catWeb" data-cat="catWeb">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">			
-                                                                <a href="images/portfolio/3.jpg" rel="portfolio">
-                                                                    <img src="images/portfolio/3.jpg" alt="Sonor's Design" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Web design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>				
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catMotion" data-cat="catMotion">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">			
-                                                                <a href="images/portfolio/4.jpg" rel="portfolio">
-                                                                    <img src="images/portfolio/4.jpg" alt="Typography Company" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Motion Graphic</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catWeb" data-cat="catWeb">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">
-                                                                <a href="images/portfolio/5.jpg" title="Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien." rel="portfolio">
-                                                                    <img src="images/portfolio/5.jpg" alt="Weatherette" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Web Design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catMotion" data-cat="catMotion">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">		
-                                                                <a href="images/portfolio/6.jpg" rel="portfolio">				
-                                                                    <img src="images/portfolio/6.jpg" alt="BMF" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Motion Graphic</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catGraphic" data-cat="catGraphic">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">		
-                                                                <a href="images/portfolio/7.jpg" title="Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien." rel="portfolio">				
-                                                                    <img src="images/portfolio/7.jpg" alt="Techlion" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Graphic Design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio logo" data-cat="logo">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">		
-                                                                <a href="images/portfolio/8.jpg" rel="portfolio" title="Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien.">
-                                                                    <img src="images/portfolio/8.jpg" alt="KittyPic" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Logo</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catWeb" data-cat="catWeb">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">			
-                                                                <a href="images/portfolio/9.jpg" title="Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien." rel="portfolio">
-                                                                    <img src="images/portfolio/9.jpg" alt="Graph Plotting" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Web Design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio catGraphic" data-cat="catGraphic">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">	
-                                                                <a href="images/portfolio/10.jpg" rel="portfolio">
-                                                                    <img src="images/portfolio/10.jpg" alt="QR Quick Response" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Graphic Design</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio logo" data-cat="logo">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">	
-                                                                <a href="images/portfolio/11.jpg" title="Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien." rel="portfolio">
-                                                                    <img src="images/portfolio/11.jpg" alt="Mobi Sock" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Logo</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
-
-                                                        <!-- .portfolio -->
-                                                        <div class="portfolio logo" data-cat="logo">
-                                                            <!-- .portfolio-wrapper -->
-                                                            <div class="portfolio-wrapper">
-                                                                <a href="images/portfolio/12.jpg" rel="portfolio">
-                                                                    <img src="images/portfolio/12.jpg" alt="Village Community Church" />
-                                                                    <div class="label">
-                                                                        <div class="label-text">
-                                                                            <a class="text-title">Project Name</a>
-                                                                            <span class="text-category">Logo</span>
-                                                                        </div>
-                                                                        <div class="label-bg"></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!-- /.portfolio-wrapper -->
-                                                        </div>	
-                                                        <!-- /.portfolio -->
+                                                            <!-- /.portfolio -->
+                                                        <?php } ?>
 
                                                         <div class="clear"></div>
 
@@ -844,7 +637,26 @@
                                                     <!-- #portfoliolist -->
                                                 </div>
                                                 <!-- /.container-portfolio -->
-                                                                                       </div>
+
+                                                <!-- .container-portfolio-detail -->
+                                                <div class="container-portfolio-detail" style="display: none;">
+                                                    <a href="#" class="portfolio-backbutton">< Back to List</a>
+                                                    <div class="title_content">
+                                                        <div class="text_content" entity="project" column="name"></div>
+                                                        <span class="duration"><i class="fa fa-calendar color"></i>&nbsp;&nbsp; <span entity="project" column="startDate"></span> - <span entity="project" column="endDate"></span></span>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                    <div entity="project" column="description"></div>
+                                                    <a href="#" target="_blank" class="portfolio-seeprojectbutton">See project &nbsp;<i class="fa fa-external-link color"></i></a>
+                                                    <div class="title_content">
+                                                        <div class="text_content" style="text-transform: unset;">My roles / tasks in this project</div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                    <div entity="project" column="categories"></div>
+                                                </div>
+                                                <!-- /.container-portfolio-detail -->
+
+                                            </div>
                                             <!-- End .portfolio -->
 
                                             <!-- .blog -->
@@ -883,7 +695,7 @@
                                             <div class="carousel-inner">
 
                                                 <div class="item active">
-                                                    <img src="images/blog/blog-1.jpg" alt="" />
+                                                    <!--<img src="images/blog/blog-1.jpg" alt="" />-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -892,7 +704,7 @@
 
 
                                                 <div class="item">
-                                                    <img src="images/blog/blog-2.jpg" alt="" />
+                                                    <!--<img src="images/blog/blog-2.jpg" alt="" />-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -900,7 +712,7 @@
                                                 </div>
 
                                                 <div class="item">
-                                                    <img src="images/blog/blog-3.jpg" alt="" />
+                                                    <!--<img src="images/blog/blog-3.jpg" alt="" />-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -1021,7 +833,7 @@
 
                                 <div class="media">
                                     <div class="he-wrap tpl2">
-                                        <img src="images/blog/blog-4.jpg" class="img-hover" alt="" />
+                                        <!--<img src="images/blog/blog-4.jpg" class="img-hover" alt="" />-->
                                     </div>
 
                                 </div>
@@ -1091,7 +903,7 @@
                                             <div class="carousel-inner">
 
                                                 <div class="item active">
-                                                    <img src="images/blog/blog-1.jpg" alt="">
+                                                    <!--<img src="images/blog/blog-1.jpg" alt="">-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -1100,7 +912,7 @@
 
 
                                                 <div class="item">
-                                                    <img src="images/blog/blog-2.jpg" alt="">
+                                                    <!--<img src="images/blog/blog-2.jpg" alt="">-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -1108,7 +920,7 @@
                                                 </div>
 
                                                 <div class="item">
-                                                    <img src="images/blog/blog-3.jpg" alt="">
+                                                    <!--<img src="images/blog/blog-3.jpg" alt="">-->
                                                     <div class="carousel-caption">
                                                         <h4>First Thumbnail label</h4>
                                                         <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -1582,7 +1394,7 @@
 
                                 <div class="media">
                                     <div class="he-wrap tpl2">
-                                        <img src="images/blog/blog-2.jpg" class="img-hover" alt="">
+                                        <!--<img src="images/blog/blog-2.jpg" class="img-hover" alt="">-->
                                     </div>
 
                                 </div>
@@ -2014,9 +1826,9 @@
                 //console.log($("#verticalTab div.resp-tabs-container h2"));
 
                 // hide some unused tabs (for mobile mode)
-                //$("#verticalTab div.resp-tabs-container h2").eq(1).hide();
-                $("#verticalTab div.resp-tabs-container h2").eq(2).hide();
-                $("#verticalTab div.resp-tabs-container h2").eq(3).hide();
+                //$("#verticalTab div.resp-tabs-container h2").eq(1).hide(); // resume
+                //$("#verticalTab div.resp-tabs-container h2").eq(2).hide(); // portfolio
+                $("#verticalTab div.resp-tabs-container h2").eq(3).hide(); // blog
             });
         </script>
 
