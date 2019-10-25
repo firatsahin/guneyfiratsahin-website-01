@@ -303,6 +303,10 @@
                                                             <i class="fa fa-quote-left"></i>&nbsp;&nbsp;<?= $a ?>
                                                         </p>
                                                     <?php } ?>
+
+                                                    <a class="download" href="#!tab=contact">
+                                                        <span data-hover="Hire me / Get services from me"><i class="glyphicon glyphicon-user"></i> &nbsp;&nbsp;Hire me / Get services from me</span>
+                                                    </a>
                                                 </div>
 
     <div class="clear"></div>
@@ -648,6 +652,13 @@
                                                     </div>
                                                     <div entity="project" column="description"></div>
                                                     <a href="#" target="_blank" class="portfolio-seeprojectbutton">See project &nbsp;<i class="fa fa-external-link color"></i></a>
+                                                    <div name="related-to-wrapper">
+                                                        <div class="title_content">
+                                                            <div class="text_content" style="text-transform: unset;">Related to this <span name="related-to-kind"></span>:</div>
+                                                            <div class="clear"></div>
+                                                        </div>
+                                                        <div style="position: relative; top: -13px;"><span name="related-to-text"></span></div>
+                                                    </div>
                                                     <div class="title_content">
                                                         <div class="text_content" style="text-transform: unset;">My roles / tasks in this project</div>
                                                         <div class="clear"></div>
@@ -1713,31 +1724,59 @@
                                                     <div class="col-md-7">
                                                         <!-- Contact Form -->
                                                         <div class="title_content" style="float: none;">
-                                                            <div class="text_content">Let's keep in touch</div>
+                                                            <div class="text_content">Hire me / Get services from me</div>
                                                             <div class="clear"></div>
                                                         </div>
 
                                                         <div class="contact-form">
                                                             <!--<h3 class="main-heading"><span>Let's keep in touch</span></h3>-->
 
-
-
                                                             <div id="contact-status"></div>
 
                                                             <form action="#" id="contactform">
-                                                                <p class="form-group" id="contact-name">
+                                                                <p class="form-group" column="name">
                                                                     <label for="name">Your Name</label>
-                                                                    <input type="text" name="name" class="form-control name-contact" id="inputSuccess" placeholder="Name..." />
+                                                                    <input type="text" name="name" class="form-control" placeholder="Name..." />
+                                                                    <span class="error-messages">
+                                                                        <span error-type="required">&bull; Please enter your name.</span>
+                                                                    </span>
                                                                 </p>
-                                                                <p class="form-group" id="contact-email"> 
-                                                                    <label for="email">Your Email</label>
-                                                                    <input type="text" name="email" class="form-control email-contact" id="inputSuccess" placeholder="Email..." />
+                                                                <p class="form-group" column="companyName">
+                                                                    <label for="name">Company Name (optional)</label>
+                                                                    <input type="text" name="companyName" class="form-control" placeholder="Company Name..." />
                                                                 </p>
-
-                                                                <p class="form-group" id="contact-message">
-                                                                    <label for="message">Your Message</label>
-                                                                    <textarea name="message" cols="88" rows="6" class="form-control message-contact" id="inputError" placeholder="Message..."></textarea>
+                                                                <p class="form-group" column="email">
+                                                                    <label for="email">Your Email (I'll reply to this address)</label>
+                                                                    <input type="text" name="email" class="form-control" placeholder="Email..." />
+                                                                    <span class="error-messages">
+                                                                        <span error-type="required">&bull; Please enter your e-mail.</span>
+                                                                        <span error-type="invalid">&bull; Entered e-mail doesn't seem to be a valid one. Please fix.</span>
+                                                                    </span>
                                                                 </p>
+                                                                <p class="form-group" column="serviceTypes">
+                                                                    <label for="email">What kind of services you're willing to get? <span class="pick-one-note">(Pick at least 1)</span></label>
+                                                                    <?php foreach ($data->portfolio->filters as $s) { ?>
+                                                                        <span class="service-type" service-id="<?= $s->key ?>"><?= $s->value ?></span>
+                                                                    <?php } ?>
+                                                                    <span class="error-messages">
+                                                                        <span error-type="required">&bull; Please pick at least 1 service type.</span>
+                                                                    </span>
+                                                                </p>
+                                                                <p class="form-group" column="employType">
+                                                                    <label for="employType">Employment Type</label>
+                                                                    <select name="employType" class="form-control">
+                                                                        <option>I want to get services from you (as a freelancer)</option>
+                                                                        <option>I want to hire you (as an employee of my company)</option>
+                                                                    </select>
+                                                                </p>
+                                                                <p class="form-group" column="message">
+                                                                    <label for="message">Your Message <span style="font-size: 10px; font-weight: bold;">(You can explain the details of the project you want me to work on)</span></label>
+                                                                    <textarea name="message" cols="88" rows="6" class="form-control" placeholder="Message..."></textarea>
+                                                                    <span class="error-messages">
+                                                                        <span error-type="required">&bull; Please enter your message.</span>
+                                                                    </span>
+                                                                </p>
+                                                                <div id="contactform-message"></div>
                                                                 <input type="reset" name="reset" value="CLEAR" class="reset">
                                                                 <!-- <input type="submit" name="submit" value="SEND MESSAGE" class="submit">-->
 

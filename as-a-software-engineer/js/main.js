@@ -35,6 +35,27 @@ function writeObjectToHash(hashObj) {
     //log(hashVal);
     location.href = hashVal;
 }
+
+function getFormData($form) {
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
+function getContentScroll() {
+    return getViewMode() != "mobile" ? Math.abs(parseInt($(".content_2:visible .mCSB_container").css("top"))) : null;
+}
+function setContentScroll(scrollTop) {
+    if (getViewMode() != "mobile") {
+        $(".content_2:visible .mCSB_container").css("top", -scrollTop);
+        $(".content_2:visible").mCustomScrollbar("update");
+    }
+}
 // GLOBAL HELPER FUNCTIONS - END
 
 jQuery(document).ready(function($) {
@@ -124,20 +145,19 @@ jQuery(document).ready(function($) {
     /* ---------------------------------------------------------------------- */
 
     var animation_style = 'bounceIn';
-
-    $('.dropdown-select').change(function() {
-        animation_style = $('.dropdown-select').val();
-    });
+    function performTabChangeAnimation() {
+        $('.resp-tabs-container').addClass('animated ' + animation_style);
+        $('.resp-tabs-container').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            $('.resp-tabs-container').removeClass('animated ' + animation_style);
+        });
+    }
 
     // tab change event (PC mode)
     $('ul.resp-tabs-list li[class^=tabs-]').click(function() {
 
         var tabName = $(this).attr('data-tab-name');
 
-        $('.resp-tabs-container').addClass('animated ' + animation_style);
-        $('.resp-tabs-container').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $('.resp-tabs-container').removeClass('animated ' + animation_style);
-        });
+        performTabChangeAnimation();
 
         $(".content_2").mCustomScrollbar("destroy");
         setCustomScrollbars();
@@ -182,7 +202,7 @@ jQuery(document).ready(function($) {
                 return $(this).text().trim() === hashObj.tab;
             });
         } else {
-            tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']")/*.not(".resp-tab-active")*/;
+            tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']").not(".resp-tab-active");
         }
         tabToGo.click();
 
@@ -224,78 +244,81 @@ jQuery(document).ready(function($) {
 
     // Needed variables
     var $contactform = $('#contactform'),
-            $success = ' Your message has been sent. Thank you!';
+            $successMsg = ' Your message has been sent to Firat. He\'ll reply to you soon. Thanks!';
 
-    $contactform.submit(function() {
-        console.log("contact form submitted!", "data:", $(this).serialize());
+    $contactform.submit(function (e) {
+        e.preventDefault();
 
-        //return false;
+        // preparing form data
+        var contactFormData = getFormData($contactform);
+        contactFormData.serviceTypes = [];
+        $contactform.find("span.service-type.is-active").each(function () {
+            contactFormData.serviceTypes.push($(this).text());
+        });
+
+        // clear error states before calling
+        $contactform.find("#contactform-message").empty();
+        $contactform.find("p.form-group[column]").removeClass("has-error");
+
+        $contactform.find("button[name=submit]").prop('disabled', true).text('SENDING MESSAGE...');
         $.ajax({
             type: "POST",
             url: "contact.html",
-            data: $(this).serialize(),
-            success: function(msg)
-            {
-                var msg_error = msg.split(",");
-                var output_error = '';
-
-                if (msg_error.indexOf('error-message') != -1) {
-                    $("#contact-message").addClass("has-error");
-                    $("#contact-message").removeClass("has-success");
-                    output_error = 'Please enter your message.';
-                } else {
-                    $("#contact-message").addClass("has-success");
-                    $("#contact-message").removeClass("has-error");
-                }
-
-                if (msg_error.indexOf('error-email') != -1) {
-
-                    $("#contact-email").addClass("has-error");
-                    $("#contact-email").removeClass("has-success");
-                    output_error = 'Please enter valid e-mail.';
-                } else {
-                    $("#contact-email").addClass("has-success");
-                    $("#contact-email").removeClass("has-error");
-                }
-
-                if (msg_error.indexOf('error-name') != -1) {
-                    $("#contact-name").addClass("has-error");
-                    $("#contact-name").removeClass("has-success");
-                    output_error = 'Please enter your name.';
-                } else {
-                    $("#contact-name").addClass("has-success");
-                    $("#contact-name").removeClass("has-error");
-                }
-
-
-                if (msg == 'success') {
-
-                    response = '<div class="alert alert-success success-send">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-                            '<i class="glyphicon glyphicon-ok" style="margin-right: 5px;"></i> ' + $success
-                            + '</div>';
-
+            //data: $(this).serialize(),
+            data: JSON.stringify(contactFormData),
+            contentType: "application/json",
+            success: function (result) {
+                if (result.success) { // success
+                    var response = '<div class="alert alert-success success-send">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                        '<i class="glyphicon glyphicon-ok" style="margin-right: 5px;"></i> ' + $successMsg
+                        + '</div>';
 
                     $(".reset").trigger('click');
-                    $("#contact-name").removeClass("has-success");
-                    $("#contact-email").removeClass("has-success");
-                    $("#contact-message").removeClass("has-success");
 
-                } else {
+                    // Show response message
+                    $contactform.find("#contactform-message").append(response);
 
-                    response = '<div class="alert alert-danger error-send">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-                            '<i class="glyphicon glyphicon-remove" style="margin-right: 5px;"></i> ' + output_error
-                            + '</div>';
+                    // success case > remove success message after a while
+                    setTimeout(function () {
+                        $contactform.find(".error-send,.success-send").fadeOut(function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                } else { // failure
+                    $contactform.find("p.form-group[column] span.error-messages span[error-type]").hide();
+                    result.errors.forEach(function (error) {
+                        $contactform.find("p.form-group[column='" + error.colname + "']").addClass("has-error")
+                            .find("span.error-messages span[error-type='" + error.errorType + "']").show();
+                    });
 
+                    // focus to first error field
+                    if (result.errors.length > 0) $contactform.find("p.form-group[column='" + result.errors[0].colname + "']").find(".form-control").focus();
+
+                    var response = '<div class="alert alert-danger error-send">' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                        '<i class="glyphicon glyphicon-remove" style="margin-right: 5px;"></i> ' + result.message
+                        + '</div>';
+
+                    // Show response message
+                    $contactform.find("#contactform-message").append(response);
                 }
-                // Hide any previous response text
-                $(".error-send,.success-send").remove();
-                // Show response message
-                $contactform.prepend(response);
             }
+        }).fail(function () {
+            log("failure");
+        }).always(function () {
+            $contactform.find("button[name=submit]").prop('disabled', false).text('SEND MESSAGE');
         });
-        return false;
+    });
+
+    $contactform.find("input[type=reset]").click(function() {
+        $contactform.find("#contactform-message").empty();
+        $contactform.find("p.form-group[column]").removeClass("has-error");
+        $contactform.find("p.form-group[column=serviceTypes] span.service-type").removeClass('is-active');
+    });
+
+    $contactform.find("span.service-type").click(function () {
+        $(this).toggleClass('is-active');
     });
 
     /* ---------------------------------------------------------------------- */
@@ -313,24 +336,7 @@ jQuery(document).ready(function($) {
                 filterSelector: '.filter',
                 effects: ['fade'],
                 easing: 'snap',
-                // call the hover effect
-                onMixEnd: filterList.hoverEffect()
             });
-
-        },
-        hoverEffect: function() {
-
-            // Simple parallax effect
-            $('#portfoliolist .portfolio').hover(
-                    function() {
-                        $(this).find('.label').stop().animate({bottom: 0}, 200);
-                        $(this).find('img').stop().animate({top: -30}, 500);
-                    },
-                    function() {
-                        $(this).find('.label').stop().animate({bottom: -40}, 200);
-                        $(this).find('img').stop().animate({top: 0}, 300);
-                    }
-            );
 
         }
 
@@ -340,17 +346,17 @@ jQuery(document).ready(function($) {
     filterList.init();
 
     // each portfolio item click
-    $("#portfolio a[rel^='portfolio']").click(function (e) {
+    $("#portfolio .portfolio").click(function (e) {
         e.preventDefault();
 
         // add project id to hash
         var hashObj = readHashAsObject();
-        hashObj.projectId = $(this).closest(".portfolio").attr('project-id');
+        hashObj.projectId = $(this).attr('project-id');
         writeObjectToHash(hashObj);
     });
 
     function loadProjectDetails(projectId){
-        var p = JSON.parse($("#portfoliolist .portfolio[project-id='" + projectId + "']").attr('data-project')); //log(p);
+        var p = JSON.parse($("#portfoliolist .portfolio[project-id='" + projectId + "']").attr('data-project')); log(p);
 
         portfolioChangeStep(2);
 
@@ -368,6 +374,14 @@ jQuery(document).ready(function($) {
         // project link binding
         $("#portfolio a.portfolio-seeprojectbutton")[p.projectLink ? 'show' : 'hide']().attr('href', p.projectLink || '#');
 
+        // related to part binding
+        var rtWrapper = $("#portfolio .container-portfolio-detail div[name=related-to-wrapper]");
+        if (p.relatedExperience || p.relatedEducation) {
+            rtWrapper.show();
+            rtWrapper.find("span[name=related-to-kind]").text(p.relatedExperience ? 'experience' : p.relatedEducation ? 'education' : '');
+            rtWrapper.find("span[name=related-to-text]").text(p.relatedExperience ? p.relatedExperience.title + ' at ' + p.relatedExperience.companyName : p.relatedEducation ? 'Student at ' + p.relatedEducation.schoolName + ', ' + p.relatedEducation.degreeName + ' ' + (p.relatedEducation.majorName || '') : '');
+        } else rtWrapper.hide();
+
         // categories binding
         $("#portfolio [entity=project][column=categories]").empty();
         p.categories.forEach(function (cat) {
@@ -378,10 +392,24 @@ jQuery(document).ready(function($) {
         // scroll to top of project detail
         if (getViewMode() == "mobile") windowScrollTo(564); //windowScrollTo($("a.portfolio-backbutton").offset().top - 14);
     }
-    function portfolioChangeStep(step){
+    var contentScrollBackup = null;
+    function portfolioChangeStep(step) {
         switch (step) {
-            case 1:$("#portfolio .container-portfolio-detail").hide().siblings(".container-portfolio").show();break;
-            case 2:$("#portfolio .container-portfolio").hide().siblings(".container-portfolio-detail").show();break;
+            case 1:
+                $("#portfolio .container-portfolio-detail").hide().siblings(".container-portfolio").show();
+                if (contentScrollBackup) {
+                    log("restored contentScroll:", contentScrollBackup);
+                    setContentScroll(contentScrollBackup)
+                    contentScrollBackup = null;
+                }
+                break;
+            case 2:
+                contentScrollBackup = getContentScroll();
+                log("backed up contentScroll:", contentScrollBackup);
+                $("#portfolio .container-portfolio").hide().siblings(".container-portfolio-detail").show();
+                setContentScroll(0);
+                performTabChangeAnimation();
+                break;
         }
     }
 

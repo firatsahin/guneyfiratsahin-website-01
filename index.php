@@ -305,6 +305,11 @@ switch (ENVIRONMENT)
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 
+
+// include sensitive data file (which all critical site settings, credentials etc. are in) (Ignored by Git)
+require_once 'sensitive_data.php';
+
+
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

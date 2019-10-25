@@ -32,6 +32,12 @@ class SoftwareEngineer extends CI_Controller {
             $p->link = str_replace("{{username}}", $data->contactInfo->$contactName, $p->link);
         }
 
+        // get related things to projects
+        foreach ($data->portfolio->projects as $p) {
+            if (isset($p->relatedExperienceId) && $p->relatedExperienceId) $p->relatedExperience = utility_helper::getArrayItemById($data->resume->experience, $p->relatedExperienceId);
+            if (isset($p->relatedEducationId) && $p->relatedEducationId) $p->relatedEducation = utility_helper::getArrayItemById($data->resume->education, $p->relatedEducationId);
+        }
+
         //echo json_encode($data);return; // CHECK OBJECT
 
         $this->load->view('SoftwareEngineer/index_view', array(
@@ -41,18 +47,45 @@ class SoftwareEngineer extends CI_Controller {
 
     public function contact()
     {
-        $outputs = [];
+        $inObj = json_decode(file_get_contents('php://input'));
+        $outObj = (object)['success' => false, 'message' => null, 'data' => null];
 
-        if (!isset($_POST['name']) || !$_POST['name']) $outputs[] = "error-name";
-        if (!isset($_POST['email']) || !$_POST['email']) $outputs[] = "error-email";
-        if (!isset($_POST['message']) || !$_POST['message']) $outputs[] = "error-message";
-
-        if (count($outputs) == 0) {
-            // do something here
-            $outputs[] = "success";
+        foreach ($inObj as $key => $value) {
+            if (gettype($value) == "string") $inObj->$key = trim($value);
         }
 
-        echo implode(",", $outputs);
+        $errors = [];
+        if (!isset($inObj->name) || !$inObj->name) $errors[] = (object)["colname" => "name", "errorType" => "required"];
+        if (!isset($inObj->email) || !$inObj->email) $errors[] = (object)["colname" => "email", "errorType" => "required"];
+        else if (!filter_var($inObj->email, FILTER_VALIDATE_EMAIL)) $errors[] = (object)["colname" => "email", "errorType" => "invalid"];
+        if (!isset($inObj->serviceTypes) || !is_array($inObj->serviceTypes) || count($inObj->serviceTypes) == 0) $errors[] = (object)["colname" => "serviceTypes", "errorType" => "required"];
+        if (!isset($inObj->message) || !$inObj->message) $errors[] = (object)["colname" => "message", "errorType" => "required"];
+
+        if (count($errors) == 0) {
+            // send email to yourself here
+            $mailBody = "<br />";
+            $mailBody .= "<b>Sender's Name :</b> " . $inObj->name;
+            $mailBody .= "<br /><br />";
+            if (isset($inObj->companyName) && $inObj->companyName) {
+                $mailBody .= "<b>Company Name :</b> " . $inObj->companyName;
+                $mailBody .= "<br /><br />";
+            }
+            $mailBody .= "<b>Sender's Email Address :</b> " . $inObj->email;
+            $mailBody .= "<br /><br />";
+            $mailBody .= "<b>Selected Service Types :</b> " . implode(", ", $inObj->serviceTypes);
+            $mailBody .= "<br /><br />";
+            $mailBody .= "<b>Desired Employment Type :</b> " . $inObj->employType;
+            $mailBody .= "<br /><br />";
+            $mailBody .= "<b>Sender's Message :</b><br /><br />" . str_replace("\n", "<br />", $inObj->message);
+            $mailBody .= "<br /><br /><i>Sent by guneyfiratsahin.com contact form.</i>";
+
+            $outObj->success = utility_helper::sendMail("guneyfiratsahin@gmail.com", "Message from guneyfiratsahin.com Contact Form", $mailBody);
+            if (!$outObj->success) $outObj->message = "An error occured while sending your message. Please try again later.";
+        } else {
+            $outObj->message = "Some form errors occured above. Please fix them and try again.";
+        }
+        $outObj->errors = $errors;
+        utility_helper::returnJson($outObj);
     }
 
 }
