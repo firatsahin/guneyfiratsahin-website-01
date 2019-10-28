@@ -36,6 +36,11 @@ class SoftwareEngineer extends CI_Controller {
         foreach ($data->portfolio->projects as $p) {
             if (isset($p->relatedExperienceId) && $p->relatedExperienceId) $p->relatedExperience = utility_helper::getArrayItemById($data->resume->experience, $p->relatedExperienceId);
             if (isset($p->relatedEducationId) && $p->relatedEducationId) $p->relatedEducation = utility_helper::getArrayItemById($data->resume->education, $p->relatedEducationId);
+            if (isset($p->images) && is_array($p->images)) {
+                foreach ($p->images as $img) { // get thumb img from big img prop (if doesn't exist)
+                    if ((!isset($img->thumbImg) || !$img->thumbImg) && isset($img->bigImg) && $img->bigImg) $img->thumbImg = $img->bigImg;
+                }
+            }
         }
 
         //echo json_encode($data);return; // CHECK OBJECT

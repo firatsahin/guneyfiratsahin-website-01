@@ -447,7 +447,11 @@
         "name": "Mobile App Development Projects (Hybrid & Native Apps)",
         "startDate": "2018",
         "endDate": "2019",
-        "image": "images/portfolio/mobile-app-dev.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/mobile-app-dev/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "mobileAppDev",
           "apiDev",
@@ -458,14 +462,19 @@
           "Native iOS App Development (w/Swift 4): I also contributed to a native iOS App development project (which was a Warehouse Management System) with Swift 4. Our target device for that project was iPad. So, I have familiarity with Mac & XCode and some knowledge on Native iOS Development with Swift 4."
         ],
         "projectLink": "",
-        "relatedExperienceId": 5
+        "relatedExperienceId": 5,
+        "projectShare": "team"
       },
       {
         "id": "3rd-party-integration",
         "name": "Integration Projects (Shipping, Payment Gateway & Other Solution)",
         "startDate": "2016",
         "endDate": "2018",
-        "image": "images/portfolio/integration.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/integration/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "backEndDev",
           "databaseDev",
@@ -480,14 +489,19 @@
           "- Other Solution Integrations: I have also contributed to some of our 2 different solution integration processes (by designing an integration API for other party to call and also adding other party’s integration API calls whenever they were needed in our solution)."
         ],
         "projectLink": "",
-        "relatedExperienceId": 5
+        "relatedExperienceId": 5,
+        "projectShare": "team"
       },
       {
         "id": "elambs-erp",
         "name": "eLAMBS Project (ERP Solution for Apparel Industry)",
         "startDate": "2013",
         "endDate": "2018",
-        "image": "images/portfolio/elambs.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/elambs/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "frontEndDev",
           "backEndDev",
@@ -508,14 +522,19 @@
           "This project is in use on https://www.elambs.com address and information about the product can be gotten here; http://info.elambs.com"
         ],
         "projectLink": "https://www.elambs.com",
-        "relatedExperienceId": 3
+        "relatedExperienceId": 3,
+        "projectShare": "team"
       },
       {
         "id": "elambs-shop-ecommerce",
         "name": "eLAMBS Shop Project (ERP Integrated E-Commerce Solution)",
         "startDate": "2015",
         "endDate": "2018",
-        "image": "images/portfolio/elambs-shop.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/elambs-shop/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "frontEndDev",
           "backEndDev",
@@ -531,14 +550,19 @@
           "Several live instances (PC / Mobile) of that project can be checked on http://info.elambs.com/OnlineShop address."
         ],
         "projectLink": "http://info.elambs.com/OnlineShop",
-        "relatedExperienceId": 4
+        "relatedExperienceId": 4,
+        "projectShare": "team"
       },
       {
         "id": "personal-portfolio",
         "name": "Olcay Saymar Architecture & Visualization | Web-Based Portfolio",
         "startDate": "12.2011",
         "endDate": "02.2012",
-        "image": "images/portfolio/olcysymr.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/olcysymr/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "frontEndDev",
           "backEndDev",
@@ -553,14 +577,19 @@
           "By using the administration panel which was developed with PHP, MySQL, jQuery and Ajax technologies, he can add / delete / update his projects and he can also add / delete / show / hide and sort the images (by setting a priority value) which belong to the projects. An admin panel which supplies that kind of management tasks was also written by me.",
           "The site is in use on http://www.olcaysaymar.com address."
         ],
-        "projectLink": "http://www.olcaysaymar.com"
+        "projectLink": "http://www.olcaysaymar.com",
+        "projectShare": "individual"
       },
       {
         "id": "vehicle-shopping-system",
         "name": "Web Based Vehicle Shopping System | Freelance Project",
         "startDate": "10.2011",
         "endDate": "01.2012",
-        "image": "images/portfolio/aracilan.jpg",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/vehicle/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "frontEndDev",
           "backEndDev",
@@ -574,14 +603,19 @@
           "For its technical background, I made HTML and CSS coding in order to create pages from the PSD design and on back-end side I used CodeIgniter framework which is a modular, scalable, secure and high performance PHP framework for PHP/MySQL based systems. Thanks to that MVC framework, I was able to do business logic, data modeling / access and user interface coding on separate sources and build clean, understandable and multi-tiered code structure which is useful for teamwork."
         ],
         "projectLink": "",
-        "relatedEducationId": 3
+        "relatedEducationId": 3,
+        "projectShare": "individual"
       },
       {
         "id": "alumni-portal-senior-project",
         "name": "Yıldız Technical University Alumni Portal | University Senior Project",
         "startDate": "10.2009",
         "endDate": "02.2010",
-        "image": "",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/alumni/01_thumb.jpg"
+          }
+        ],
         "categories": [
           "frontEndDev",
           "backEndDev",
@@ -595,7 +629,8 @@
           "In addition to the graduate role, we also have faculty, department and rector administrative roles in that system. The users who have the privilege of those roles can perform some administrative actions like approval / denial of their graduate signup requests, management of the graduate accounts that they are responsible for, importing data of the new graduates at the end of each semester and getting some statistics / reports about their graduates."
         ],
         "projectLink": "",
-        "relatedEducationId": 3
+        "relatedEducationId": 3,
+        "projectShare": "individual"
       }
     ]
   }

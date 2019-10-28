@@ -365,6 +365,14 @@ jQuery(document).ready(function($) {
             $(this).html(p[$(this).attr('column')]);
         });
 
+        // project share part binding
+        var pShareWrapper = $("#portfolio .container-portfolio-detail span[name=project-share]");
+        if (p.projectShare) {
+            pShareWrapper.show();
+            var valSpans = pShareWrapper.find("span[project-share-val]").hide().filter("[project-share-val='" + p.projectShare + "']").show();
+            if (valSpans.length == 0) pShareWrapper.hide(); // invalid value case
+        } else pShareWrapper.hide();
+
         // description binding
         $("#portfolio [entity=project][column=description]").empty();
         p.description.forEach(function (desc) {
@@ -373,6 +381,15 @@ jQuery(document).ready(function($) {
 
         // project link binding
         $("#portfolio a.portfolio-seeprojectbutton")[p.projectLink ? 'show' : 'hide']().attr('href', p.projectLink || '#');
+
+        // images binding
+        var imgsWrapper = $("#portfolio .container-portfolio-detail div[name=images-wrapper]");
+        if (p.images && jQuery.isArray(p.images) && p.images.length > 0) {
+            imgsWrapper.show().find("[entity=project][column=images]").empty();
+            p.images.forEach(function (img) {
+                $("<a>").prop({href: img.bigImg || '#'}).addClass('image-box').css({'background-image': 'url("' + img.thumbImg + '")'}).appendTo(imgsWrapper.find("[entity=project][column=images]"));
+            });
+        } else imgsWrapper.hide();
 
         // related to part binding
         var rtWrapper = $("#portfolio .container-portfolio-detail div[name=related-to-wrapper]");

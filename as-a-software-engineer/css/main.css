@@ -724,6 +724,12 @@ h2.resp-accordion:hover {
 #portfolio .container-portfolio-detail a.portfolio-backbutton:hover {
     background: #3B5998;
 }
+#portfolio .container-portfolio-detail span[name=project-share] {
+    float: right;
+    text-align: right;
+    margin-top: -8px;
+    width: calc(100% - 121px);
+}
 #portfolio .container-portfolio-detail a.portfolio-seeprojectbutton {
     font-weight: bold;
     display: inline-block;
@@ -731,6 +737,21 @@ h2.resp-accordion:hover {
 }
 #portfolio .container-portfolio-detail a.portfolio-seeprojectbutton:hover {
     text-decoration: underline !important;
+}
+#portfolio [entity=project][column=images] {
+    margin: -7px 0px 10px 0px;
+}
+#portfolio [entity=project][column=images] a.image-box {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-right: 6px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+#portfolio [entity=project][column=images] a.image-box[href='#']{
+    cursor: default;
 }
 #portfolio [entity=project][column=categories] span{
     background: #577285;

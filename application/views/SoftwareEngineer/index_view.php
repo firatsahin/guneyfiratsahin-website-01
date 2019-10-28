@@ -620,7 +620,7 @@
                                                                 <!-- .portfolio-wrapper -->
                                                                 <div class="portfolio-wrapper">
                                                                     <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" rel="portfolio" title="<?= $p->name ?>">
-                                                                        <img src="<?= isset($p->image) && $p->image ? $p->image : '/img/no-img.jpg' ?>" alt="alt text" />
+                                                                        <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="alt text" />
                                                                         <div class="label">
                                                                             <div class="label-text">
                                                                                 <a class="text-title"><?= $p->name ?></a>
@@ -644,7 +644,14 @@
 
                                                 <!-- .container-portfolio-detail -->
                                                 <div class="container-portfolio-detail" style="display: none;">
-                                                    <a href="#" class="portfolio-backbutton">< Back to List</a>
+                                                    <div>
+                                                        <a href="#" class="portfolio-backbutton">< Back to List</a>
+                                                        <span name="project-share">
+                                                            <b>Project Share: </b>
+                                                            <span project-share-val="team">Team Project<br /><span style="color: #AAA; font-size: 11px;">(developed with other team members)</span></span>
+                                                            <span project-share-val="individual">Individual Project<br /><span style="color: #AAA; font-size: 11px;">(developed by myself)</span></span>
+                                                        </span>
+                                                    </div>
                                                     <div class="title_content">
                                                         <div class="text_content" entity="project" column="name"></div>
                                                         <span class="duration"><i class="fa fa-calendar color"></i>&nbsp;&nbsp; <span entity="project" column="startDate"></span> - <span entity="project" column="endDate"></span></span>
@@ -652,6 +659,13 @@
                                                     </div>
                                                     <div entity="project" column="description"></div>
                                                     <a href="#" target="_blank" class="portfolio-seeprojectbutton">See project &nbsp;<i class="fa fa-external-link color"></i></a>
+                                                    <div name="images-wrapper">
+                                                        <div class="title_content">
+                                                            <div class="text_content" style="text-transform: unset;">Images of this project</div>
+                                                            <div class="clear"></div>
+                                                        </div>
+                                                        <div entity="project" column="images"></div>
+                                                    </div>
                                                     <div name="related-to-wrapper">
                                                         <div class="title_content">
                                                             <div class="text_content" style="text-transform: unset;">Related to this <span name="related-to-kind"></span>:</div>
