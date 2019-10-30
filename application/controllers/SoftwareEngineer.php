@@ -47,6 +47,7 @@ class SoftwareEngineer extends CI_Controller {
 
         $this->load->view('SoftwareEngineer/index_view', array(
             "data" => $data,
+            "isBlog" => false
         ));
     }
 
@@ -77,12 +78,18 @@ class SoftwareEngineer extends CI_Controller {
             }
             $mailBody .= "<b>Sender's Email Address :</b> " . $inObj->email;
             $mailBody .= "<br /><br />";
-            $mailBody .= "<b>Selected Service Types :</b> " . implode(", ", $inObj->serviceTypes);
+            $mailBody .= "<b>Desired Service Types :</b> " . implode(", ", $inObj->serviceTypes);
             $mailBody .= "<br /><br />";
             $mailBody .= "<b>Desired Employment Type :</b> " . $inObj->employType;
             $mailBody .= "<br /><br />";
+            if (isset($inObj->budgetAmount) && $inObj->budgetAmount) {
+                $mailBody .= "<b>Budget :</b> " . $inObj->budgetAmount . " " . $inObj->budgetCurrency . " " . $inObj->budgetPeriod;
+                $mailBody .= "<br /><br />";
+            }
             $mailBody .= "<b>Sender's Message :</b><br /><br />" . str_replace("\n", "<br />", $inObj->message);
             $mailBody .= "<br /><br /><i>Sent by guneyfiratsahin.com contact form.</i>";
+
+            //echo $mailBody; return; // DEBUG: TEST HTML OUTPUT
 
             $outObj->success = utility_helper::sendMail("guneyfiratsahin@gmail.com", "Message from guneyfiratsahin.com Contact Form", $mailBody);
             if (!$outObj->success) $outObj->message = "An error occured while sending your message. Please try again later.";

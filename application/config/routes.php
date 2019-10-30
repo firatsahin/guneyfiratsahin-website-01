@@ -55,6 +55,7 @@ $route['default_controller'] = 'home';
 
 // as a software engineer part
 $route['as-a-software-engineer/(:any).html'] = "SoftwareEngineer/$1";
+$route['as-a-software-engineer/blog/(:any).html'] = "SoftwareEngineerBlog/$1";
 
 // as a musician part
 $route['as-a-musician/(:any).html'] = "Musician/$1";

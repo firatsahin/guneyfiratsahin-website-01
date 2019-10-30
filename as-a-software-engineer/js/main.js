@@ -70,6 +70,7 @@ jQuery(document).ready(function($) {
         $('#preloader').delay(200).fadeOut('slow');
         $('.wrapper').fadeIn(200);
         //$('#custumize-style').fadeIn(200);
+        if (getViewMode() != "mobile") performTabChangeAnimation();
     });
 
     /* ---------------------------------------------------------------------- */
@@ -152,66 +153,80 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // tab change event (PC mode)
-    $('ul.resp-tabs-list li[class^=tabs-]').click(function() {
+    // non-blog zone actions
+    if (!siteData.isBlog) {
 
-        var tabName = $(this).attr('data-tab-name');
+        // tab change event (PC mode)
+        $('ul.resp-tabs-list li[class^=tabs-]').click(function(e) {
 
-        performTabChangeAnimation();
+            var tabName = $(this).attr('data-tab-name');
 
-        $(".content_2").mCustomScrollbar("destroy");
-        setCustomScrollbars();
+            if (tabName == "blog") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "index.html";
+                return;
+            }
 
-        var hashObj = readHashAsObject();
-        if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
+            performTabChangeAnimation();
 
-        return false;
-    });
+            $(".content_2").mCustomScrollbar("destroy");
+            setCustomScrollbars();
 
-    // tab change event (Mobile mode)
-    $("#verticalTab h2.resp-accordion").click(function () {
-        var tabName = $(this).find("span.tite-list-resp").text().trim();
+            var hashObj = readHashAsObject();
+            if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
 
-        var hashObj = readHashAsObject();
-        if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
-    });
+            return false;
+        });
 
-    // hash change event
-    var defaultHashObj = {tab: "profile"};
-    var possibleTabs = ["profile", "resume", "portfolio", "contact"];
-    $(window).bind("hashchange", function (e) {
-        log("hash changed to: " + location.hash);
+        // tab change event (Mobile mode)
+        $("#verticalTab h2.resp-accordion").click(function () {
+            var tabName = $(this).find("span.tite-list-resp").text().trim();
 
-        if (!hashHasData()) {
-            writeObjectToHash(defaultHashObj);
-            return;
-        } // hash shouldn't be empty AND should start with #! AND shouldn't be exactly "#!"
+            if (tabName == "blog") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "index.html";
+                return;
+            }
 
-        var hashObj = readHashAsObject();
-        log(hashObj);
+            var hashObj = readHashAsObject();
+            if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
+        });
 
-        if (!hashObj.tab || possibleTabs.indexOf(hashObj.tab) == -1) { // "tab" parameter is necessary
-            writeObjectToHash(defaultHashObj);
-            return;
-        }
+        // hash change event
+        var defaultHashObj = {tab: "profile"};
+        var possibleTabs = ["profile", "resume", "portfolio", "contact", "blog"];
+        $(window).bind("hashchange", function (e) {
+            log("hash changed to: " + location.hash);
 
-        log("change tab to: " + hashObj.tab);
-        var tabToGo = [];
-        if (getViewMode() == "mobile") {
-            tabToGo = $("#verticalTab h2.resp-accordion").not(".resp-tab-active").find("span.tite-list-resp").filter(function () {
-                return $(this).text().trim() === hashObj.tab;
-            });
-        } else {
-            tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']").not(".resp-tab-active");
-        }
-        tabToGo.click();
+            if (!hashHasData()) {
+                writeObjectToHash(defaultHashObj);
+                return;
+            } // hash shouldn't be empty AND should start with #! AND shouldn't be exactly "#!"
 
-        // tab specific logic: [portfolio]
-        if (hashObj.tab == "portfolio") {
-            if (hashObj.projectId) loadProjectDetails(hashObj.projectId);
-            else portfolioChangeStep(1);
-        }
-    }).trigger("hashchange");
+            var hashObj = readHashAsObject();
+            log(hashObj);
+
+            if (!hashObj.tab || possibleTabs.indexOf(hashObj.tab) == -1) { // "tab" parameter is necessary
+                writeObjectToHash(defaultHashObj);
+                return;
+            }
+
+            log("change tab to: " + hashObj.tab);
+            var tabToGo = [];
+            if (getViewMode() == "mobile") {
+                tabToGo = $("#verticalTab h2.resp-accordion").not(".resp-tab-active").find("span.tite-list-resp").filter(function () {
+                    return $(this).text().trim() === hashObj.tab;
+                });
+            } else {
+                tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']").not(".resp-tab-active");
+            }
+            tabToGo.click();
+
+            // tab specific logic: [portfolio]
+            if (hashObj.tab == "portfolio") {
+                if (hashObj.projectId) loadProjectDetails(hashObj.projectId);
+                else portfolioChangeStep(1);
+            }
+        }).trigger("hashchange");
+    }
 
     /* ---------------------------------------------------------------------- */
     /* ---------------------- redimensionnement ----------------------------- */
@@ -311,14 +326,34 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $contactform.find("input[type=reset]").click(function() {
+    // clear button click
+    $contactform.find("input[type=reset]").click(function(e) {
+        e.preventDefault();
+        $contactform[0].reset();
         $contactform.find("#contactform-message").empty();
         $contactform.find("p.form-group[column]").removeClass("has-error");
         $contactform.find("p.form-group[column=serviceTypes] span.service-type").removeClass('is-active');
+        log($contactform.find("p.form-group[column=employType] .form-control").val());
+        $contactform.find("p.form-group[column=employType] .form-control").trigger("change");
     });
 
+    // service type > select-deselect
     $contactform.find("span.service-type").click(function () {
         $(this).toggleClass('is-active');
+    });
+
+    // employ type change > change the note
+    $contactform.find("p.form-group[column=employType] .form-control").change(function () {
+        var index = $(this).prop('selectedIndex');
+        $contactform.find("p.form-group[column=employType] span[for-option]").hide().filter("[for-option='" + index + "']").show();
+    }).trigger("change");
+
+    // amount focus out > normalize
+    $contactform.find("p.form-group[column=budget] .form-control[name=budgetAmount]").blur(function () {
+        if ($(this).val()) {
+            $(this).val(parseFloat($(this).val()).toFixed(2));
+            log("normalized to: ", $(this).val());
+        }
     });
 
     /* ---------------------------------------------------------------------- */
@@ -387,8 +422,9 @@ jQuery(document).ready(function($) {
         if (p.images && jQuery.isArray(p.images) && p.images.length > 0) {
             imgsWrapper.show().find("[entity=project][column=images]").empty();
             p.images.forEach(function (img) {
-                $("<a>").prop({href: img.bigImg || '#'}).addClass('image-box').css({'background-image': 'url("' + img.thumbImg + '")'}).appendTo(imgsWrapper.find("[entity=project][column=images]"));
+                $("<a>").prop({href: img.bigImg || '#', target: "_blank"}).addClass('image-box').css({'background-image': 'url("' + img.thumbImg + '")'}).appendTo(imgsWrapper.find("[entity=project][column=images]"));
             });
+            //imgsWrapper.find("[entity=project][column=images] a.image-box").not("[href='#']").prettyPhoto({theme: "facebook"});
         } else imgsWrapper.hide();
 
         // related to part binding
@@ -497,7 +533,7 @@ jQuery(document).ready(function($) {
             $('#blog-page').hide();
 
             $(postdetail).show();
-            $(".tabs-blog").trigger('click');
+            //$(".tabs-blog").trigger('click');
         }
 
         return false;
@@ -514,7 +550,7 @@ jQuery(document).ready(function($) {
             $('#blog-page').hide();
 
             $(postdetail).show();
-            $(".tabs-blog").trigger('click');
+            //$(".tabs-blog").trigger('click');
         }
 
         return false;
@@ -529,7 +565,7 @@ jQuery(document).ready(function($) {
 
             $('.content-post').hide();
             $('#blog-page').show();
-            $(".tabs-blog").trigger('click');
+            //$(".tabs-blog").trigger('click');
 
         }
 
@@ -550,12 +586,39 @@ jQuery(document).ready(function($) {
             $('.content-post').hide();
 
             $(postdetail).show();
-            $(".tabs-blog").trigger('click');
+            //$(".tabs-blog").trigger('click');
         }
 
         return false;
 
     });
+
+    // blog zone actions
+    if (siteData.isBlog) {
+
+        // tab change event (PC mode)
+        $('ul.resp-tabs-list li[class^=tabs-]').click(function (e) {
+
+            var tabName = $(this).attr('data-tab-name');
+
+            if (tabName == "home") {
+                location.href = siteData.softwareEngineerRootUri + "index.html";
+                return;
+            }
+
+            return false;
+        });
+
+        // tab change event (Mobile mode)
+        $("#verticalTab h2.resp-accordion").click(function () {
+            var tabName = $(this).find("span.tite-list-resp").text().trim();
+
+            if (tabName == "home") {
+                location.href = siteData.softwareEngineerRootUri + "index.html";
+                return;
+            }
+        });
+    }
 
 
     /* ---------------------------------------------------------------------- */

@@ -309,6 +309,12 @@ switch (ENVIRONMENT)
 // include sensitive data file (which all critical site settings, credentials etc. are in) (Ignored by Git)
 require_once 'sensitive_data.php';
 
+// SUPER GLOBALS (available anywhere)
+// constant
+define('SOFTWARE_ENGINEER_ROOT_URI', '/as-a-software-engineer/');
+// variable
+//$GLOBALS['someKey'] = "someVal"; // it can be changed during the app flow
+
 
 /*
  * --------------------------------------------------------------------

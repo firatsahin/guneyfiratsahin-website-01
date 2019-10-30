@@ -499,7 +499,8 @@
         "endDate": "2018",
         "images": [
           {
-            "thumbImg": "images/portfolio/elambs/01_thumb.jpg"
+            "thumbImg": "images/portfolio/elambs/01_thumb.jpg",
+            "bigImg": "images/portfolio/elambs/01_big.jpg"
           }
         ],
         "categories": [
@@ -532,7 +533,8 @@
         "endDate": "2018",
         "images": [
           {
-            "thumbImg": "images/portfolio/elambs-shop/01_thumb.jpg"
+            "thumbImg": "images/portfolio/elambs-shop/01_thumb.jpg",
+            "bigImg": "images/portfolio/elambs-shop/01_big.jpg"
           }
         ],
         "categories": [
@@ -560,7 +562,8 @@
         "endDate": "02.2012",
         "images": [
           {
-            "thumbImg": "images/portfolio/olcysymr/01_thumb.jpg"
+            "thumbImg": "images/portfolio/olcysymr/01_thumb.jpg",
+            "bigImg": "images/portfolio/olcysymr/01_big.jpg"
           }
         ],
         "categories": [
@@ -587,7 +590,8 @@
         "endDate": "01.2012",
         "images": [
           {
-            "thumbImg": "images/portfolio/vehicle/01_thumb.jpg"
+            "thumbImg": "images/portfolio/vehicle/01_thumb.jpg",
+            "bigImg": "images/portfolio/vehicle/01_big.jpg"
           }
         ],
         "categories": [
@@ -613,7 +617,8 @@
         "endDate": "02.2010",
         "images": [
           {
-            "thumbImg": "images/portfolio/alumni/01_thumb.jpg"
+            "thumbImg": "images/portfolio/alumni/01_thumb.jpg",
+            "bigImg": "images/portfolio/alumni/01_big.jpg"
           }
         ],
         "categories": [
