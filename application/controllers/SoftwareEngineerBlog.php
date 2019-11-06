@@ -19,35 +19,65 @@ class SoftwareEngineerBlog extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
-    public function index()
+    private function getData()
     {
         $data = json_decode(file_get_contents('frt_data.json'));
-
-        // generate formatted date
-        $data->personalInfo->birthDate->formatted = DateTime::createFromFormat('!m', $data->personalInfo->birthDate->month)->format('F') . ' ' . $data->personalInfo->birthDate->day . ', ' . $data->personalInfo->birthDate->year;
 
         // fix social profile links
         foreach ($data->personalInfo->socialProfiles as $p) {
             $contactName = $p->name;
             $p->link = str_replace("{{username}}", $data->contactInfo->$contactName, $p->link);
         }
+        return $data;
+    }
 
-        // get related things to projects
-        foreach ($data->portfolio->projects as $p) {
-            if (isset($p->relatedExperienceId) && $p->relatedExperienceId) $p->relatedExperience = utility_helper::getArrayItemById($data->resume->experience, $p->relatedExperienceId);
-            if (isset($p->relatedEducationId) && $p->relatedEducationId) $p->relatedEducation = utility_helper::getArrayItemById($data->resume->education, $p->relatedEducationId);
-            if (isset($p->images) && is_array($p->images)) {
-                foreach ($p->images as $img) { // get thumb img from big img prop (if doesn't exist)
-                    if ((!isset($img->thumbImg) || !$img->thumbImg) && isset($img->bigImg) && $img->bigImg) $img->thumbImg = $img->bigImg;
-                }
-            }
-        }
+	public function index()
+    {
+        $data = $this->getData();
+
+        // get recent posts here
+        $recentPosts = array_splice($data->blog->posts, 0, 4);
 
         //echo json_encode($data);return; // CHECK OBJECT
 
+        $blogData = (object)[
+            "blogViewName" => "index_view",
+            "blogTitle" => "Recent Posts",
+            "recentPosts" => $recentPosts
+        ];
+
+        //echo json_encode($blogData);return; // CHECK OBJECT
+
         $this->load->view('SoftwareEngineer/index_view', array(
             "data" => $data,
-            "isBlog" => true
+            "isBlog" => true,
+            "blogData" => $blogData
+        ));
+    }
+
+    public function showPost($id = -1)
+    {
+        $data = $this->getData();
+
+        $requestedPost = null;
+        foreach ($data->blog->posts as $post) {
+            if ($post->id == $id) {
+                $requestedPost = $post;
+                break;
+            }
+        }
+
+        $blogData = (object)[
+            "blogViewName" => "show_post_view",
+            "post" => $requestedPost
+        ];
+
+        //echo json_encode($blogData);return; // CHECK OBJECT
+
+        $this->load->view('SoftwareEngineer/index_view', array(
+            "data" => $data,
+            "isBlog" => true,
+            "blogData" => $blogData
         ));
     }
 

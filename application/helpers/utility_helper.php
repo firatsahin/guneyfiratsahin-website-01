@@ -80,4 +80,15 @@ class utility_helper
         return $result;
     }
 
+    public static function findAllOccurenceIndexes($haystack, $needle)
+    { // returns all occurence indexes of a needle string in another string | returns array containing all indexes
+        $lastPos = 0;
+        $positions = [];
+        while (($lastPos = strpos($haystack, $needle, $lastPos)) !== false) {
+            $positions[] = $lastPos;
+            $lastPos = $lastPos + strlen($needle);
+        }
+        return $positions;
+    }
+
 }

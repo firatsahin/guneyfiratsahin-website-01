@@ -1716,6 +1716,12 @@ ul.info-post li {
     margin-top: 13px;
     font-size: 12px !important;
 }
+section.content-post article.postPage > div.post_media {
+    margin-bottom: 20px;
+}
+section.content-post article.postPage > p {
+    margin-bottom: 16px;
+}
 /** sidebar blog **/
 
 

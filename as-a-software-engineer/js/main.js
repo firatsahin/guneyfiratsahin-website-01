@@ -275,7 +275,7 @@ jQuery(document).ready(function($) {
         $contactform.find("#contactform-message").empty();
         $contactform.find("p.form-group[column]").removeClass("has-error");
 
-        $contactform.find("button[name=submit]").prop('disabled', true).text('SENDING MESSAGE...');
+        $contactform.find("button[name=btnSubmit]").prop('disabled', true).text('SENDING MESSAGE...');
         $.ajax({
             type: "POST",
             url: "contact.html",
@@ -322,7 +322,7 @@ jQuery(document).ready(function($) {
         }).fail(function () {
             log("failure");
         }).always(function () {
-            $contactform.find("button[name=submit]").prop('disabled', false).text('SEND MESSAGE');
+            $contactform.find("button[name=btnSubmit]").prop('disabled', false).text('SEND MESSAGE');
         });
     });
 
@@ -522,40 +522,6 @@ jQuery(document).ready(function($) {
     /* ---------------------------------------------------------------------- */
     /* --------------------------------- Blog ------------------------------- */
     /* ---------------------------------------------------------------------- */
-
-    // More blog
-    $('a.read_m').click(function() {
-        var pagina = $(this).attr('href');
-        var postdetail = pagina + '-page';
-
-        if (pagina.indexOf("#post-") != -1) {
-
-            $('#blog-page').hide();
-
-            $(postdetail).show();
-            //$(".tabs-blog").trigger('click');
-        }
-
-        return false;
-
-    });
-
-    // More blog
-    $('a.read_more').click(function() {
-        var pagina = $(this).attr('href');
-        var postdetail = pagina + '-page';
-
-        if (pagina.indexOf("#post-") != -1) {
-
-            $('#blog-page').hide();
-
-            $(postdetail).show();
-            //$(".tabs-blog").trigger('click');
-        }
-
-        return false;
-
-    });
 
     //pagination All
     $('.content-post a').click(function() {

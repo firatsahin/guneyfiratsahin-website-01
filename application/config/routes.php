@@ -50,12 +50,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+// routes that can be used in URL(link) generation logic inside the app
+$GLOBALS['linkableRoutes'] = [];
+
 // default route
 $route['default_controller'] = 'home';
 
 // as a software engineer part
 $route['as-a-software-engineer/(:any).html'] = "SoftwareEngineer/$1";
 $route['as-a-software-engineer/blog/(:any).html'] = "SoftwareEngineerBlog/$1";
+
+// as a software engineer > blog part
+$GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'showBlogPostDetail', 'key' => 'as-a-software-engineer/blog/post-(:num)/(:any).html', 'value' => 'SoftwareEngineerBlog/showPost/$1'];
 
 // as a musician part
 $route['as-a-musician/(:any).html'] = "Musician/$1";
@@ -65,3 +71,10 @@ $route['as-a-human/(:any).html'] = "Human/$1";
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// add linkable routes to routes array too
+foreach ($GLOBALS['linkableRoutes'] as $lr) {
+    $route[$lr->key] = $lr->value;
+}
+
+//echo json_encode($route);exit();
