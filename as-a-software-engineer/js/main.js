@@ -2,7 +2,9 @@
 var log = console.log;
 
 function getViewMode() {
-    return window.matchMedia("(max-width: 800px)").matches ? "mobile" : "pc";
+    return window.matchMedia("(max-width: 800px)").matches ? 1 :
+        window.matchMedia("(max-width: 991px)").matches ? 2 :
+            window.matchMedia("(max-width: 1199px)").matches ? 3 : 4;
 }
 
 function windowScrollTo(scrollTop) {
@@ -48,10 +50,10 @@ function getFormData($form) {
 }
 
 function getContentScroll() {
-    return getViewMode() != "mobile" ? Math.abs(parseInt($(".content_2:visible .mCSB_container").css("top"))) : null;
+    return getViewMode() != 1 ? Math.abs(parseInt($(".content_2:visible .mCSB_container").css("top"))) : null;
 }
 function setContentScroll(scrollTop) {
-    if (getViewMode() != "mobile") {
+    if (getViewMode() != 1) {
         $(".content_2:visible .mCSB_container").css("top", -scrollTop);
         $(".content_2:visible").mCustomScrollbar("update");
     }
@@ -70,7 +72,7 @@ jQuery(document).ready(function($) {
         $('#preloader').delay(200).fadeOut('slow');
         $('.wrapper').fadeIn(200);
         //$('#custumize-style').fadeIn(200);
-        if (getViewMode() != "mobile") performTabChangeAnimation();
+        if (getViewMode() != 1) performTabChangeAnimation();
     });
 
     /* ---------------------------------------------------------------------- */
@@ -211,7 +213,7 @@ jQuery(document).ready(function($) {
 
             log("change tab to: " + hashObj.tab);
             var tabToGo = [];
-            if (getViewMode() == "mobile") {
+            if (getViewMode() == 1) {
                 tabToGo = $("#verticalTab h2.resp-accordion").not(".resp-tab-active").find("span.tite-list-resp").filter(function () {
                     return $(this).text().trim() === hashObj.tab;
                 });
@@ -219,6 +221,8 @@ jQuery(document).ready(function($) {
                 tabToGo = $("ul.resp-tabs-list li[data-tab-name='" + hashObj.tab + "']").not(".resp-tab-active");
             }
             tabToGo.click();
+
+            redimensionnement(); // trigger redimensionnement (to fix content scroll height)
 
             // tab specific logic: [portfolio]
             if (hashObj.tab == "portfolio") {
@@ -234,16 +238,35 @@ jQuery(document).ready(function($) {
 
     function redimensionnement() {
 
-        if (getViewMode()=="mobile") {
+        if (getViewMode() == 1) {
             $(".content_2").mCustomScrollbar("destroy");
             $(".resp-vtabs .resp-tabs-container").css("height", "100%");
             $(".content_2").css("height", "100%");
         } else {
 
-            $(".resp-vtabs .resp-tabs-container").css("height", "580px");
-            $(".content_2").css("height", "580px");
+            if (getViewMode() == 2) {
+                var h = $(window).height() - $("div.widget-profil").outerHeight(true) - parseInt($("div.wrapper").css('margin-top')) - parseInt($("div.wrapper").css('margin-bottom'));
+                $(".resp-vtabs .resp-tabs-container").css("height", h);
+                $(".content_2").css("height", h);
+                $("ul.resp-tabs-list").height(h - parseInt($("ul.resp-tabs-list").css('margin-bottom'))); // add inline height rule
+            } else {
+                $(".resp-vtabs .resp-tabs-container").css("height", "580px");
+                $(".content_2").css("height", "580px");
+                $("ul.resp-tabs-list").height(''); // remove inline height rule
+            }
+
+            var scrollBackup = getContentScroll();
             $(".content_2").mCustomScrollbar("destroy");
             setCustomScrollbars();
+            setContentScroll(scrollBackup);
+
+            // put downside logic
+            if ($("ul.resp-tabs-list li.put-downside").length > 0) {
+                var lisTotalH = $("ul.resp-tabs-list > li").length * 76;
+                var space = (getViewMode() == 2 ? $("ul.resp-tabs-list").outerHeight(true) : 580) - lisTotalH;
+                if (space < 0) space = 0;
+                $("ul.resp-tabs-list li.put-downside").first().css('margin-top', space);
+            }
 
         }
 
@@ -443,22 +466,22 @@ jQuery(document).ready(function($) {
         });
 
         // scroll to top of project detail
-        if (getViewMode() == "mobile") windowScrollTo(564); //windowScrollTo($("a.portfolio-backbutton").offset().top - 14);
+        if (getViewMode() == 1) windowScrollTo(564); //windowScrollTo($("a.portfolio-backbutton").offset().top - 14);
     }
-    var contentScrollBackup = null;
+    var portfolioStep1cs = null;
     function portfolioChangeStep(step) {
         switch (step) {
             case 1:
                 $("#portfolio .container-portfolio-detail").hide().siblings(".container-portfolio").show();
-                if (contentScrollBackup) {
-                    log("restored contentScroll:", contentScrollBackup);
-                    setContentScroll(contentScrollBackup)
-                    contentScrollBackup = null;
+                if (portfolioStep1cs) {
+                    log("restored portfolioStep1cs:", portfolioStep1cs);
+                    setContentScroll(portfolioStep1cs)
+                    portfolioStep1cs = null;
                 }
                 break;
             case 2:
-                contentScrollBackup = getContentScroll();
-                log("backed up contentScroll:", contentScrollBackup);
+                portfolioStep1cs = getContentScroll();
+                log("backed up portfolioStep1cs:", portfolioStep1cs);
                 $("#portfolio .container-portfolio").hide().siblings(".container-portfolio-detail").show();
                 setContentScroll(0);
                 performTabChangeAnimation();
@@ -522,42 +545,6 @@ jQuery(document).ready(function($) {
     /* ---------------------------------------------------------------------- */
     /* --------------------------------- Blog ------------------------------- */
     /* ---------------------------------------------------------------------- */
-
-    //pagination All
-    $('.content-post a').click(function() {
-        var pagina = $(this).attr('href');
-
-        if (pagina == "#blog") {
-
-            $('.content-post').hide();
-            $('#blog-page').show();
-            //$(".tabs-blog").trigger('click');
-
-        }
-
-        return false;
-
-    });
-
-    //pagination blog
-    $('.content-post #pagination').click(function() {
-
-
-        var pagina = $(this).attr('href');
-        var postdetail = pagina + '-page';
-
-        if (pagina.indexOf("#post-") != -1) {
-
-            $('#blog-page').hide();
-            $('.content-post').hide();
-
-            $(postdetail).show();
-            //$(".tabs-blog").trigger('click');
-        }
-
-        return false;
-
-    });
 
     // blog zone actions
     if (siteData.isBlog) {

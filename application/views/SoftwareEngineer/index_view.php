@@ -173,24 +173,24 @@
                                                     <i class="fa fa-briefcase icon_menu"></i>
                                                 </li>
 
-                                                <li class="tabs-contact hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="contact" title="Contact" style="margin-bottom: 201px !important;">
+                                                <li class="tabs-contact hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="contact" title="Contact">
                                                     <span class="tite-list">contact</span>
                                                     <i class="fa fa-envelope icon_menu"></i>
                                                 </li>
 
-                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog Site">
+                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="blog" title="Blog Site">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-bullhorn icon_menu"></i>
                                                 </li>
 
                                             <?php } else { ?>
 
-                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog" style="margin-bottom: 428px !important;">
+                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-bullhorn icon_menu icon_menu_active"></i>
                                                 </li>
 
-                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="home" title="Back to Home Site">
+                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="home" title="Back to Home Site">
                                                     <span class="tite-list">home</span>
                                                     <i class="fa fa-home icon_menu"></i>
                                                 </li>
@@ -942,7 +942,7 @@
             var siteData = {
                 isBlog:<?=isset($isBlog) && $isBlog ? 'true' : 'false' ?>,
                 softwareEngineerRootUri: "<?= SOFTWARE_ENGINEER_ROOT_URI ?>",
-                blogSiteSuffix: "blog/"
+                blogSiteSuffix: "<?= SOFTWARE_ENGINEER_BLOG_SUFFIX ?>"
             };
             console.log("siteData: ", siteData);
         </script>

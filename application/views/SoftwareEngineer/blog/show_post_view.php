@@ -267,9 +267,9 @@
                                 </div>
 
                                 <div class="col-md-12"  style="margin-top: 20px;">
-                                    <a href="#post-3" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                                    <a href="#post-1" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                                    <a href="#blog" class="readmore"><i class="glyphicon glyphicon-chevron-left"></i> All Posts</a>
+                                    <a href="#" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                                    <a href="#" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI.SOFTWARE_ENGINEER_BLOG_SUFFIX ?>index.html" class="readmore"><i class="glyphicon glyphicon-chevron-left"></i> All Posts</a>
                                 </div>
 
                                 <div class="clear"></div>

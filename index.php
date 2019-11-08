@@ -312,6 +312,7 @@ require_once 'sensitive_data.php';
 // SUPER GLOBALS (available anywhere)
 // constant
 define('SOFTWARE_ENGINEER_ROOT_URI', '/as-a-software-engineer/');
+define('SOFTWARE_ENGINEER_BLOG_SUFFIX', 'blog/');
 // variable
 //$GLOBALS['someKey'] = "someVal"; // it can be changed during the app flow
 
