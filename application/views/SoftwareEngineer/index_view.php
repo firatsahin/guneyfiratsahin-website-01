@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
 
-        <title><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?> | <?= $data->personalInfo->title ?></title>
+        <title><?= isset($pageTitle) ? $pageTitle : '' ?></title>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

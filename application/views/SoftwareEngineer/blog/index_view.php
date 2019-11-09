@@ -1,4 +1,4 @@
-<h1 class="h-bloc">Blog - <?= $blogData->blogTitle ?></h1><br>
+<h1 class="h-bloc"><?= $blogData->blogTitle ?></h1><br>
 
 <div class="col-md-12">
     <div class="row">
@@ -8,7 +8,7 @@
             <!-- start Page Blog -->
             <section id="blog-page">
 
-                <?php foreach ($blogData->recentPosts as $post) { ?>
+                <?php foreach ($blogData->posts as $post) { ?>
 
                     <!-- Post - Begin -->
                     <article id="post-<?= $post->id ?>" class="blog-article">
@@ -82,22 +82,29 @@
                                         <div class="top_c ">
 
                                             <div class="title_content">
-                                                <div class="text_content"><a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->postTitle]) ?>"><?= $post->postTitle ?></a></div>
+                                                <div class="text_content">
+                                                    <?php /*<a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>"><?= $post->title ?></a>*/ ?>
+                                                    <?= $post->title ?>
+                                                </div>
                                                 <div class="clear"></div>
                                             </div>
 
                                             <ul class="info">
-                                                <li><i class="glyphicon glyphicon-comment"></i> 2 Comments</li>
-                                                <li><i class="glyphicon glyphicon-time"></i> January 31, 2014</li>
-                                                <li><i class="glyphicon glyphicon-user"></i> by Jane Doe</li>
-                                                <li><i class="glyphicon glyphicon-tag"></i> php, web design</li>
+                                                <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
+                                                <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
+                                                <?php /*<li><i class="glyphicon glyphicon-user"></i>&nbsp; by Jane Doe</li>*/ ?>
+                                                <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
                                             </ul>
 
                                             <div class="blog-content">
                                                 <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
-                                                    <p>
-                                                        <i class="fa fa-quote-left"></i>&nbsp; <?= strlen($post->contents[0]) > 300 ? trim(substr($post->contents[0], 0, 300)) . '...' : $post->contents[0] ?>
-                                                    </p>
+
+                                                    <?php if ($post->contents[0]->contentTypeId == "1") { ?>
+                                                        <p>
+                                                            <i class="fa fa-quote-left"></i>&nbsp; <?= strlen($post->contents[0]->content) > 300 ? trim(substr($post->contents[0]->content, 0, 300)) . '...' : $post->contents[0]->content ?>
+                                                        </p>
+                                                    <?php } ?>
+
                                                 <?php } else { ?>
                                                     <p>No content yet.</p>
                                                 <?php } ?>
@@ -105,7 +112,7 @@
                                         </div>
                                     </div>
 
-                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->postTitle]) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
+                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
 
                                 </div>
                             </div>
@@ -117,6 +124,20 @@
                     <div class="clear"></div>
 
                 <?php } ?>
+
+                <article class="blog-article" style="padding: 0px; border-top: 5px solid #3B5998; margin-top: 30px;">
+                    <div class="col-md-12 post_content"  style="padding: 10px 0px 0px 0px; text-align: center;">
+                        <a href="#" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+
+                        <a href="#" class="readmore" style="float: unset;">1</a>
+                        <a href="#" class="readmore" style="float: unset;">2</a>
+                        <a href="#" class="readmore" style="float: unset;">3</a>
+
+                        <a href="#" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+
+                    <div class="clear"></div>
+                </article>
 
             </section>
 

@@ -47,7 +47,8 @@ class SoftwareEngineer extends CI_Controller {
 
         $this->load->view('SoftwareEngineer/index_view', array(
             "data" => $data,
-            "isBlog" => false
+            "isBlog" => false,
+            "pageTitle" => $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local . ' | ' . $data->personalInfo->title . ' Personal Web Page'
         ));
     }
 

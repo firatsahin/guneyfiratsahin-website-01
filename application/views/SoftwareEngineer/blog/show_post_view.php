@@ -1,6 +1,6 @@
 <?php $post = $blogData->post; ?>
 
-<h1 class="h-bloc">Blog Post: <?= $post->postTitle ?></h1><br>
+<h1 class="h-bloc">Blog Post: <?= $post->title ?></h1><br>
 
 <div class="col-md-12">
     <div class="row">
@@ -67,13 +67,17 @@
                             </div>
 
                             <div class="title_content">
-                                <div class="text_content"><?= $blogData->post->postTitle ?></div>
+                                <div class="text_content"><?= $blogData->post->title ?></div>
                                 <div class="clear"></div>
                             </div>
 
-                            <?php if (isset($post->contents) && is_array($post->contents)) { ?>
+                            <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
                                 <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
-                                    <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= $post->contents[$i] ?></p>
+
+                                    <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
+                                        <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= $post->contents[$i]->content ?></p>
+                                    <?php } ?>
+
                                 <?php } ?>
                             <?php } else { ?>
                                 <p>No content yet.</p>
@@ -89,17 +93,17 @@
 
 
                                     <ul class="info-post">
-                                        <li><i class="glyphicon glyphicon-comment"></i> 2 Comments</li>
-                                        <li><i class="glyphicon glyphicon-time"></i> January 31, 2014</li>
-                                        <li><i class="glyphicon glyphicon-user"></i> by Jane Doe</li>
-                                        <li><i class="glyphicon glyphicon-tag"></i> php, web design</li>
+                                        <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
+                                        <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
+                                        <?php /*<li><i class="glyphicon glyphicon-user"></i>&nbsp; by Jane Doe</li>*/ ?>
+                                        <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
                                     </ul>
                                 </div>
 
                                 <div class="clear"></div>
 
 
-                                <div class="about_author">
+                                <?php /*<div class="about_author">
                                     <div class="title_content" style="margin-bottom:10px">
                                         <div class="text_content">BILL GATES</div>
                                         <div class="clear"></div>
@@ -126,13 +130,13 @@
                                     <div class="clear"></div>
                                 </div>
 
-                                <div class="clear"></div>
+                                <div class="clear"></div>*/ ?>
 
 
                                 <div class="post_comments">
 
                                     <div class="title_content">
-                                        <div class="text_content">7 Comments</div>
+                                        <div class="text_content">5 Comments</div>
                                         <div class="clear"></div>
                                     </div>
 
@@ -200,31 +204,6 @@
                                                 vitae tristique. Aliquam erat volutpat. Nunc sit
                                                 amet cursus libero. In fringilla egestas ornare.
                                             </div>
-                                            <div class="comment sub">
-                                                <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                                <div class="text">
-                                                    <div class="name">Bill Gates <a class="reply" href="#">Reply</a></div>
-                                                    <div class="date">12, September, 2013</div>
-                                                    Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Praesent condimentum sed elit
-                                                    vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                    amet cursus libero. In fringilla egestas ornare.
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
-
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">Andrian Robert <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
                                             <div class="clear"></div>
                                         </div><!-- .comments -->
 
@@ -259,17 +238,24 @@
                                             </p>
                                             <input type="reset" name="reset" value="CLEAR" class="reset">
                                             <!--<input type="submit" name="submit" value="Post Comment" class="submit">-->
-                                            <button class="submit" data-toggle="modal" data-target=".bs-example-modal-sm">Post Comment</button>
+                                            <button type="button" class="submit">Post Comment</button>
                                         </form>
                                         <div class="clear"></div>
 
                                     </div>
                                 </div>
 
-                                <div class="col-md-12"  style="margin-top: 20px;">
-                                    <a href="#" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                                    <a href="#" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI.SOFTWARE_ENGINEER_BLOG_SUFFIX ?>index.html" class="readmore"><i class="glyphicon glyphicon-chevron-left"></i> All Posts</a>
+                                <div class="col-md-12"  style="margin-top: 30px; padding: 0px;">
+                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI.SOFTWARE_ENGINEER_BLOG_SUFFIX ?>index.html" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i> All Posts</a>
+
+                                    <?php if ($blogData->nextLink) { ?>
+                                        <a href="<?= $blogData->nextLink ?>" class="readmore" id="pagination">Next Post &nbsp;<i class="glyphicon glyphicon-chevron-right"></i></a>
+                                    <?php } ?>
+
+                                    <?php if ($blogData->prevLink) { ?>
+                                        <a href="<?= $blogData->prevLink ?>" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Previous Post</a>
+                                    <?php } ?>
+
                                 </div>
 
                                 <div class="clear"></div>
