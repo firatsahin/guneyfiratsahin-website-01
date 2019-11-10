@@ -58,10 +58,11 @@ $route['default_controller'] = 'home';
 
 // as a software engineer part
 $route['as-a-software-engineer/(:any).html'] = "SoftwareEngineer/$1";
-$route['as-a-software-engineer/blog/(:any).html'] = "SoftwareEngineerBlog/$1";
+$route['as-a-software-engineer/blog/(:any)/page-(:num).html'] = "SoftwareEngineerBlog/index/$1/$2";
 
 // as a software engineer > blog part
 $GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'showBlogPostDetail', 'key' => 'as-a-software-engineer/blog/post-(:num)/(:any).html', 'value' => 'SoftwareEngineerBlog/showPost/$1'];
+$route['as-a-software-engineer/blog/categories/index.html'] = "SoftwareEngineerBlog/listCategories";
 
 // as a musician part
 $route['as-a-musician/(:any).html'] = "Musician/$1";

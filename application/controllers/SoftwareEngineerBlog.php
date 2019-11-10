@@ -34,30 +34,39 @@ class SoftwareEngineerBlog extends CI_Controller {
             $p->link = str_replace("{{username}}", $this->data->contactInfo->$contactName, $p->link);
         }
 
-        $this->pageTitleBase = $this->data->personalInfo->name->local . ' ' . $this->data->personalInfo->surname->local . ' - ' . $this->data->personalInfo->title . ' | Personal Blog';
+        $this->pageTitleBase = $this->data->personalInfo->name->local . ' ' . $this->data->personalInfo->surname->local . ' ' . $this->data->personalInfo->title . ' | Personal Blog';
 
         $this->load->database();
     }
 
-    public function index($whatKind = 'recent-posts')
+    public function index($whatKind = 'recent-posts', $page = 1)
     {
         $sortBy = $this->getSortByOf($whatKind); // get sort by value by 'whatKind' param
+        $pageSize = 3; // setting: num of posts per page
+        $filter = "isPublished=true";
+
+        if ($page < 1) utility_helper::redirectAndExit("page-1.html");
+
+        $postsCount = intval($this->db->query("select count(*) count from blogPost where $filter")->result()[0]->count);
+        $pageCount = ceil($postsCount / $pageSize);
+
+        if ($page > $pageCount) utility_helper::redirectAndExit("page-$pageCount.html");
 
         // get posts here
-        $posts = $this->db->query("select * from blogPost where isPublished=true order by $sortBy->col $sortBy->direction limit 0,5")->result();
+        $posts = $this->db->query("select * from blogPost where $filter order by $sortBy->col $sortBy->direction limit " . (($page - 1) * $pageSize) . ",$pageSize")->result();
         foreach ($posts as $post) {
             $post->contents = $this->getFirstParagraphContentOfPost($post->id);
             $post->images = $this->getImagesOfPost($post->id);
         }
 
-        //echo json_encode($this->data);return; // CHECK OBJECT
-
         $blogData = (object)[
             "blogViewName" => "index_view",
+            "activeTabIndex" => 0,
             "blogTitle" => 'Blog: ' . ($whatKind == 'recent-posts' ? "Recent Posts" : ""),
+            "page" => $page,
+            "pageCount" => $pageCount,
             "posts" => $posts
         ];
-
         //echo json_encode($blogData);return; // CHECK OBJECT
 
         $this->load->view('SoftwareEngineer/index_view', array(
@@ -75,8 +84,15 @@ class SoftwareEngineerBlog extends CI_Controller {
         $sortBy = $this->getSortByOf($whatKind); // get sort by value by 'whatKind' param
 
         // add +1 to post visit count here ....
+        $this->db->query("update blogPost set readCount=readCount+1 where id=" . $id);
 
+        // get post
         $post = $this->db->query("select * from blogPost where id=" . $id)->result()[0];
+
+        // correct URI if it's wrong
+        uri_helper::correctMalformedURI(uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]));
+
+        // get post details
         $post->contents = $this->getContentsOfPost($id);
         $post->images = $this->getImagesOfPost($id);
 
@@ -85,11 +101,11 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         $blogData = (object)[
             "blogViewName" => "show_post_view",
+            "activeTabIndex" => 0,
             "post" => $post,
             "prevLink" => $prevNextLinks->prevLink,
             "nextLink" => $prevNextLinks->nextLink,
         ];
-
         //echo json_encode($blogData);return; // CHECK OBJECT
 
         $this->load->view('SoftwareEngineer/index_view', array(
@@ -100,6 +116,27 @@ class SoftwareEngineerBlog extends CI_Controller {
         ));
     }
 
+    public function listCategories()
+    {
+        $categories = $this->getRootCategories(true);
+
+        $blogData = (object)[
+            "blogViewName" => "list_categories_view",
+            "activeTabIndex" => 1,
+            "blogTitle" => 'Blog: Categories',
+            "categories" => $categories,
+        ];
+        //echo json_encode($blogData);return; // CHECK OBJECT
+
+        $this->load->view('SoftwareEngineer/index_view', array(
+            "data" => $this->data,
+            "isBlog" => true,
+            "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "blogData" => $blogData
+        ));
+    }
+
+    // HELPER FUNCTIONS - BEGIN
     private function getSortByOf($whatKind)
     {
         $sortBy = (object)["col" => "createDate", "direction" => "desc"]; // default
@@ -142,5 +179,28 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         return $returnObj;
     }
+
+    private function getRootCategories($withAllChildren = false)
+    {
+        $rootCats = $this->db->query("select * from postCategory where isActive=true and parentId is null order by sortNo,name")->result();
+        if ($withAllChildren) {
+            foreach ($rootCats as $c) {
+                $c->subCategories = $this->getSubCategoriesOf($c->id, true);
+            }
+        }
+        return $rootCats;
+    }
+
+    private function getSubCategoriesOf($id, $withInnerChildren = false)
+    {
+        $subCats = $this->db->query("select * from postCategory where isActive=true and parentId=$id order by sortNo,name")->result();
+        if ($withInnerChildren) {
+            foreach ($subCats as $c) {
+                $c->subCategories = $this->getSubCategoriesOf($c->id, true);
+            }
+        }
+        return $subCats;
+    }
+    // HELPER FUNCTIONS - END
 
 }

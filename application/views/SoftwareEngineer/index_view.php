@@ -180,15 +180,22 @@
 
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="blog" title="Blog Site">
                                                     <span class="tite-list">blog</span>
-                                                    <i class="fa fa-bullhorn icon_menu"></i>
+                                                    <i class="fa fa-pencil icon_menu"></i>
                                                 </li>
 
                                             <?php } else { ?>
 
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog">
                                                     <span class="tite-list">blog</span>
-                                                    <i class="fa fa-bullhorn icon_menu icon_menu_active"></i>
+                                                    <i class="fa fa-pencil icon_menu <?= $blogData->activeTabIndex == 0 ? 'icon_menu_active' : '' ?>"></i>
                                                 </li>
+
+                                                <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog categories" title="Blog Categories">
+                                                    <span class="tite-list">blog categories</span>
+                                                    <i class="fa fa-tasks icon_menu <?= $blogData->activeTabIndex == 1 ? 'icon_menu_active' : '' ?>"></i>
+                                                </li>
+
+                                                <!-- /////////////////////////////////////////// -->
 
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="home" title="Back to Home Site">
                                                     <span class="tite-list">home</span>
@@ -866,10 +873,26 @@
                                                 <!-- .blog -->
                                                 <div id="blog" class="content_2">
 
-                                                    <?php $this->load->view('SoftwareEngineer/blog/' . $blogData->blogViewName, (object)["blogData" => $blogData]); ?>
+                                                    <?php if ($blogData->activeTabIndex == 0) { ?>
+                                                        <?php $this->load->view('SoftwareEngineer/blog/' . $blogData->blogViewName, (object)["blogData" => $blogData]); ?>
+                                                    <?php } else { ?>
+                                                        <div style="text-align: center; margin: 80px 0px; font-size: 18px;">Getting recent posts...</div>
+                                                    <?php } ?>
 
                                                 </div>
                                                 <!-- End .blog -->
+
+                                                <!-- .blog categories -->
+                                                <div id="blog categories" class="content_2">
+                                                    <?php if ($blogData->activeTabIndex == 1) { ?>
+                                                        <?php $this->load->view('SoftwareEngineer/blog/' . $blogData->blogViewName, (object)["blogData" => $blogData]); ?>
+                                                    <?php } else { ?>
+                                                        <div style="text-align: center; margin: 80px 0px; font-size: 18px;">Getting categories...</div>
+                                                    <?php } ?>
+                                                </div>
+                                                <!-- End .blog categories -->
+
+                                                <!-- /////////////////////////////////////////// -->
 
                                                 <!-- .home (not actual content, just redirect) -->
                                                 <div id="home" class="content_2">
@@ -942,7 +965,11 @@
             var siteData = {
                 isBlog:<?=isset($isBlog) && $isBlog ? 'true' : 'false' ?>,
                 softwareEngineerRootUri: "<?= SOFTWARE_ENGINEER_ROOT_URI ?>",
-                blogSiteSuffix: "<?= SOFTWARE_ENGINEER_BLOG_SUFFIX ?>"
+                blogSiteSuffix: "<?= SOFTWARE_ENGINEER_BLOG_SUFFIX ?>",
+                blogSiteDefaultPath: "<?= SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>",
+                <?php if(isset($blogData)) { ?>
+                blogActiveTabIndex: <?= $blogData->activeTabIndex ?>,
+                <?php } ?>
             };
             console.log("siteData: ", siteData);
         </script>

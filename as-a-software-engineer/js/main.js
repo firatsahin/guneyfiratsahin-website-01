@@ -164,7 +164,7 @@ jQuery(document).ready(function($) {
             var tabName = $(this).attr('data-tab-name');
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "index.html";
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
                 return;
             }
 
@@ -184,7 +184,7 @@ jQuery(document).ready(function($) {
             var tabName = $(this).find("span.tite-list-resp").text().trim();
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "index.html";
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
                 return;
             }
 
@@ -551,8 +551,21 @@ jQuery(document).ready(function($) {
 
         // tab change event (PC mode)
         $('ul.resp-tabs-list li[class^=tabs-]').click(function (e) {
+            if ($('ul.resp-tabs-list li[class^=tabs-]').index(this) == siteData.blogActiveTabIndex) return; // prevent redirection to the same tab
 
             var tabName = $(this).attr('data-tab-name');
+
+            if (tabName == "blog") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                return;
+            }
+
+            if (tabName == "blog categories") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html";
+                return;
+            }
+
+            ////////////////////////////////////////////////////////////////////
 
             if (tabName == "home") {
                 location.href = siteData.softwareEngineerRootUri + "index.html";
@@ -562,9 +575,25 @@ jQuery(document).ready(function($) {
             return false;
         });
 
+        $('ul.resp-tabs-list li[class^=tabs-]').eq(siteData.blogActiveTabIndex).trigger("click"); // go to blogActiveTab initially
+
         // tab change event (Mobile mode)
         $("#verticalTab h2.resp-accordion").click(function () {
+            if ($("#verticalTab h2.resp-accordion").index(this) == siteData.blogActiveTabIndex) return; // prevent redirection to the same tab
+
             var tabName = $(this).find("span.tite-list-resp").text().trim();
+
+            if (tabName == "blog") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                return;
+            }
+
+            if (tabName == "blog categories") {
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html";
+                return;
+            }
+
+            ////////////////////////////////////////////////////////////////////
 
             if (tabName == "home") {
                 location.href = siteData.softwareEngineerRootUri + "index.html";

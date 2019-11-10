@@ -2922,7 +2922,7 @@ li h6{
     color: #FFF !important;
 }
 
-.post-format-icon a.item-date span {
+.post-format-icon span {
     padding-top: 7px;
     margin-bottom: -6px;
     font-size: 26px !important;
@@ -2930,7 +2930,7 @@ li h6{
     color: #FFF !important;
 }
 
-.post-format-icon a.item-date span {
+.post-format-icon span {
 
     display: block;
     clear: both;

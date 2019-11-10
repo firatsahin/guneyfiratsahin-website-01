@@ -20,7 +20,7 @@
                                 <div class="col-md-12 post_media">
 
                                     <div class="post-format-icon">
-                                        <a href="#" class="item-date"><span class="fa fa-<?= (isset($post->images) && is_array($post->images) && count($post->images) > 0) ? 'picture-o' : 'pencil' ?>"></span></a>
+                                        <span class="fa fa-<?= (isset($post->images) && is_array($post->images) && count($post->images) > 0) ? 'picture-o' : 'pencil' ?>"></span>
                                     </div>
 
                                     <?php if (isset($post->images) && is_array($post->images) && count($post->images) > 0) { // post has image(s) ?>
@@ -92,7 +92,7 @@
                                             <ul class="info">
                                                 <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
                                                 <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
-                                                <?php /*<li><i class="glyphicon glyphicon-user"></i>&nbsp; by Jane Doe</li>*/ ?>
+                                                <li><i class="glyphicon glyphicon-user"></i>&nbsp; Seen: <?= $post->readCount ?> time<?= $post->readCount == 1 ? '' : 's' ?></li>
                                                 <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
                                             </ul>
 
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
 
-                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
+                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>?from=<?= urlencode(str_replace(SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX, "", $_SERVER['REDIRECT_URL'])) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
 
                                 </div>
                             </div>
@@ -126,14 +126,16 @@
                 <?php } ?>
 
                 <article class="blog-article" style="padding: 0px; border-top: 5px solid #3B5998; margin-top: 30px;">
-                    <div class="col-md-12 post_content"  style="padding: 10px 0px 0px 0px; text-align: center;">
-                        <a href="#" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                    <div class="col-md-12 post_content"  style="padding: 10px 15px 0px 15px; text-align: center;">
 
-                        <a href="#" class="readmore" style="float: unset;">1</a>
-                        <a href="#" class="readmore" style="float: unset;">2</a>
-                        <a href="#" class="readmore" style="float: unset;">3</a>
+                        <?php if ($blogData->page > 1) { ?>
+                            <a href="<?= 'page-' . ($blogData->page - 1) . '.html' ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i> Newer Posts</a>
+                        <?php } ?>
 
-                        <a href="#" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                        <?php if ($blogData->page < $blogData->pageCount) { ?>
+                            <a href="<?= 'page-' . ($blogData->page + 1) . '.html' ?>" class="readmore" style="float: right;">Older Posts <i class="glyphicon glyphicon-chevron-right"></i></a>
+                        <?php } ?>
+
                     </div>
 
                     <div class="clear"></div>

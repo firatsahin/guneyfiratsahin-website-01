@@ -91,4 +91,10 @@ class utility_helper
         return $positions;
     }
 
+    public static function redirectAndExit($uri)
+    {
+        header("Location: $uri");
+        exit();
+    }
+
 }

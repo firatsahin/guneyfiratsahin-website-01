@@ -1,6 +1,10 @@
 <?php $post = $blogData->post; ?>
 
-<h1 class="h-bloc">Blog Post: <?= $post->title ?></h1><br>
+<h1 class="h-bloc">Blog Post: <?= $post->title ?></h1>
+
+<div>
+    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . (isset($_GET['from']) && $_GET['from'] ? $_GET['from'] : SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH) ?>" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Back to Post List</a>
+</div>
 
 <div class="col-md-12">
     <div class="row">
@@ -19,7 +23,7 @@
                             <div class="col-md-12 post_media">
 
                                 <div class="post-format-icon">
-                                    <a href="#" class="item-date"><span class="fa fa-<?= (isset($post->images) && is_array($post->images) && count($post->images) > 0) ? 'picture-o' : 'pencil' ?>"></span></a>
+                                    <span class="fa fa-<?= (isset($post->images) && is_array($post->images) && count($post->images) > 0) ? 'picture-o' : 'pencil' ?>"></span>
                                 </div>
 
                                 <?php if (isset($post->images) && is_array($post->images) && count($post->images) > 0) { // post has image(s) ?>
@@ -95,7 +99,7 @@
                                     <ul class="info-post">
                                         <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
                                         <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
-                                        <?php /*<li><i class="glyphicon glyphicon-user"></i>&nbsp; by Jane Doe</li>*/ ?>
+                                        <li><i class="glyphicon glyphicon-user"></i>&nbsp; Seen: <?= $post->readCount ?> time<?= $post->readCount == 1 ? '' : 's' ?></li>
                                         <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
                                     </ul>
                                 </div>
@@ -246,14 +250,13 @@
                                 </div>
 
                                 <div class="col-md-12"  style="margin-top: 30px; padding: 0px;">
-                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI.SOFTWARE_ENGINEER_BLOG_SUFFIX ?>index.html" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i> All Posts</a>
-
-                                    <?php if ($blogData->nextLink) { ?>
-                                        <a href="<?= $blogData->nextLink ?>" class="readmore" id="pagination">Next Post &nbsp;<i class="glyphicon glyphicon-chevron-right"></i></a>
-                                    <?php } ?>
 
                                     <?php if ($blogData->prevLink) { ?>
-                                        <a href="<?= $blogData->prevLink ?>" class="readmore" id="pagination"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Previous Post</a>
+                                        <a href="<?= $blogData->prevLink ?><?= isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Previous Post</a>
+                                    <?php } ?>
+
+                                    <?php if ($blogData->nextLink) { ?>
+                                        <a href="<?= $blogData->nextLink ?><?= isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '' ?>" class="readmore">Next Post &nbsp;<i class="glyphicon glyphicon-chevron-right"></i></a>
                                     <?php } ?>
 
                                 </div>
