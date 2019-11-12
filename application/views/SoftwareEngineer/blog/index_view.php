@@ -1,4 +1,18 @@
-<h1 class="h-bloc"><?= $blogData->blogTitle ?></h1><br>
+<h1 class="h-bloc" style="height: 39px;">
+    <div style="position: relative; top: -6px;">
+
+        <span>Blog:</span>
+        <select name="post-set-ddl" post-set="<?= $blogData->postSet ?>">
+            <option value="recent-posts">Recent Posts</option>
+            <option value="most-clicked-posts">Most Clicked Posts</option>
+        </select>
+
+        <?php if (isset($blogData->categoryName) && $blogData->categoryName) { ?>
+            <span name="category-span">&nbsp; of [<?= $blogData->categoryName ?>]</span>
+        <?php } ?>
+
+    </div>
+</h1><br>
 
 <div class="col-md-12">
     <div class="row">
@@ -90,10 +104,11 @@
                                             </div>
 
                                             <ul class="info">
-                                                <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
-                                                <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
+                                                <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; Created: <?= substr($post->createDate, 0, 10) ?></li>
+                                                <li><i class="glyphicon glyphicon-th-list"></i>&nbsp; Category: <a href="<?= $post->category->link ?>"><?= $post->category->name ?></a></li>
                                                 <li><i class="glyphicon glyphicon-user"></i>&nbsp; Seen: <?= $post->readCount ?> time<?= $post->readCount == 1 ? '' : 's' ?></li>
-                                                <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
+                                                <li><i class="glyphicon glyphicon-comment"></i>&nbsp; Comments: 2</li>
+                                                <li><i class="glyphicon glyphicon-tag"></i>&nbsp; Tags: php, web design</li>
                                             </ul>
 
                                             <div class="blog-content">
@@ -123,6 +138,12 @@
 
                     <div class="clear"></div>
 
+                <?php } ?>
+
+                <?php if (count($blogData->posts) == 0) { ?>
+                    <div style="height: 180px; text-align: center; line-height: 170px;">
+                        No posts here yet.
+                    </div>
                 <?php } ?>
 
                 <article class="blog-article" style="padding: 0px; border-top: 5px solid #3B5998; margin-top: 30px;">

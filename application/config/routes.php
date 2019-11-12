@@ -63,6 +63,7 @@ $route['as-a-software-engineer/blog/(:any)/page-(:num).html'] = "SoftwareEnginee
 // as a software engineer > blog part
 $GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'showBlogPostDetail', 'key' => 'as-a-software-engineer/blog/post-(:num)/(:any).html', 'value' => 'SoftwareEngineerBlog/showPost/$1'];
 $route['as-a-software-engineer/blog/categories/index.html'] = "SoftwareEngineerBlog/listCategories";
+$GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'listCategoryPosts', 'key' => 'as-a-software-engineer/blog/category-(:num)/(:any)/(:any)/page-(:num).html', 'value' => 'SoftwareEngineerBlog/listCategoryPosts/$1/$3/$4'];
 
 // as a musician part
 $route['as-a-musician/(:any).html'] = "Musician/$1";

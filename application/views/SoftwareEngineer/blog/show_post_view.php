@@ -97,10 +97,11 @@
 
 
                                     <ul class="info-post">
-                                        <li><i class="glyphicon glyphicon-comment"></i>&nbsp; 2 Comments</li>
-                                        <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; <?= substr($post->createDate, 0, 10) ?></li>
+                                        <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; Created: <?= substr($post->createDate, 0, 10) ?></li>
+                                        <li><i class="glyphicon glyphicon-th-list"></i>&nbsp; Category: <a href="<?= $post->category->link ?>"><?= $post->category->name ?></a></li>
                                         <li><i class="glyphicon glyphicon-user"></i>&nbsp; Seen: <?= $post->readCount ?> time<?= $post->readCount == 1 ? '' : 's' ?></li>
-                                        <li><i class="glyphicon glyphicon-tag"></i>&nbsp; php, web design</li>
+                                        <li><i class="glyphicon glyphicon-comment"></i>&nbsp; Comments: 2</li>
+                                        <li><i class="glyphicon glyphicon-tag"></i>&nbsp; Tags: php, web design</li>
                                     </ul>
                                 </div>
 

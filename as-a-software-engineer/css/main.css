@@ -2996,3 +2996,43 @@ li h6{
 div.ppt {
     display: none !important;
 }
+
+/* Blog: Categories */
+#blog-page #blog-categories ul:not([level='0']) {
+    display: none;
+}
+#blog-page #blog-categories ul > li.is-open > ul {
+    display: list-item;
+}
+#blog-page #blog-categories ul > li > i {
+    position: absolute;
+    margin: 3px 0px 0px -1px;
+    font-size: 10px;
+    padding: 5px 7px;
+    transition: .4s transform ease-out;
+}
+#blog-page #blog-categories ul > li.is-open > i {
+    transform: rotate(90deg);
+    margin: 2px 0px 0px -2px;
+}
+#blog-page #blog-categories ul li[subcat-count='0'] > i {
+    display: none;
+}
+#blog-page #blog-categories ul li div.category {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 0px 6px 0px 18px;
+    /*background-color: #d6e7ec;*/
+}
+#blog-page #blog-categories ul li div.category:hover {
+    background-color: #d6e7ec;
+}
+#blog-page #blog-categories ul li div.category > span.cat-name {
+    cursor: default;
+    color: #3B5998;
+}
+#blog-page #blog-categories ul li div.category > a.cat-link {
+    float: right;
+}
+#blog-page #blog-categories ul li div.category > a.cat-link:hover {
+    text-decoration: underline !important;
+}

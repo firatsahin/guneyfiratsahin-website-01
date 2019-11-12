@@ -600,6 +600,41 @@ jQuery(document).ready(function($) {
                 return;
             }
         });
+
+        // DDL: Post Set > change event and initial value set
+        $("div#blog select[name=post-set-ddl]").change(function () {
+            var categoryStr = '';
+            var uriAfterBlogRoot = location.pathname.replace(siteData.softwareEngineerRootUri + siteData.blogSiteSuffix, '');
+            if (uriAfterBlogRoot.indexOf("category-") == 0) {
+                var segments = uriAfterBlogRoot.split("/");
+                categoryStr = segments[0] + "/" + segments[1] + "/";
+            }
+            var urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + categoryStr + this.value + '/page-1.html';
+            log(urlToGo);
+            location.href = urlToGo;
+        }).val($("div#blog select[name=post-set-ddl]").attr('post-set'));
+
+        // Categories part
+        var $blogCategories = $("#blog-categories");
+        if ($blogCategories.length > 0) {
+            $blogCategories.find("ul[level]").each(function () {
+                $(this).css('margin-left', $(this).attr('level') * 15);
+            });
+        }
+
+        // sub categories expand-collapse
+        $blogCategories.find("ul[level] > li:not([subcat-count='0'])").find("> i, > div.category").click(function (e) {
+            if ($(this).find("> a.cat-link").is(e.target)) return; // exclude 'See Posts' link from expand-collapse action
+            $(this).closest("li").toggleClass('is-open');
+        });
+
+        // collapse-expand all
+        $("#blog-page").find("button[name=btnExpandAll], button[name=btnCollapseAll]").click(function () {
+            var isExpand = $(this).attr('name') == 'btnExpandAll';
+            $blogCategories.find("ul[level] > li:not([subcat-count='0'])")[isExpand ? 'addClass' : 'removeClass']('is-open');
+        });
+        $("#blog-page").find("button[name=btnExpandAll]").trigger("click"); // expand all initially
+
     }
 
 
