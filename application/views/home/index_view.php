@@ -6,10 +6,13 @@
     <title><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?> | <?= $data->landingPageInfo->title ?></title>
 
     <!-- metas -->
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <meta name="description" content="<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?> <?= $data->landingPageInfo->title ?> Personal Web Page" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <?php if (isset($data->landingPageInfo->description) && $data->landingPageInfo->description) { ?>
+        <meta name="description" content="<?= $data->landingPageInfo->description ?>" />
+    <?php } ?>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="/img/frt-favicon.png"/>

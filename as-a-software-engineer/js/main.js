@@ -73,6 +73,7 @@ jQuery(document).ready(function($) {
         $('.wrapper').fadeIn(200);
         //$('#custumize-style').fadeIn(200);
         if (getViewMode() != 1) performTabChangeAnimation();
+        if (localStorage.isSiteMaximized == "1") $("div[name=icon-minimize-maximize]").trigger("click");
     });
 
     /* ---------------------------------------------------------------------- */
@@ -87,6 +88,19 @@ jQuery(document).ready(function($) {
             $(this).find('i.glyphicon').removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
         }
 
+    });
+
+    // send e-mail to me script
+    $("span.span-mt-link").click(function () {
+        var mailtoLink = "mailto:" + atob($(this).attr('mt-link')); //log(mailtoLink);
+        location.href = mailtoLink;
+    });
+
+    // minimize-maximize content
+    $("div[name=icon-minimize-maximize]").click(function () {
+        $("body").toggleClass('is-maximized');
+        localStorage.isSiteMaximized = ($("body").hasClass('is-maximized') ? 1 : 0); // put miximize setting to local storage
+        redimensionnement();
     });
 
     /* ---------------------------------------------------------------------- */
@@ -222,7 +236,7 @@ jQuery(document).ready(function($) {
             }
             tabToGo.click();
 
-            redimensionnement(); // trigger redimensionnement (to fix content scroll height)
+            setTimeout(redimensionnement, 400); // trigger redimensionnement (to fix content scroll height)
 
             // tab specific logic: [portfolio]
             if (hashObj.tab == "portfolio") {
@@ -237,6 +251,7 @@ jQuery(document).ready(function($) {
     /* ---------------------------------------------------------------------- */
 
     function redimensionnement() {
+        var $isMaximized = $("body").hasClass('is-maximized');
 
         if (getViewMode() == 1) {
             $(".content_2").mCustomScrollbar("destroy");
@@ -250,9 +265,18 @@ jQuery(document).ready(function($) {
                 $(".content_2").css("height", h);
                 $("ul.resp-tabs-list").height(h - parseInt($("ul.resp-tabs-list").css('margin-bottom'))); // add inline height rule
             } else {
-                $(".resp-vtabs .resp-tabs-container").css("height", "580px");
-                $(".content_2").css("height", "580px");
-                $("ul.resp-tabs-list").height(''); // remove inline height rule
+                if (!$isMaximized) {
+                    $(".resp-vtabs .resp-tabs-container").css("height", "580px");
+                    $(".content_2").css("height", "580px");
+                    $("ul.resp-tabs-list").height(''); // remove inline height rule
+                    $(".widget-profil").height(''); // remove inline height rule
+                } else { // MAXIMIZED LOGIC HERE
+                    var maximizedHeight = $(window).height() - parseInt($("div.wrapper").css('margin-top')) - parseInt($("div.wrapper").css('margin-bottom'));
+                    $(".resp-vtabs .resp-tabs-container").css("height", maximizedHeight + "px");
+                    $(".content_2").css("height", maximizedHeight + "px");
+                    $("ul.resp-tabs-list").height(maximizedHeight);
+                    $(".widget-profil").height(maximizedHeight);
+                }
             }
 
             var scrollBackup = getContentScroll();
@@ -263,7 +287,7 @@ jQuery(document).ready(function($) {
             // put downside logic
             if ($("ul.resp-tabs-list li.put-downside").length > 0) {
                 var lisTotalH = $("ul.resp-tabs-list > li").length * 76;
-                var space = (getViewMode() == 2 ? $("ul.resp-tabs-list").outerHeight(true) : 580) - lisTotalH;
+                var space = (getViewMode() == 2 ? $("ul.resp-tabs-list").outerHeight(true) : ($isMaximized ? $("ul.resp-tabs-list").outerHeight() : 580)) - lisTotalH;
                 if (space < 0) space = 0;
                 $("ul.resp-tabs-list li.put-downside").first().css('margin-top', space);
             }
@@ -356,7 +380,6 @@ jQuery(document).ready(function($) {
         $contactform.find("#contactform-message").empty();
         $contactform.find("p.form-group[column]").removeClass("has-error");
         $contactform.find("p.form-group[column=serviceTypes] span.service-type").removeClass('is-active');
-        log($contactform.find("p.form-group[column=employType] .form-control").val());
         $contactform.find("p.form-group[column=employType] .form-control").trigger("change");
     });
 
@@ -601,39 +624,288 @@ jQuery(document).ready(function($) {
             }
         });
 
-        // DDL: Post Set > change event and initial value set
-        $("div#blog select[name=post-set-ddl]").change(function () {
-            var categoryStr = '';
-            var uriAfterBlogRoot = location.pathname.replace(siteData.softwareEngineerRootUri + siteData.blogSiteSuffix, '');
-            if (uriAfterBlogRoot.indexOf("category-") == 0) {
-                var segments = uriAfterBlogRoot.split("/");
-                categoryStr = segments[0] + "/" + segments[1] + "/";
-            }
-            var urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + categoryStr + this.value + '/page-1.html';
-            log(urlToGo);
-            location.href = urlToGo;
-        }).val($("div#blog select[name=post-set-ddl]").attr('post-set'));
+        var $blogPageType = $("div#blog_page").attr('blog-page-type');
+        log("$blogPageType:", $blogPageType);
 
-        // Categories part
-        var $blogCategories = $("#blog-categories");
-        if ($blogCategories.length > 0) {
-            $blogCategories.find("ul[level]").each(function () {
-                $(this).css('margin-left', $(this).attr('level') * 15);
+        if ($blogPageType == 'list-posts') {
+
+            if (getViewMode() == 1) $("h1.h-bloc > div > span[name=blog-title-prefix]").hide();
+
+            // DDL: Post Set > change event and initial value set
+            $("div#blog select[name=post-set-ddl]").change(function () {
+                var categoryStr = '';
+                var uriAfterBlogRoot = location.pathname.replace(siteData.softwareEngineerRootUri + siteData.blogSiteSuffix, '');
+                if (uriAfterBlogRoot.indexOf("category-") == 0) {
+                    var segments = uriAfterBlogRoot.split("/");
+                    categoryStr = segments[0] + "/" + segments[1] + "/";
+                }
+                var urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + categoryStr + this.value + '/page-1.html';
+                log(urlToGo);
+                location.href = urlToGo;
+            }).val($("div#blog select[name=post-set-ddl]").attr('post-set'));
+
+            // write first 300 chars of post's first paragraph
+            $("div#blog_page").find("article[id^=post-]").each(function () {
+                var firstP = $(this).find("div.blog-content > p").first();
+                var firstPText = firstP.text().trim();
+                firstP.html(firstPText.length > 300 ? firstPText.substr(0, 300).trim() + '...' : firstPText);
             });
+
         }
 
-        // sub categories expand-collapse
-        $blogCategories.find("ul[level] > li:not([subcat-count='0'])").find("> i, > div.category").click(function (e) {
-            if ($(this).find("> a.cat-link").is(e.target)) return; // exclude 'See Posts' link from expand-collapse action
-            $(this).closest("li").toggleClass('is-open');
-        });
+        if ($blogPageType == 'list-categories' || $blogPageType == 'edit-categories') {
 
-        // collapse-expand all
-        $("#blog-page").find("button[name=btnExpandAll], button[name=btnCollapseAll]").click(function () {
-            var isExpand = $(this).attr('name') == 'btnExpandAll';
-            $blogCategories.find("ul[level] > li:not([subcat-count='0'])")[isExpand ? 'addClass' : 'removeClass']('is-open');
-        });
-        $("#blog-page").find("button[name=btnExpandAll]").trigger("click"); // expand all initially
+            // Categories part
+            var $blogCategories = $("#blog-categories");
+            if ($blogCategories.length > 0) {
+                $blogCategories.find("ul[level]").each(function () {
+                    $(this).css('margin-left', $(this).attr('level') * 15);
+                });
+            }
+
+            // sub categories expand-collapse
+            $blogCategories.find("ul[level] > li:not([subcat-count='0'])").find("> i" + ($blogPageType == 'list-categories' ? ', > div.category' : '')).click(function (e) {
+                if ($(this).find("> a.cat-link").is(e.target)) return; // exclude 'See Posts' link from expand-collapse action
+                $(this).closest("li").toggleClass('is-open');
+            });
+
+            // collapse-expand all
+            $("#blog-page").find("button[name=btnExpandAll], button[name=btnCollapseAll]").click(function () {
+                var isExpand = $(this).attr('name') == 'btnExpandAll';
+                $blogCategories.find("ul[level] > li:not([subcat-count='0'])")[isExpand ? 'addClass' : 'removeClass']('is-open');
+            });
+            $("#blog-page").find("button[name=btnExpandAll]").trigger("click"); // expand all initially
+
+            if ($blogPageType == 'edit-categories') { // categories > edit mode
+
+                function callEditCategory(data) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/SoftwareEngineerBlog/editCategory/" + $("span[name=edit-category-key]").text(),
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        success: function (result) {
+                            log(result);
+                            if (result.success) { // success
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+
+                $("button[name=btnSaveCategory]").click(function () {
+                    callEditCategory({
+                        whatToDo: "category_update",
+                        category: {
+                            id: $(this).closest("li[cat-id]").attr("cat-id"),
+                            name: $.trim($(this).siblings("input[name=tbxCatName]").val()),
+                            parentId: $.trim($(this).siblings("input[name=tbxParentCatID]").val()) || null,
+                            sortNo: $.trim($(this).siblings("input[name=tbxSortNo]").val()) || 0,
+                        }
+                    });
+                });
+
+                $("button[name=btnAddNewCategory]").click(function () {
+                    callEditCategory({
+                        whatToDo: "category_insert",
+                        category: {
+                            name: $.trim($(this).siblings("input[name=tbxCatName]").val()),
+                            parentId: $.trim($(this).siblings("input[name=tbxParentCatID]").val()) || null,
+                        }
+                    });
+                });
+
+                $("button[name=btnDeleteCategory]").click(function () {
+                    if (!confirm("Del Category ?")) return;
+                    var catLi = $(this).closest("li[cat-id]");
+                    callEditCategory({
+                        whatToDo: "category_delete",
+                        category: {
+                            id: catLi.attr('cat-id')
+                        }
+                    });
+                });
+
+                $("a[name=lnkAddNewPost]").click(function () {
+                    var catLi = $(this).closest("li[cat-id]");
+                    if (!confirm("Add New Post to Category: [" + catLi.find("input[name=tbxCatName]").val() + "] ?")) return;
+                    callEditCategory({
+                        whatToDo: "post_add",
+                        post: {
+                            categoryId: catLi.attr('cat-id')
+                        }
+                    });
+                });
+
+            }
+
+        }
+
+        if ($blogPageType == 'show-post') {
+
+        }
+
+        if ($blogPageType == 'edit-post') {
+            log("editing a post right now!");
+
+            function callEditPost(data) {
+                $.ajax({
+                    type: "POST",
+                    url: "/SoftwareEngineerBlog/editPost/" + $("span[name=edit-post-key]").text() + "/" + $("span[name=post-id]").text(),
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (result) {
+                        log(result);
+                        if (result.success) { // success
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+            $("button[name=btnChangePublishStatus]").click(function () {
+                callEditPost({
+                    whatToDo: "post_updatePublishStatus",
+                    post: {
+                        isPublished: ($(this).attr('is-published') === "1" ? false : true)
+                    }
+                });
+            });
+
+            $("button[name=btnAddNewImage]").click(function () {
+                callEditPost({
+                    whatToDo: "image_add",
+                });
+            });
+
+            $("button[name=btnSaveImage]").click(function () {
+                var imgDiv = $(this).closest("div[post-image-id]");
+                callEditPost({
+                    whatToDo: "image_update",
+                    image: {
+                        id: imgDiv.attr('post-image-id'),
+                        src: $.trim(imgDiv.find('input[name=tbxImageSrc]').val()),
+                        label: $.trim(imgDiv.find('input[name=tbxImageLabel]').val()),
+                        text: $.trim(imgDiv.find("textarea").val())
+                    }
+                });
+            });
+
+            $("button[name=btnDeleteImage]").click(function () {
+                if (!confirm("Del Image ? (File stays, Mapping goes away)")) return;
+                var imgDiv = $(this).closest("div[post-image-id]");
+                callEditPost({
+                    whatToDo: "image_delete",
+                    image: {
+                        id: imgDiv.attr('post-image-id')
+                    }
+                });
+            });
+
+            $("div.images-wrapper").sortable({
+                items: "div[post-image-id]",
+                handle: "span[name=span-move]",
+                update: function () {
+                    log("image sort changed");
+                    var images = [];
+                    $("div.images-wrapper div[post-image-id]").each(function () {
+                        images.push({
+                            id: $(this).attr('post-image-id')
+                        });
+                    });
+                    callEditPost({
+                        whatToDo: "images_sort",
+                        images: images
+                    });
+                }
+            });
+
+            $("button[name=btnSaveTitle]").click(function () {
+                callEditPost({
+                    whatToDo: "post_updateTitle",
+                    post: {
+                        title: $("input[name=tbxPostTitle]").val().trim()
+                    }
+                });
+            });
+
+            $("button[name=btnAddNewContent]").click(function () {
+                callEditPost({
+                    whatToDo: "content_add",
+                    content: {
+                        typeId: $("select[name=ddlContentType]").val()
+                    }
+                });
+            });
+
+            $("button[name=btnSaveContent]").click(function () {
+                var contentDiv = $(this).closest("div[content-id]");
+                callEditPost({
+                    whatToDo: "content_update",
+                    content: {
+                        id: contentDiv.attr('content-id'),
+                        typeId: contentDiv.attr('content-type-id'),
+                        text: $.trim(contentDiv.find("textarea").val())
+                    }
+                });
+            });
+
+            $("button[name=btnDeleteContent]").click(function () {
+                if (!confirm("Del Content ?")) return;
+                var contentDiv = $(this).closest("div[content-id]");
+                callEditPost({
+                    whatToDo: "content_delete",
+                    content: {
+                        id: contentDiv.attr('content-id')
+                    }
+                });
+            });
+
+            $("div.contents-wrapper").sortable({
+                items: "div[content-id]",
+                handle: "span[name=span-move]",
+                update: function () {
+                    log("content sort changed");
+                    var contents = [];
+                    $("div.contents-wrapper div[content-id]").each(function () {
+                        contents.push({
+                            id: $(this).attr('content-id')
+                        });
+                    });
+                    callEditPost({
+                        whatToDo: "contents_sort",
+                        contents: contents
+                    });
+                }
+            });
+
+            $("button[name=btnAddTagTextbox]").click(function () {
+                $('<div><input type="text" name="tbxTagName" /></div>').appendTo("div.tags-wrapper");
+            });
+
+            $("button[name=btnSaveTags]").click(function () {
+                var tags = [];
+                $("div.tags-wrapper input[name=tbxTagName]").each(function () {
+                    var tag = $.trim($(this).val());
+                    if (tag && tags.indexOf(tag) == -1) tags.push(tag);
+                });
+                var tagsJson = tags.length > 0 ? JSON.stringify(tags) : null;
+                if (tagsJson && tagsJson.length > 250) {
+                    console.error("tagsJson too long (max:250 char)");
+                    return;
+                }
+                log(tagsJson);
+                callEditPost({
+                    whatToDo: "post_updateTagsJson",
+                    post: {
+                        tagsJson: tagsJson
+                    }
+                });
+            });
+
+        }
+
+
 
     }
 

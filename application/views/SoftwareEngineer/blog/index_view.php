@@ -1,7 +1,7 @@
 <h1 class="h-bloc" style="height: 39px;">
     <div style="position: relative; top: -6px;">
 
-        <span>Blog:</span>
+        <span name="blog-title-prefix">Blog:</span>
         <select name="post-set-ddl" post-set="<?= $blogData->postSet ?>">
             <option value="recent-posts">Recent Posts</option>
             <option value="most-clicked-posts">Most Clicked Posts</option>
@@ -18,7 +18,7 @@
     <div class="row">
 
         <!-- Page Blog -->
-        <div class="col-md-12" id="blog_page">
+        <div class="col-md-12" id="blog_page" blog-page-type="list-posts">
             <!-- start Page Blog -->
             <section id="blog-page">
 
@@ -103,20 +103,14 @@
                                                 <div class="clear"></div>
                                             </div>
 
-                                            <ul class="info">
-                                                <li title="<?= $post->createDate ?>"><i class="glyphicon glyphicon-time"></i>&nbsp; Created: <?= substr($post->createDate, 0, 10) ?></li>
-                                                <li><i class="glyphicon glyphicon-th-list"></i>&nbsp; Category: <a href="<?= $post->category->link ?>"><?= $post->category->name ?></a></li>
-                                                <li><i class="glyphicon glyphicon-user"></i>&nbsp; Seen: <?= $post->readCount ?> time<?= $post->readCount == 1 ? '' : 's' ?></li>
-                                                <li><i class="glyphicon glyphicon-comment"></i>&nbsp; Comments: 2</li>
-                                                <li><i class="glyphicon glyphicon-tag"></i>&nbsp; Tags: php, web design</li>
-                                            </ul>
+                                            <?php $this->load->view('SoftwareEngineer/blog/partial/partial_info_post_view', (object)["post" => $post, "callerPage" => "list-posts"]); ?>
 
                                             <div class="blog-content">
                                                 <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
 
                                                     <?php if ($post->contents[0]->contentTypeId == "1") { ?>
                                                         <p>
-                                                            <i class="fa fa-quote-left"></i>&nbsp; <?= strlen($post->contents[0]->content) > 300 ? trim(substr($post->contents[0]->content, 0, 300)) . '...' : $post->contents[0]->content ?>
+                                                            <i class="fa fa-quote-left"></i>&nbsp; <?= $post->contents[0]->content ?>
                                                         </p>
                                                     <?php } ?>
 
@@ -150,11 +144,11 @@
                     <div class="col-md-12 post_content"  style="padding: 10px 15px 0px 15px; text-align: center;">
 
                         <?php if ($blogData->page > 1) { ?>
-                            <a href="<?= 'page-' . ($blogData->page - 1) . '.html' ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i> Newer Posts</a>
+                            <a href="<?= 'page-' . ($blogData->page - 1) . '.html' ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i> <?= $blogData->postSet == 'recent-posts' ? 'Newer Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'More Clicked Posts' : '') ?></a>
                         <?php } ?>
 
                         <?php if ($blogData->page < $blogData->pageCount) { ?>
-                            <a href="<?= 'page-' . ($blogData->page + 1) . '.html' ?>" class="readmore" style="float: right;">Older Posts <i class="glyphicon glyphicon-chevron-right"></i></a>
+                            <a href="<?= 'page-' . ($blogData->page + 1) . '.html' ?>" class="readmore" style="float: right;"><?= $blogData->postSet == 'recent-posts' ? 'Older Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'Less Clicked Posts' : '') ?> <i class="glyphicon glyphicon-chevron-right"></i></a>
                         <?php } ?>
 
                     </div>

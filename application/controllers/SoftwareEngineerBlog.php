@@ -87,10 +87,16 @@ class SoftwareEngineerBlog extends CI_Controller {
             }
         }
 
+        $editMode = (isset($_GET['edit_post_key']) && $_GET['edit_post_key'] === EDIT_POST_KEY); // for editing the post
+        $isPreview = (isset($_GET['preview']) && $_GET['preview'] === "1");
+
         //$sortBy = $this->getSortByOf($postSet); // get sort by value by 'postSet' param
 
         // get post
-        $post = $this->db->query("select * from blogPost where id=" . $id)->result()[0];
+        $posts = $this->db->query("select * from blogPost where id=" . $id)->result();
+        if (count($posts) == 0 || (!$posts[0]->isPublished && !$editMode)) utility_helper::redirectAndExit(SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH);
+
+        $post = $posts[0];
 
         // correct URI if it's wrong
         uri_helper::correctMalformedURI(uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]));
@@ -100,20 +106,26 @@ class SoftwareEngineerBlog extends CI_Controller {
         $post->images = $this->getImagesOfPost($id);
         $post->category = $this->getCategoryById($post->categoryId);
         $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
+        $post->comments = [];
+        $post->tags = $this->normalizeTags($post->tagsJson);
 
         // prev / next link generation here
         $prevNextLinks = $this->getPrevNextLinksOfPost($post, $postSet, $filter);
 
         // add +1 to post visit count here ....
-        $this->db->query("update blogPost set readCount=readCount+1 where id=" . $id);
+        if (!$editMode) $this->db->query("update blogPost set seenCount=seenCount+1 where id=" . $id);
 
         $blogData = (object)[
-            "blogViewName" => "show_post_view",
+            "blogViewName" => $editMode && !$isPreview ? "edit_post_view" : "show_post_view",
             "activeTabIndex" => 0,
             "post" => $post,
             "prevLink" => $prevNextLinks->prevLink,
             "nextLink" => $prevNextLinks->nextLink,
+            "editMode" => $editMode && !$isPreview,
         ];
+        if ($editMode && !$isPreview) { // edit mode specific additions
+            $blogData->contentTypes = $this->db->query("select * from postContentType order by id asc")->result();
+        }
         //echo json_encode($blogData);return; // CHECK OBJECT
 
         $this->load->view('SoftwareEngineer/index_view', array(
@@ -124,15 +136,80 @@ class SoftwareEngineerBlog extends CI_Controller {
         ));
     }
 
+    public function editPost($editPostKey, $postId = -1)
+    {
+        $inObj = json_decode(file_get_contents('php://input'));
+        $outObj = (object)['success' => false, 'message' => null, 'data' => null];
+
+        if ($editPostKey !== EDIT_POST_KEY) { // edit post key check
+            utility_helper::returnJson($outObj);
+            return;
+        }
+
+        if ($inObj->whatToDo == "post_updatePublishStatus") {
+            $this->db->query("update blogPost set isPublished=" . ($inObj->post->isPublished ? '1' : '0') . " where id=$postId");
+        }
+        if ($inObj->whatToDo == "post_updateTitle") {
+            $this->db->query("update blogPost set title='" . $inObj->post->title . "' where id=$postId");
+        }
+        if ($inObj->whatToDo == "post_updateTagsJson") {
+            $this->db->query("update blogPost set tagsJson=" . utility_helper::nullableStrValForSql($inObj->post->tagsJson) . " where id=$postId");
+        }
+
+        if ($inObj->whatToDo == "image_add") {
+            $this->db->query("insert into postImage (blogPostId) values ($postId)");
+        }
+        if ($inObj->whatToDo == "image_update") {
+            $this->db->query("update postImage set src='" . $inObj->image->src . "', label=" . utility_helper::nullableStrValForSql($inObj->image->label) . ", text=" . utility_helper::nullableStrValForSql($inObj->image->text) . " where id=" . $inObj->image->id);
+        }
+        if ($inObj->whatToDo == "image_delete") {
+            $this->db->query("delete from postImage where id=" . $inObj->image->id);
+        }
+        if ($inObj->whatToDo == "images_sort") {
+            $sortNo = count($inObj->images) - 1;
+            foreach ($inObj->images as $image) {
+                $this->db->query("update postImage set sortNo='" . $sortNo . "' where id=" . $image->id);
+                $sortNo--;
+            }
+        }
+
+        if ($inObj->whatToDo == "content_add") {
+            $this->db->query("insert into postContent (blogPostId,contentTypeId) values ($postId," . $inObj->content->typeId . ")");
+        }
+        if ($inObj->whatToDo == "content_update") {
+            if ($inObj->content->typeId == "1") {
+                $this->db->query("update postContent set content='" . str_replace("'", "''", $inObj->content->text) . "' where id=" . $inObj->content->id);
+            }
+        }
+        if ($inObj->whatToDo == "content_delete") {
+            $this->db->query("delete from postContent where id=" . $inObj->content->id);
+        }
+        if ($inObj->whatToDo == "contents_sort") {
+            $sortNo = count($inObj->contents) - 1;
+            foreach ($inObj->contents as $content) {
+                $this->db->query("update postContent set sortNo='" . $sortNo . "' where id=" . $content->id);
+                $sortNo--;
+            }
+        }
+
+        $this->db->query("update blogPost set lastModifiedDate='" . utility_helper::getDateNow() . "' where id=$postId");
+        $outObj->success = true;
+
+        utility_helper::returnJson($outObj);
+    }
+
     public function listCategories()
     {
         $categories = $this->getRootCategories(true);
+
+        $editMode = (isset($_GET['edit_category_key']) && $_GET['edit_category_key'] === EDIT_CATEGORY_KEY); // for editing categories
 
         $blogData = (object)[
             "blogViewName" => "list_categories_view",
             "activeTabIndex" => 1,
             "blogTitle" => 'Blog: Categories',
             "categories" => $categories,
+            "editMode" => $editMode
         ];
         //echo json_encode($blogData);return; // CHECK OBJECT
 
@@ -142,6 +219,39 @@ class SoftwareEngineerBlog extends CI_Controller {
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
             "blogData" => $blogData
         ));
+    }
+
+    public function editCategory($editCategoryKey)
+    {
+        $inObj = json_decode(file_get_contents('php://input'));
+        $outObj = (object)['success' => false, 'message' => null, 'data' => null];
+
+        if ($editCategoryKey !== EDIT_CATEGORY_KEY) { // edit post key check
+            utility_helper::returnJson($outObj);
+            return;
+        }
+
+        if ($inObj->whatToDo == "category_update") {
+            if (!$this->canXbeYsChild($inObj->category->id, $inObj->category->parentId)) {
+                $outObj->message = $inObj->category->id . " cannot be " . $inObj->category->parentId . "'s child category.";
+                utility_helper::returnJson($outObj);
+                return;
+            }
+            $this->db->query("update postCategory set name='" . $inObj->category->name . "', parentId=" . utility_helper::nullableStrValForSql($inObj->category->parentId) . ", sortNo=" . $inObj->category->sortNo . " where id=" . $inObj->category->id);
+        }
+        if ($inObj->whatToDo == "category_insert") {
+            $this->db->query("insert into postCategory (name,isActive,parentId) values ('" . $inObj->category->name . "',1," . utility_helper::nullableStrValForSql($inObj->category->parentId) . ")");
+        }
+        if ($inObj->whatToDo == "category_delete") {
+            $this->db->query("delete from postCategory where id=" . $inObj->category->id);
+        }
+        if ($inObj->whatToDo == "post_add") {
+            $now = utility_helper::getDateNow();
+            $this->db->query("insert into blogPost (categoryId,createDate,lastModifiedDate) values (" . $inObj->post->categoryId . ",'" . $now . "','" . $now . "')");
+        }
+
+        $outObj->success = true;
+        utility_helper::returnJson($outObj);
     }
 
     public function listCategoryPosts($categoryId, $postSet = 'recent-posts', $page = 1)
@@ -187,7 +297,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         $sortBy = (object)["col" => "createDate", "direction" => "desc"]; // default
         switch ($postSet) {
             case "recent-posts": $sortBy->col = "createDate"; $sortBy->direction = "desc"; break;
-            case "most-clicked-posts": $sortBy->col = "readCount"; $sortBy->direction = "desc"; break;
+            case "most-clicked-posts": $sortBy->col = "seenCount"; $sortBy->direction = "desc"; break;
             // other cases here..
         }
         return $sortBy;
@@ -212,6 +322,8 @@ class SoftwareEngineerBlog extends CI_Controller {
             $post->images = $this->getImagesOfPost($post->id);
             $post->category = $this->getCategoryById($post->categoryId);
             $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
+            $post->comments = [];
+            $post->tags = $this->normalizeTags($post->tagsJson);
         }
 
         return $returnObj;
@@ -219,19 +331,19 @@ class SoftwareEngineerBlog extends CI_Controller {
 
     private function getFirstParagraphContentOfPost($id)
     {
-        $contents = $this->db->query("select * from postContent where blogPostId=$id and contentTypeId=1 order by sortNo,id limit 0,1")->result();
+        $contents = $this->db->query("select * from postContent where blogPostId=$id and contentTypeId=1 order by sortNo desc,id limit 0,1")->result();
         return $contents;
     }
 
     private function getContentsOfPost($id)
     {
-        $contents = $this->db->query("select * from postContent where blogPostId=$id order by sortNo,id")->result();
+        $contents = $this->db->query("select * from postContent where blogPostId=$id order by sortNo desc,id")->result();
         return $contents;
     }
 
     private function getImagesOfPost($id)
     {
-        $images = $this->db->query("select * from postImage where blogPostId=$id order by sortNo,id")->result();
+        $images = $this->db->query("select * from postImage where blogPostId=$id order by sortNo desc,id")->result();
         return $images;
     }
 
@@ -260,7 +372,7 @@ class SoftwareEngineerBlog extends CI_Controller {
     private function getSubCategoriesOf($id = null, $withInnerChildren = false)
     {
         $filter = $id ? "parentId=$id" : "parentId is null";
-        $subCats = $this->db->query("select * from postCategory where isActive=true and $filter order by sortNo,name")->result();
+        $subCats = $this->db->query("select * from postCategory where isActive=true and $filter order by sortNo desc,name")->result();
         if ($withInnerChildren) {
             foreach ($subCats as $c) {
                 $c->subCategories = $this->getSubCategoriesOf($c->id, true);
@@ -273,7 +385,7 @@ class SoftwareEngineerBlog extends CI_Controller {
     private function addSubCategoryIdsOf($id = null, $withInnerChildren = false, &$addTo)
     {
         if (!$id) return;
-        $subCats = $this->db->query("select id from postCategory where isActive=true and parentId=$id order by sortNo,name")->result();
+        $subCats = $this->db->query("select id from postCategory where isActive=true and parentId=$id order by sortNo desc,name")->result();
         foreach ($subCats as $c) {
             $addTo[] = $c->id;
             if ($withInnerChildren) {
@@ -297,6 +409,37 @@ class SoftwareEngineerBlog extends CI_Controller {
         $result = $this->db->query("select * from postCategory where id=$id")->result();
         if (count($result) == 0) return null;
         return $result[0];
+    }
+
+    private function normalizeTags($tagsJson)
+    {
+        $tagsArray = [];
+        if ($tagsJson) $tagsArray = json_decode($tagsJson);
+        return $tagsArray;
+    }
+
+    private function canXbeYsChild($xId, $yId)
+    {
+        if ($xId == $yId) return false;
+        return array_search($xId, $this->getParentCategoryIdsOf($yId, true)) === false;
+    }
+
+    private function getParentCategoryIdsOf($id = null, $untilRootCategory = false)
+    {
+        $parentCatIds = [];
+        if (!$id) return $parentCatIds;
+        $this->addParentCategoryIdOf($id, $untilRootCategory, $parentCatIds);
+        return $parentCatIds;
+    }
+
+    private function addParentCategoryIdOf($id = null, $untilRootCategory = false, &$addTo)
+    {
+        if (!$id) return;
+        $cat = $this->getCategoryById($id);
+        if ($cat == null || $cat->parentId == null) return;
+
+        $addTo[] = $cat->parentId;
+        if ($untilRootCategory) $this->addParentCategoryIdOf($cat->parentId, true, $addTo);
     }
     // HELPER FUNCTIONS - END
 

@@ -1,16 +1,12 @@
 <?php $post = $blogData->post; ?>
 
-<h1 class="h-bloc">Blog Post: <?= $post->title ?></h1>
-
-<div>
-    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . (isset($_GET['from']) && $_GET['from'] ? $_GET['from'] : SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH) ?>" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Back to Post List</a>
-</div>
+<h1 class="h-bloc">Editing Post: <?= $post->title ?></h1>
 
 <div class="col-md-12">
     <div class="row">
 
         <!-- Page Blog -->
-        <div class="col-md-12" id="blog_page" blog-page-type="show-post">
+        <div class="col-md-12" id="blog_page" blog-page-type="edit-post">
 
             <!-- Page Blog - Post -->
             <section id="post-<?= $post->id ?>-page" class="content-post">
@@ -20,88 +16,133 @@
 
                         <article class="postPage">
 
-                            <div class="col-md-12 post_media">
-
-                                <div class="post-format-icon">
-                                    <span class="fa fa-<?= (isset($post->images) && is_array($post->images) && count($post->images) > 0) ? 'picture-o' : 'pencil' ?>"></span>
-                                </div>
-
-                                <?php if (isset($post->images) && is_array($post->images) && count($post->images) > 0) { // post has image(s) ?>
-                                    <div class="media">
-                                        <div class="he-wrap tpl2">
-
-                                            <?php if (count($post->images) > 1) { // multiple images (slider) ?>
-
-                                                <div id="carousel-<?= $post->id ?>" class="carousel slide" data-ride="carousel">
-
-                                                    <ol class="carousel-indicators">
-                                                        <?php for ($i = 0; $i < count($post->images); $i++) { ?>
-                                                            <li data-target="#carousel-<?= $post->id ?>" data-slide-to="<?= $i ?>" <?= $i == 0 ? 'class="active"' : '' ?>></li>
-                                                        <?php } ?>
-                                                    </ol>
-
-                                                    <div class="carousel-inner">
-
-                                                        <?php for ($i = 0; $i < count($post->images); $i++) { ?>
-
-                                                            <div class="item <?= $i == 0 ? 'active' : '' ?>">
-                                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[$i]->src ?>" class="postImg" alt="" />
-                                                                <div class="carousel-caption">
-                                                                    <h4><?= $post->images[$i]->label ?></h4>
-                                                                    <p><?= $post->images[$i]->text ?></p>
-                                                                </div>
-                                                            </div>
-
-                                                        <?php } ?>
-
-                                                    </div>
-
-                                                </div>
-
-                                            <?php } else { // single image ?>
-
-                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[0]->src ?>" class="img-hover" alt="" />
-
-                                            <?php } ?>
-
-                                        </div>
-                                    </div>
-                                <?php } ?>
-
-                            </div>
-
                             <div class="title_content">
-                                <div class="text_content"><?= $blogData->post->title ?></div>
+                                <div class="text_content">
+                                    Tasks about the Post
+                                </div>
                                 <div class="clear"></div>
                             </div>
 
-                            <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
-                                <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
+                            <div class="tasks-wrapper" style="margin-bottom: 20px;">
+                                <button type="button" name="btnChangePublishStatus" is-published="<?= $blogData->post->isPublished ?>"><?= $blogData->post->isPublished ? 'Unpublish' : 'Publish' ?> Post</button>
+                                &nbsp;&nbsp;
+                                <a href="?edit_post_key=<?= $_GET['edit_post_key'] ?>&preview=1" target="_blank">Preview Post</a>
+                            </div>
 
-                                    <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
-                                        <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= str_replace("\n", "<br />", $post->contents[$i]->content) ?></p>
+                            <div class="title_content">
+                                <div class="text_content">
+                                    Images of the Post
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+
+                            <div class="images-wrapper" style="margin-bottom: 20px;">
+                                <?php if (isset($post->images) && is_array($post->images)) { ?>
+                                    <?php for ($i = 0; $i < count($post->images); $i++) { ?>
+
+                                        <div post-image-id="<?= $post->images[$i]->id ?>" style="margin-bottom: 20px;">
+                                            <div class="left" style="width: 400px; height: 160px; background: url('<?= SOFTWARE_ENGINEER_ROOT_URI . $post->images[$i]->src ?>') no-repeat center; background-size: contain;"></div>
+                                            <div class="left" style="width: calc(100% - 400px)">
+                                                <button type="button" name="btnSaveImage">Save</button>
+                                                <button type="button" name="btnDeleteImage">Del</button>
+                                                <span name="span-move" style="cursor: move;">Move</span>
+
+                                                <input type="text" name="tbxImageSrc" value="<?= $post->images[$i]->src ?>" maxlength="100" />
+                                                <input type="text" name="tbxImageLabel" value="<?= $post->images[$i]->label ?>" maxlength="100" />
+                                                <textarea style="width: 100%; height: 80px; resize: vertical;" maxlength="250"><?= $post->images[$i]->text ?></textarea>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
                                     <?php } ?>
-
                                 <?php } ?>
-                            <?php } else { ?>
-                                <p>No content yet.</p>
-                            <?php } ?>
+
+                                <button type="button" name="btnAddNewImage">+ Add New Image</button>
+                            </div>
+
+                            <div class="title_content">
+                                <div class="text_content">
+                                    Title:
+                                    <input type="text" name="tbxPostTitle" value="<?= htmlspecialchars($blogData->post->title, ENT_QUOTES) ?>" maxlength="100" />
+                                    <button type="button" name="btnSaveTitle">Save Title</button>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+
+                            Post ID: <span name="post-id"><?= $blogData->post->id ?></span>
+                            <br>
+                            Edit Post Key: <span name="edit-post-key"><?= $_GET['edit_post_key'] ?></span>
+
+                            <div class="contents-wrapper" style="margin-bottom: 20px;">
+
+                                <?php if (isset($post->contents) && is_array($post->contents)) { ?>
+                                    <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
+
+                                        <div content-id="<?= $post->contents[$i]->id ?>" content-type-id="<?= $post->contents[$i]->contentTypeId ?>" style="margin-bottom: 10px;">
+                                            <div class="left" style="width: 92%">
+
+                                                <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
+
+                                                    <textarea style="width: 100%; height: 160px; resize: vertical;" maxlength="1000"><?= $post->contents[$i]->content ?></textarea>
+
+                                                <?php } ?>
+
+                                            </div>
+                                            <div class="left" style="width: 8%">
+                                                <button type="button" name="btnSaveContent">Save</button>
+                                                <button type="button" name="btnDeleteContent">Del</button>
+                                                <span name="span-move" style="cursor: move;">Move</span>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                    <?php } ?>
+                                <?php } ?>
+
+                                <button type="button" name="btnAddNewContent">+ Add New Content</button>
+                                &nbsp; Type:
+                                <select name="ddlContentType">
+                                    <?php foreach ($blogData->contentTypes as $ct) { ?>
+                                        <option value="<?= $ct->id ?>"><?= $ct->value ?>: <?= $ct->id ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+
+
+                            <div class="title_content">
+                                <div class="text_content">
+                                    Tags
+                                </div>
+                                <div class="clear"></div>
+                            </div>
 
                             <div class="col-md-12 first">
                                 <div class="info">
-                                    <div>
+                                    <div class="tags-wrapper">
 
                                         <?php if (isset($post->tags) && is_array($post->tags)) { ?>
                                             <?php for ($i = 0; $i < count($post->tags); $i++) { ?>
 
-                                                <span class="tag">#<?= $post->tags[$i] ?></span>
+                                                <div>
+                                                    <input type="text" name="tbxTagName" value="<?= $post->tags[$i] ?>" />
+                                                </div>
 
                                             <?php } ?>
                                         <?php } ?>
 
                                     </div>
 
-                                    <?php $this->load->view('SoftwareEngineer/blog/partial/partial_info_post_view', (object)["post" => $post, "callerPage" => "show-post"]); ?>
+                                    <button type="button" name="btnAddTagTextbox">+ Add New Tag Textbox</button>
+                                    <button type="button" name="btnSaveTags">Save Tags</button>
+
+                                    <div class="title_content">
+                                        <div class="text_content">
+                                            Stats
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+
+                                    <?php $this->load->view('SoftwareEngineer/blog/partial/partial_info_post_view', (object)["post" => $post, "callerPage" => "edit-post"]); ?>
                                 </div>
 
                                 <div class="clear"></div>

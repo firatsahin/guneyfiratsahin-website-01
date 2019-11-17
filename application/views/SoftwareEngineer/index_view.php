@@ -210,6 +210,12 @@
                                         <!-- /resp-tabs-list -->
 
 
+                                        <!-- minimize-maximize icons -->
+                                        <div name="icon-minimize-maximize">
+                                            <i class="fa fa-expand" title="Maximize Content"></i>
+                                            <i class="fa fa-compress" title="Minimize Content"></i>
+                                        </div>
+
 
                                         <!-- resp-tabs-container --> 
                                         <div class="resp-tabs-container">
@@ -256,9 +262,9 @@
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-envelope"></i>
                                                                     <label>Email</label>
-                                                                    <span class="value" title="Click to e-mail me about anything">
-                    <a href="mailto:<?= $data->contactInfo->email ?>?subject=<?= 'E-mail from '.$data->siteInfo->domainName->short.' visitor' ?>&body=<?= 'Hey '.$data->personalInfo->preferredName->global.'! I just visited your web site and I would like to talk to you about...' ?>"><?= $data->contactInfo->email ?></a>
-                </span>
+                                                                    <span class="value">
+                                                                        <span class="span-mt-link" title="Click to e-mail me" mt-link="<?= base64_encode($data->contactInfo->email . '' . '?subject=E-mail from ' . $data->siteInfo->domainName->short . ' visitor&body=Hey ' . $data->personalInfo->preferredName->global . '! I just visited your web site and I would like to talk to you about...') ?>">Click to e-mail me</span>
+                                                                    </span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
@@ -631,7 +637,7 @@
 
                                                             <?php foreach ($data->portfolio->projects as $p) { ?>
                                                                 <!-- .portfolio -->
-                                                                <div class="portfolio <?= implode(" ", $p->categories) ?>" data-cat="<?= implode(" ", $p->categories) ?>" project-id="<?= $p->id ?>" data-project="<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>">
+                                                                <div class="portfolio <?= implode(" ", $p->categories) ?>" data-cat="<?= implode(" ", $p->categories) ?>" project-id="<?= $p->id ?>" data-project="<?= htmlspecialchars(json_encode($p), ENT_QUOTES) ?>">
                                                                     <!-- .portfolio-wrapper -->
                                                                     <div class="portfolio-wrapper">
                                                                         <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" rel="portfolio" title="<?= $p->name ?>">
@@ -723,21 +729,21 @@
                                                                         </div>
 
                                                                         <ul>
-                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to see where <?= $data->personalInfo->city ?> is"><i class="glyphicon glyphicon-map-marker"></i>&nbsp; Location:&nbsp;
-                                                                    <a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a>
+                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-map-marker"></i>&nbsp; Location:&nbsp;
+                                                                    <a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank" title="Click to see where <?= $data->personalInfo->city ?> is"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a>
                                                                     <br /><br />
                                                                 </span></li>
-                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to e-mail me about anything"><i class="glyphicon glyphicon-envelope"></i>&nbsp; Email:&nbsp;
-                                                                    <a href="mailto:<?= $data->contactInfo->email ?>?subject=<?= 'E-mail from '.$data->siteInfo->domainName->short.' visitor' ?>&body=<?= 'Hey '.$data->personalInfo->preferredName->global.'! I just visited your web site and I would like to talk to you about...' ?>"><?= $data->contactInfo->email ?></a>
+                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-envelope"></i>&nbsp; Email:&nbsp;
+                                                                                    <span class="span-mt-link" title="Click to e-mail me" mt-link="<?= base64_encode($data->contactInfo->email . '' . '?subject=E-mail from ' . $data->siteInfo->domainName->short . ' visitor&body=Hey ' . $data->personalInfo->preferredName->global . '! I just visited your web site and I would like to talk to you about...') ?>">Click to e-mail me</span>
                                                                 </span></li>
-                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to add me as a contact on Skype"><i class="glyphicon glyphicon-comment"></i>&nbsp; Skype:&nbsp;
-                                                                    <a href="skype:<?= $data->contactInfo->skype ?>?userinfo"><?= $data->contactInfo->skype ?></a>
+                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-comment"></i>&nbsp; Skype:&nbsp;
+                                                                    <a href="skype:<?= $data->contactInfo->skype ?>?userinfo" title="Click to add me as a contact on Skype"><?= $data->contactInfo->skype ?></a>
                                                                 </span></li>
-                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;" title="Click to take a look at my GitHub account"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
-                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank">github.com/<?= $data->contactInfo->github ?></a>
+                                                                            <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
+                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account">github.com/<?= $data->contactInfo->github ?></a>
                                                                 </span></li>
-                                                                            <li><span class="span-info" title="Click to take a look at my LinkedIn account"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
-                                                                    <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
+                                                                            <li><span class="span-info"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
+                                                                    <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank" title="Click to take a look at my LinkedIn account">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
                                                                 </span></li>
                                                                         </ul>
                                                                     </div>
@@ -929,6 +935,9 @@
         <!-- jquery | jQuery 1.11.0 -->
         <!-- Credits: http://jquery.com -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+        <!-- jquery ui | jQuery UI 1.12.1 -->
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
  		
         <!-- Js | bootstrap -->
         <!-- Credits: http://getbootstrap.com/ -->
@@ -978,17 +987,6 @@
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-
-        <script type="text/javascript">
-            $(function () {
-                //console.log($("#verticalTab div.resp-tabs-container h2"));
-
-                // hide some unused tabs (for mobile mode)
-                //$("#verticalTab div.resp-tabs-container h2").eq(1).hide(); // resume
-                //$("#verticalTab div.resp-tabs-container h2").eq(2).hide(); // portfolio
-                //$("#verticalTab div.resp-tabs-container h2").eq(3).hide(); // blog
-            });
-        </script>
 
     </body>
 </html>

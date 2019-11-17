@@ -17,6 +17,11 @@ class utility_helper
         //$this->ci =& get_instance();
     }
 
+    public static function getDateNow($modify = '0 days')
+    {
+        return DateTime::createFromFormat('U.u', microtime(true))->setTimezone(new DateTimeZone('Europe/Istanbul'))->modify($modify)->format("Y-m-d H:i:s.u");
+    }
+
     // add single file reference with version info
     public static function includeVersionedReference($uri)
     {
@@ -95,6 +100,13 @@ class utility_helper
     {
         header("Location: $uri");
         exit();
+    }
+
+    public static function nullableStrValForSql($val)
+    {
+        $val = trim($val);
+        $normalized = $val ? "'" . str_replace("'", "''", $val) . "'" : 'null';
+        return $normalized;
     }
 
 }
