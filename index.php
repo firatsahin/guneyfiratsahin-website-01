@@ -314,6 +314,7 @@ require_once 'sensitive_data.php';
 define('SOFTWARE_ENGINEER_ROOT_URI', '/as-a-software-engineer/');
 define('SOFTWARE_ENGINEER_BLOG_SUFFIX', 'blog/');
 define('SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH', 'recent-posts/page-1.html');
+define('SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH', SOFTWARE_ENGINEER_ROOT_URI . 'images/blog/uploads/');
 // variable
 //$GLOBALS['someKey'] = "someVal"; // it can be changed during the app flow
 

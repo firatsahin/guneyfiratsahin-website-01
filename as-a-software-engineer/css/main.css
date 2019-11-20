@@ -1173,7 +1173,7 @@ ul.about {
 
 @media only screen and (max-width: 1199px) {
 
-    .widget-profil #profile_social a { 
+    body:not(.is-maximized) .widget-profil #profile_social a {
         width: 34px;	
         height: 34px;	
         line-height: 34px;	
@@ -1188,17 +1188,17 @@ ul.about {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .widget-profil h1 {
+    body:not(.is-maximized) .widget-profil h1 {
         line-height: 34px;
         margin: 6px 0px 10px 0px;
     }
 
-    .widget-profil #profile_social a {
+    body:not(.is-maximized) .widget-profil #profile_social a {
         width: 37px;
         height: 37px;
     }
 
-    #profile_social a{
+    body:not(.is-maximized) #profile_social a{
         width: 42px;
         height: 42px;
         line-height: 42px;
@@ -1641,7 +1641,7 @@ ul.about {
 .postPage .postImg {
     margin-top: 0;
     margin-right: 30px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     margin-left: 0;
     cursor: default;
 }
@@ -1734,6 +1734,31 @@ section.content-post article.postPage > div.post_media {
 }
 section.content-post article.postPage > p {
     margin-bottom: 16px;
+}
+div.btn-like-post-div {
+    display: inline-block;
+    color: #3B5998;
+    padding: 14px 4px 8px 4px;
+    cursor: pointer;
+}
+div.btn-like-post-div > span[name=caption]:before {
+    content: 'Like this';
+}
+div.btn-like-post-div:hover {
+    color: darkblue;
+}
+div.btn-like-post-div[status='1'] {
+    color: green;
+    cursor: default;
+}
+div.btn-like-post-div[status='1'] > i {
+    color: green !important;
+}
+div.btn-like-post-div[status='1'] > span[name=caption]:before {
+    content: 'You\'ve liked this';
+}
+div.btn-like-post-div[status='1'] > span[name=caption]:after {
+    content: '!';
 }
 /** sidebar blog **/
 
@@ -1965,6 +1990,9 @@ section.content-post article.postPage > p {
     border-radius: 50px;
 }
 
+#blog .post_comments {
+    margin-top: 12px;
+}
 
 #blog .post_comments .comment{
     background: rgba(100, 100, 100, 0.1);
@@ -1979,6 +2007,10 @@ section.content-post article.postPage > p {
     color: #999;
 }
 
+#blog .post_comments .comment.new {
+    background-color: #c6ff70;
+}
+
 #blog .post_comments .comment.sub{
     margin-left: 50px;
     float: left;
@@ -1989,6 +2021,7 @@ section.content-post article.postPage > p {
     padding-bottom: 0;
     border-bottom: 0;
     border-top: 1px solid #eee;
+    width: calc(100% - 55px);
 }
 
 #blog .post_comments .comment img{
@@ -2001,15 +2034,15 @@ section.content-post article.postPage > p {
 }
 
 #blog .post_comments .comment .text{
-    display: inline-block;
-    width:84%;
+    /*display: inline-block;*/
+    width:calc(100% - 70px);
     line-height: 18px;
     float: left;
 }
 
-#blog .post_comments .comment.sub .text{
+/*#blog .post_comments .comment.sub .text{
     width: 81%;
-}
+}*/
 
 #blog .post_comments .comment .name,
 #blog .post_comments .comment .date{
@@ -2086,6 +2119,17 @@ section.content-post article.postPage > p {
     font-size: 14px;
     margin-left: 20px;
     transition: color 0.2s ease 0s;
+}
+
+#comment_form p.form-group span.error-messages {
+    color: #a94442;
+}
+#comment_form p.form-group:not(.has-error) span.error-messages {
+    display: none;
+}
+#comment_form p.form-group span.error-messages span[error-type] {
+    display: block;
+    padding: 0px 2px;
 }
 
 /*--------------------------------------------------
@@ -3130,4 +3174,15 @@ body.is-maximized div[name=icon-minimize-maximize] > i.fa-expand {
             margin: 0px;
         }
     }
+}
+
+/* Carousel Customize */
+div.carousel.slide {
+    transition: .4s ease-out opacity;
+}
+div.carousel.slide:not(:hover) {
+    opacity: .85;
+}
+div.carousel.slide:not(:hover) a.carousel-control {
+    display: none;
 }

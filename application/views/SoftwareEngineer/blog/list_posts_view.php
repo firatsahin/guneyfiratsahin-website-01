@@ -56,7 +56,7 @@
                                                             <?php for ($i = 0; $i < count($post->images); $i++) { ?>
 
                                                                 <div class="item <?= $i == 0 ? 'active' : '' ?>">
-                                                                    <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[$i]->src ?>" alt="" />
+                                                                    <img src="<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH ?><?= $post->images[$i]->src ?>" alt="" />
                                                                     <div class="carousel-caption">
                                                                         <h4><?= $post->images[$i]->label ?></h4>
                                                                         <p><?= $post->images[$i]->text ?></p>
@@ -79,7 +79,7 @@
 
                                                 <?php } else { // single image ?>
 
-                                                    <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[0]->src ?>" class="img-hover" alt="" />
+                                                    <img src="<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH ?><?= $post->images[0]->src ?>" class="img-hover" alt="" />
 
                                                 <?php } ?>
 

@@ -32,5 +32,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # FRT Excluded Files
 #-------------------------
-sensitive_data.php
-almar_frt_customize/*
+/sensitive_data.php
+/almar_frt_customize/*
+/as-a-software-engineer/images/blog/uploads/*

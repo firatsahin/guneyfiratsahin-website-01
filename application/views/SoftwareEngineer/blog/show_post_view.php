@@ -45,7 +45,7 @@
                                                         <?php for ($i = 0; $i < count($post->images); $i++) { ?>
 
                                                             <div class="item <?= $i == 0 ? 'active' : '' ?>">
-                                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[$i]->src ?>" class="postImg" alt="" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH ?><?= $post->images[$i]->src ?>" class="postImg" alt="" />
                                                                 <div class="carousel-caption">
                                                                     <h4><?= $post->images[$i]->label ?></h4>
                                                                     <p><?= $post->images[$i]->text ?></p>
@@ -56,11 +56,19 @@
 
                                                     </div>
 
+                                                    <a class="left carousel-control" href="#carousel-<?= $post->id ?>" data-slide="prev">
+                                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                                    </a>
+
+                                                    <a class="right carousel-control" href="#carousel-<?= $post->id ?>" data-slide="next">
+                                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                                    </a>
+
                                                 </div>
 
                                             <?php } else { // single image ?>
 
-                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?><?= $post->images[0]->src ?>" class="img-hover" alt="" />
+                                                <img src="<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH ?><?= $post->images[0]->src ?>" class="img-hover" alt="" />
 
                                             <?php } ?>
 
@@ -101,6 +109,15 @@
 
                                     </div>
 
+                                    <div class="btn-like-post-div">
+                                        <i class="glyphicon glyphicon-thumbs-up"></i>&nbsp; <span name="caption"> Post</span>
+                                    </div>
+
+                                    <div class="title_content">
+                                        <div class="text_content">Stats</div>
+                                        <div class="clear"></div>
+                                    </div>
+
                                     <?php $this->load->view('SoftwareEngineer/blog/partial/partial_info_post_view', (object)["post" => $post, "callerPage" => "show-post"]); ?>
                                 </div>
 
@@ -110,7 +127,7 @@
                                 <div class="post_comments">
 
                                     <div class="title_content">
-                                        <div class="text_content">5 Comments</div>
+                                        <div class="text_content"><?= count($post->comments) ?> Comment<?= count($post->comments) == 1 ? '' : 's' ?></div>
                                         <div class="clear"></div>
                                     </div>
 
@@ -118,70 +135,39 @@
 
                                     <div class="comments">
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">John Doe <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="comment sub">
-                                                <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                                <div class="text">
-                                                    <div class="name">Bill Gates <a class="reply" href="#">Reply</a></div>
-                                                    <div class="date">12, September, 2013</div>
-                                                    Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Praesent condimentum sed elit
-                                                    vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                    amet cursus libero. In fringilla egestas ornare.
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                        <?php if (isset($post->comments) && is_array($post->comments) && count($post->comments) > 0) { ?>
+                                            <?php for ($i = 0; $i < count($post->comments); $i++) { ?>
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">John Smith <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="comment sub">
-                                                <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                                <div class="text">
-                                                    <div class="name">Bill Gates <a class="reply" href="#">Reply</a></div>
-                                                    <div class="date">12, September, 2013</div>
-                                                    Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Praesent condimentum sed elit
-                                                    vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                    amet cursus libero. In fringilla egestas ornare.
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                                <div class="comment">
+                                                    <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
+                                                    <div class="text">
+                                                        <div class="name"><?= $post->comments[$i]->commenterFullName ?></div>
+                                                        <div class="date"><?= substr($post->comments[$i]->commentedDatetime, 0, 19) ?></div>
+                                                        <div><?= $post->comments[$i]->commentText ?></div>
+                                                    </div>
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">Andrian Robert <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                                    <?php if (isset($post->comments[$i]->replies) && is_array($post->comments[$i]->replies)) { ?>
+                                                        <?php foreach ($post->comments[$i]->replies as $commentReply) { ?>
 
+                                                            <div class="comment sub">
+                                                                <img src="/as-a-software-engineer/images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
+                                                                <div class="text">
+                                                                    <div class="name"><?= $data->personalInfo->name->global . ' ' . $data->personalInfo->surname->global ?></div>
+                                                                    <div class="date"><?= substr($commentReply->commentedDatetime, 0, 19) ?></div>
+                                                                    <div><?= $commentReply->commentText ?></div>
+                                                                </div>
+                                                                <div class="clear"></div>
+                                                            </div>
 
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <div class="clear"></div>
+                                                </div><!-- .comments -->
+
+                                            <?php } ?>
+                                        <?php } else { ?>
+                                            <p style="margin-bottom: 10px;">No comments to this post yet.</p>
+                                        <?php } ?>
 
                                     </div><!-- .post_comments -->
 
@@ -197,22 +183,33 @@
 
 
                                         <form method="post" id="comment_form">
-                                            <p class="form-group" id="contact-name">
+                                            <p class="form-group" column="commenterFullName">
                                                 <label for="name">Your Name</label>
-                                                <input type="text" name="name" class="form-control" id="inputSuccess" placeholder="Name*...">
+                                                <input type="text" name="commenterFullName" class="form-control" placeholder="Name*..." />
+                                                <span class="error-messages">
+                                                    <span error-type="required">&bull; Please enter your name.</span>
+                                                </span>
                                             </p>
-                                            <p class="form-group" id="contact-email">
+                                            <p class="form-group" column="commenterEmail">
                                                 <label for="email">Your Email</label>
-                                                <input type="text" name="email" class="form-control" id="inputSuccess" placeholder="Email*...">
+                                                <input type="text" name="commenterEmail" class="form-control" placeholder="Email*..." />
+                                                <span class="error-messages">
+                                                    <span error-type="required">&bull; Please enter your e-mail.</span>
+                                                    <span error-type="invalid">&bull; Entered e-mail doesn't seem to be a valid one. Please fix.</span>
+                                                </span>
                                             </p>
 
-                                            <p class="form-group" id="contact-message">
+                                            <p class="form-group" column="commentText">
                                                 <label for="message">Your Message</label>
-                                                <textarea name="message" cols="88" rows="6" class="form-control" id="inputError" placeholder="Your Comment..."></textarea>
+                                                <textarea name="commentText" cols="88" rows="6" class="form-control" placeholder="Your Comment..."></textarea>
+                                                <span class="error-messages">
+                                                    <span error-type="required">&bull; Please enter your comment.</span>
+                                                </span>
                                             </p>
-                                            <input type="reset" name="reset" value="CLEAR" class="reset">
+                                            <div id="commentform-message"></div>
+                                            <input type="reset" name="btnReset" value="CLEAR" class="reset">
                                             <!--<input type="submit" name="submit" value="Post Comment" class="submit">-->
-                                            <button type="button" class="submit">Post Comment</button>
+                                            <button name="btnSubmit" class="submit">POST COMMENT</button>
                                         </form>
                                         <div class="clear"></div>
 

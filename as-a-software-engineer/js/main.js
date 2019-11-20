@@ -126,6 +126,38 @@ jQuery(document).ready(function($) {
         $(".resp-tabs-list li").not(this).find(".icon_menu").removeClass("icon_menu_active");
     });
 
+    // tab buttons > mousedown event
+    $(".resp-tabs-list li").mousedown(function (e) {
+        var index = $(".resp-tabs-list li").index(this);
+        var urlToGo = null;
+        if (e.which == 1) { // left click
+            log("left clicked to tab:" + index);
+            if (siteData.isBlog && siteData.blogActiveTabIndex == index) { // blog site tabs
+                log("same tab");
+                switch (index) {
+                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
+                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html"; break;
+                }
+            }
+            if (urlToGo) location.href = urlToGo;
+        }
+        if (e.which == 2) { // middle click
+            log("middle clicked to tab:" + index);
+            if (siteData.isBlog) { // blog site tabs
+                switch (index) {
+                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
+                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html"; break;
+                    case 2: urlToGo = siteData.softwareEngineerRootUri + "index.html"; break;
+                }
+            } else { // main site tabs
+                switch (index) {
+                    case 0: case 1: case 2: case 3: urlToGo = location.pathname + "#!tab=" + $(this).attr('data-tab-name'); break;
+                    case 4: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
+                }
+            }
+            if (urlToGo) window.open(urlToGo);
+        }
+    });
 
     $(".resp-tabs-list li").hover(function() {
         $(this).find(".icon_menu").addClass("icon_menu_hover");
@@ -173,7 +205,7 @@ jQuery(document).ready(function($) {
     if (!siteData.isBlog) {
 
         // tab change event (PC mode)
-        $('ul.resp-tabs-list li[class^=tabs-]').click(function(e) {
+        $('ul.resp-tabs-list li[class^=tabs-]').click(function (e) {
 
             var tabName = $(this).attr('data-tab-name');
 
@@ -188,7 +220,13 @@ jQuery(document).ready(function($) {
             setCustomScrollbars();
 
             var hashObj = readHashAsObject();
-            if (!hashObj.tab || hashObj.tab != tabName) writeObjectToHash({tab: tabName});
+            if (!hashObj.tab || hashObj.tab != tabName) { // tab changed
+                writeObjectToHash({tab: tabName});
+            } else { // same tab clicked
+                log("same tab clicked");
+            }
+
+            setTimeout(redimensionnement, 0); // to fix content height (while bounce in animation on maximized case)
 
             return false;
         });
@@ -236,7 +274,7 @@ jQuery(document).ready(function($) {
             }
             tabToGo.click();
 
-            setTimeout(redimensionnement, 400); // trigger redimensionnement (to fix content scroll height)
+            setTimeout(redimensionnement, 400); // trigger redimensionnement (to fix content scroll height) (on mobile mode & not 1st tab case)
 
             // tab specific logic: [portfolio]
             if (hashObj.tab == "portfolio") {
@@ -574,7 +612,10 @@ jQuery(document).ready(function($) {
 
         // tab change event (PC mode)
         $('ul.resp-tabs-list li[class^=tabs-]').click(function (e) {
-            if ($('ul.resp-tabs-list li[class^=tabs-]').index(this) == siteData.blogActiveTabIndex) return; // prevent redirection to the same tab
+            if ($('ul.resp-tabs-list li[class^=tabs-]').index(this) == siteData.blogActiveTabIndex) {
+                redimensionnement();
+                return; // prevent redirection to the same tab
+            }
 
             var tabName = $(this).attr('data-tab-name');
 
@@ -742,7 +783,108 @@ jQuery(document).ready(function($) {
         }
 
         if ($blogPageType == 'show-post') {
+            var postId = $("section.content-post").attr('id').replace('post-', '').replace('-page', '');
 
+            var likedPosts = (localStorage.likedPosts ? JSON.parse(localStorage.likedPosts) : []);
+            if (likedPosts.indexOf(postId) != -1) $("div.btn-like-post-div").attr('status', '1');
+
+            // like-unlike button click
+            $("div.btn-like-post-div").click(function () {
+                if (!$(this).attr('status')) {
+                    log("like");
+                    $(this).attr('status', '1');
+                    $("ul.info-post li span[name=like-count]").text(parseInt($("ul.info-post li span[name=like-count]").text()) + 1); // update front value +1
+                    var likedPosts = (localStorage.likedPosts ? JSON.parse(localStorage.likedPosts) : []);
+                    if (likedPosts.indexOf(postId) == -1) likedPosts.push(postId);
+                    localStorage.likedPosts = JSON.stringify(likedPosts); // add like to local storage
+                    $.ajax({
+                        type: "POST",
+                        url: "/SoftwareEngineerBlog/likePost/" + postId,
+                        /*data: JSON.stringify({}),*/
+                        contentType: "application/json",
+                        success: function (result) {
+                            log(result);
+                        }
+                    });
+                } else {
+                    /*log("unlike");
+                    $(this).removeAttr('status');*/
+                }
+            });
+
+
+            var $commentForm = $('form#comment_form'),
+                $successMsg = ' Your comment has been sent successfully. Firat will make it visible soon (unless you wrote bad things lol). Thanks for your attention!';
+
+            $commentForm.submit(function (e) {
+                e.preventDefault();
+
+                // preparing form data
+                var commentFormData = getFormData($commentForm);
+
+                // clear error states before calling
+                $commentForm.find("#commentform-message").empty();
+                $commentForm.find("p.form-group[column]").removeClass("has-error");
+
+                $commentForm.find("button[name=btnSubmit]").prop('disabled', true).text('POSTING COMMENT...');
+
+                $.ajax({
+                    type: "POST",
+                    url: "/SoftwareEngineerBlog/addCommentToPost/" + postId,
+                    data: JSON.stringify(commentFormData),
+                    contentType: "application/json",
+                    success: function (result) {
+                        log(result);
+                        if (result.success) { // success
+                            var response = '<div class="alert alert-success success-send">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                                '<i class="glyphicon glyphicon-ok" style="margin-right: 5px;"></i> ' + $successMsg
+                                + '</div>';
+
+                            $(".reset").trigger('click');
+
+                            // Show response message
+                            $commentForm.find("#commentform-message").append(response);
+
+                            // success case > remove success message after a while
+                            setTimeout(function () {
+                                $commentForm.find(".error-send,.success-send").fadeOut(function () {
+                                    $(this).remove();
+                                });
+                            }, 10000);
+                        } else { // failure
+                            $commentForm.find("p.form-group[column] span.error-messages span[error-type]").hide();
+                            result.errors.forEach(function (error) {
+                                $commentForm.find("p.form-group[column='" + error.colname + "']").addClass("has-error")
+                                    .find("span.error-messages span[error-type='" + error.errorType + "']").show();
+                            });
+
+                            // focus to first error field
+                            if (result.errors.length > 0) $commentForm.find("p.form-group[column='" + result.errors[0].colname + "']").find(".form-control").focus();
+
+                            var response = '<div class="alert alert-danger error-send">' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                                '<i class="glyphicon glyphicon-remove" style="margin-right: 5px;"></i> ' + result.message
+                                + '</div>';
+
+                            // Show response message
+                            $commentForm.find("#commentform-message").append(response);
+                        }
+                    }
+                }).fail(function () {
+                    log("failure");
+                }).always(function () {
+                    $commentForm.find("button[name=btnSubmit]").prop('disabled', false).text('POST COMMENT');
+                });
+            });
+
+            // clear button click
+            $commentForm.find("input[type=reset]").click(function (e) {
+                e.preventDefault();
+                $commentForm[0].reset();
+                $commentForm.find("#commentform-message").empty();
+                $commentForm.find("p.form-group[column]").removeClass("has-error");
+            });
         }
 
         if ($blogPageType == 'edit-post') {
@@ -829,6 +971,15 @@ jQuery(document).ready(function($) {
                 });
             });
 
+            $("button[name=btnSaveCategoryId]").click(function () {
+                callEditPost({
+                    whatToDo: "post_updateCategoryId",
+                    post: {
+                        categoryId: $("select[name=ddlCategoryId]").val().trim()
+                    }
+                });
+            });
+
             $("button[name=btnAddNewContent]").click(function () {
                 callEditPost({
                     whatToDo: "content_add",
@@ -899,6 +1050,35 @@ jQuery(document).ready(function($) {
                     whatToDo: "post_updateTagsJson",
                     post: {
                         tagsJson: tagsJson
+                    }
+                });
+            });
+
+            $("a[name=lnkReplyToComment]").click(function () {
+                $(this).closest("[comment-id]").find("div.reply-to-wrapper").toggle();
+            });
+
+            $("button[name=btnReplyToComment]").click(function () {
+                var commentId = $(this).closest("[comment-id]").attr('comment-id');
+                var commentText = $.trim($(this).closest("[comment-id]").find("textarea[name=commentText]").val());
+                if (!commentText) return;
+                callEditPost({
+                    whatToDo: "comment_replyToComment",
+                    comment: {
+                        repliedCommentId: commentId,
+                        commentText: commentText
+                    }
+                });
+            });
+
+            $("a[name=lnkChangePublishStatus]").click(function () {
+                var isPublishedToBe = ($(this).attr('publish-status') === "1" ? 0 : 1);
+                if (!confirm((isPublishedToBe ? 'Publish' : 'Unpublish') + " Comment ?")) return;
+                callEditPost({
+                    whatToDo: "comment_changePublishStatus",
+                    comment: {
+                        id: $(this).closest("[comment-id]").attr('comment-id'),
+                        isPublished: isPublishedToBe
                     }
                 });
             });

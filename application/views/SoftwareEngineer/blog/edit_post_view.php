@@ -41,14 +41,14 @@
                                     <?php for ($i = 0; $i < count($post->images); $i++) { ?>
 
                                         <div post-image-id="<?= $post->images[$i]->id ?>" style="margin-bottom: 20px;">
-                                            <div class="left" style="width: 400px; height: 160px; background: url('<?= SOFTWARE_ENGINEER_ROOT_URI . $post->images[$i]->src ?>') no-repeat center; background-size: contain;"></div>
+                                            <div class="left" style="width: 400px; height: 160px; background: url('<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $post->images[$i]->src ?>') no-repeat center; background-size: contain;"></div>
                                             <div class="left" style="width: calc(100% - 400px)">
                                                 <button type="button" name="btnSaveImage">Save</button>
                                                 <button type="button" name="btnDeleteImage">Del</button>
                                                 <span name="span-move" style="cursor: move;">Move</span>
 
-                                                <input type="text" name="tbxImageSrc" value="<?= $post->images[$i]->src ?>" maxlength="100" />
-                                                <input type="text" name="tbxImageLabel" value="<?= $post->images[$i]->label ?>" maxlength="100" />
+                                                <input type="text" name="tbxImageSrc" value="<?= htmlspecialchars($post->images[$i]->src, ENT_QUOTES) ?>" maxlength="100" />
+                                                <input type="text" name="tbxImageLabel" value="<?= htmlspecialchars($post->images[$i]->label, ENT_QUOTES) ?>" maxlength="100" />
                                                 <textarea style="width: 100%; height: 80px; resize: vertical;" maxlength="250"><?= $post->images[$i]->text ?></textarea>
                                             </div>
                                             <div class="clear"></div>
@@ -83,7 +83,7 @@
 
                                                 <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
 
-                                                    <textarea style="width: 100%; height: 160px; resize: vertical;" maxlength="1000"><?= $post->contents[$i]->content ?></textarea>
+                                                    <textarea style="width: 100%; height: 180px; resize: vertical;" maxlength="3000"><?= $post->contents[$i]->content ?></textarea>
 
                                                 <?php } ?>
 
@@ -124,7 +124,7 @@
                                             <?php for ($i = 0; $i < count($post->tags); $i++) { ?>
 
                                                 <div>
-                                                    <input type="text" name="tbxTagName" value="<?= $post->tags[$i] ?>" />
+                                                    <input type="text" name="tbxTagName" value="<?= htmlspecialchars($post->tags[$i], ENT_QUOTES) ?>" />
                                                 </div>
 
                                             <?php } ?>
@@ -134,6 +134,32 @@
 
                                     <button type="button" name="btnAddTagTextbox">+ Add New Tag Textbox</button>
                                     <button type="button" name="btnSaveTags">Save Tags</button>
+
+                                    <div class="title_content">
+                                        <div class="text_content">
+                                            Category Mapping
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+
+                                    <div>
+                                        Category:
+                                        <select name="ddlCategoryId">
+                                            <?php
+                                            function writeCategoriesDdl($categories, $level, $post)
+                                            {
+                                                foreach ($categories as $c) {
+                                                    $prefix = '';
+                                                    for ($i = 0; $i < $level; $i++) $prefix .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                                    echo '<option value="' . $c->id . '" ' . ($c->id == $post->categoryId ? 'selected="selected"' : '') . '>' . $prefix . $c->name . '</option>';
+                                                    if (isset($c->subCategories)) writeCategoriesDdl($c->subCategories, $level + 1, $post);
+                                                }
+                                            }
+                                            writeCategoriesDdl($blogData->categories, 0, $post);
+                                            ?>
+                                        </select>
+                                        <button type="button" name="btnSaveCategoryId">Save Category of the Post</button>
+                                    </div>
 
                                     <div class="title_content">
                                         <div class="text_content">
@@ -151,7 +177,7 @@
                                 <div class="post_comments">
 
                                     <div class="title_content">
-                                        <div class="text_content">5 Comments</div>
+                                        <div class="text_content"><?= count($post->comments) ?> Comment<?= count($post->comments) == 1 ? '' : 's' ?></div>
                                         <div class="clear"></div>
                                     </div>
 
@@ -159,105 +185,51 @@
 
                                     <div class="comments">
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">John Doe <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="comment sub">
-                                                <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                                <div class="text">
-                                                    <div class="name">Bill Gates <a class="reply" href="#">Reply</a></div>
-                                                    <div class="date">12, September, 2013</div>
-                                                    Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Praesent condimentum sed elit
-                                                    vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                    amet cursus libero. In fringilla egestas ornare.
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                        <?php if (isset($post->comments) && is_array($post->comments) && count($post->comments) > 0) { ?>
+                                            <?php for ($i = 0; $i < count($post->comments); $i++) { ?>
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">John Smith <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="comment sub">
-                                                <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                                <div class="text">
-                                                    <div class="name">Bill Gates <a class="reply" href="#">Reply</a></div>
-                                                    <div class="date">12, September, 2013</div>
-                                                    Lorem ipsum dolor sit amet, consectetur
-                                                    adipiscing elit. Praesent condimentum sed elit
-                                                    vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                    amet cursus libero. In fringilla egestas ornare.
-                                                </div>
-                                                <div class="clear"></div>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                                <div class="comment <?= !$post->comments[$i]->isPublished ? 'new' : '' ?>" comment-id="<?= $post->comments[$i]->id ?>">
+                                                    <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
+                                                    <div class="text">
+                                                        <div class="name"><?= $post->comments[$i]->commenterFullName ?>
+                                                            <a class="reply" href="#" name="lnkReplyToComment">Reply</a>
+                                                            <a class="reply" href="#" name="lnkChangePublishStatus" publish-status="<?= ($post->comments[$i]->isPublished ? '1' : '0') ?>"><?= ($post->comments[$i]->isPublished ? 'Unpublish' : 'Publish') ?></a>
+                                                        </div>
+                                                        <div class="date"><?= substr($post->comments[$i]->commentedDatetime, 0, 19) ?></div>
+                                                        <div><?= $post->comments[$i]->commentText ?></div>
+                                                    </div>
 
-                                        <div class="comment">
-                                            <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
-                                            <div class="text">
-                                                <div class="name">Andrian Robert <a class="reply" href="#">Reply</a></div>
-                                                <div class="date">12, September, 2013</div>
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Praesent condimentum sed elit
-                                                vitae tristique. Aliquam erat volutpat. Nunc sit
-                                                amet cursus libero. In fringilla egestas ornare.
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .comments -->
+                                                    <div class="reply-to-wrapper" style="display: none;">
+                                                        <textarea name="commentText" style="width: 500px; height: 100px;"></textarea>
+                                                        <button type="button" name="btnReplyToComment">Reply To Comment</button>
+                                                    </div>
 
+                                                    <?php if (isset($post->comments[$i]->replies) && is_array($post->comments[$i]->replies)) { ?>
+                                                        <?php foreach ($post->comments[$i]->replies as $commentReply) { ?>
 
+                                                            <div class="comment sub">
+                                                                <img src="/as-a-software-engineer/images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
+                                                                <div class="text">
+                                                                    <div class="name"><?= $data->personalInfo->name->global . ' ' . $data->personalInfo->surname->global ?></div>
+                                                                    <div class="date"><?= substr($commentReply->commentedDatetime, 0, 19) ?></div>
+                                                                    <div><?= $commentReply->commentText ?></div>
+                                                                </div>
+                                                                <div class="clear"></div>
+                                                            </div>
+
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <div class="clear"></div>
+                                                </div><!-- .comments -->
+
+                                            <?php } ?>
+                                        <?php } else { ?>
+                                            <p style="margin-bottom: 10px;">No comments to this post yet.</p>
+                                        <?php } ?>
 
                                     </div><!-- .post_comments -->
 
                                     <div class="clear"></div>
-
-
-                                    <div class="comment_form">
-
-                                        <div class="title_content">
-                                            <div class="text_content">Leave A Comment</div>
-                                            <div class="clear"></div>
-                                        </div>
-
-
-                                        <form method="post" id="comment_form">
-                                            <p class="form-group" id="contact-name">
-                                                <label for="name">Your Name</label>
-                                                <input type="text" name="name" class="form-control" id="inputSuccess" placeholder="Name*...">
-                                            </p>
-                                            <p class="form-group" id="contact-email">
-                                                <label for="email">Your Email</label>
-                                                <input type="text" name="email" class="form-control" id="inputSuccess" placeholder="Email*...">
-                                            </p>
-
-                                            <p class="form-group" id="contact-message">
-                                                <label for="message">Your Message</label>
-                                                <textarea name="message" cols="88" rows="6" class="form-control" id="inputError" placeholder="Your Comment..."></textarea>
-                                            </p>
-                                            <input type="reset" name="reset" value="CLEAR" class="reset">
-                                            <!--<input type="submit" name="submit" value="Post Comment" class="submit">-->
-                                            <button type="button" class="submit">Post Comment</button>
-                                        </form>
-                                        <div class="clear"></div>
-
-                                    </div>
                                 </div>
 
                                 <div class="col-md-12"  style="margin-top: 30px; padding: 0px;">

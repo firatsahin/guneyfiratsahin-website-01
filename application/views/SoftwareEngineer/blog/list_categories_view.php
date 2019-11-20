@@ -9,7 +9,7 @@ function writeCategories($categories, $level, $blogData)
         echo '<div class="category"><span class="cat-name">';
         if ($blogData->editMode) {
             echo 'ID:<b>' . $c->id . '</b>';
-            echo '&nbsp; <input type="text" name="tbxCatName" value="' . $c->name . '" maxlength="50" />';
+            echo '&nbsp; <input type="text" name="tbxCatName" value="' . htmlspecialchars($c->name, ENT_QUOTES) . '" maxlength="50" />';
             echo '&nbsp; Parent: <input type="number" name="tbxParentCatID" value="' . $c->parentId . '" style="width: 50px;" />';
             echo '&nbsp; Sort: <input type="number" name="tbxSortNo" value="' . $c->sortNo . '" style="width: 40px;" />';
             //echo '<br />';

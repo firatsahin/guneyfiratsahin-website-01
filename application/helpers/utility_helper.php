@@ -37,6 +37,12 @@ class utility_helper
         echo json_encode($obj);
     }
 
+    public static function returnJsonAndExit($obj)
+    {
+        self::returnJson($obj);
+        exit();
+    }
+
     public static function getArrayItemById($array, $id, $idField = 'id')
     {
         foreach ($array as $item) {

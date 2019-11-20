@@ -212,8 +212,8 @@
 
                                         <!-- minimize-maximize icons -->
                                         <div name="icon-minimize-maximize">
-                                            <i class="fa fa-expand" title="Maximize Content"></i>
-                                            <i class="fa fa-compress" title="Minimize Content"></i>
+                                            <i class="fa fa-expand" title="Maximize Window"></i>
+                                            <i class="fa fa-compress" title="Restore Window"></i>
                                         </div>
 
 

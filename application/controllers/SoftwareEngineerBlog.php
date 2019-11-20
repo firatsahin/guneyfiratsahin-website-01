@@ -52,7 +52,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         $getPageResult = $this->getPagePosts($page, $this->defaultPageSize, $sortBy, "");
 
         $blogData = (object)[
-            "blogViewName" => "index_view",
+            "blogViewName" => "list_posts_view",
             "activeTabIndex" => 0,
             "blogTitle" => 'Blog: ' . ($postSet == 'recent-posts' ? "Recent Posts" : ($postSet == 'most-clicked-posts' ? "Most Clicked Posts" : "")),
             "postSet" => $postSet,
@@ -106,7 +106,8 @@ class SoftwareEngineerBlog extends CI_Controller {
         $post->images = $this->getImagesOfPost($id);
         $post->category = $this->getCategoryById($post->categoryId);
         $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
-        $post->comments = [];
+        $post->comments = $this->getCommentsOfPost($post->id, (!$editMode || $isPreview));
+        $post->commentsCount = count($post->comments, (!$editMode || $isPreview));
         $post->tags = $this->normalizeTags($post->tagsJson);
 
         // prev / next link generation here
@@ -125,6 +126,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         ];
         if ($editMode && !$isPreview) { // edit mode specific additions
             $blogData->contentTypes = $this->db->query("select * from postContentType order by id asc")->result();
+            $blogData->categories = $this->getRootCategories(true);
         }
         //echo json_encode($blogData);return; // CHECK OBJECT
 
@@ -142,8 +144,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         $outObj = (object)['success' => false, 'message' => null, 'data' => null];
 
         if ($editPostKey !== EDIT_POST_KEY) { // edit post key check
-            utility_helper::returnJson($outObj);
-            return;
+            utility_helper::returnJsonAndExit($outObj);
         }
 
         if ($inObj->whatToDo == "post_updatePublishStatus") {
@@ -154,6 +155,9 @@ class SoftwareEngineerBlog extends CI_Controller {
         }
         if ($inObj->whatToDo == "post_updateTagsJson") {
             $this->db->query("update blogPost set tagsJson=" . utility_helper::nullableStrValForSql($inObj->post->tagsJson) . " where id=$postId");
+        }
+        if ($inObj->whatToDo == "post_updateCategoryId") {
+            $this->db->query("update blogPost set categoryId=" . $inObj->post->categoryId . " where id=$postId");
         }
 
         if ($inObj->whatToDo == "image_add") {
@@ -192,6 +196,14 @@ class SoftwareEngineerBlog extends CI_Controller {
             }
         }
 
+        if ($inObj->whatToDo == "comment_changePublishStatus") {
+            $this->db->query("update postComment set isPublished=" . ($inObj->comment->isPublished ? '1' : '0') . " where id=" . $inObj->comment->id);
+        }
+        if ($inObj->whatToDo == "comment_replyToComment") {
+            $this->db->query("insert into postComment (blogPostId,commenterFullName,commenterEmail,commentText,commentedDatetime,isPublished,repliedCommentId) values " .
+                "($postId,'frt','frt'," . utility_helper::nullableStrValForSql($inObj->comment->commentText) . ",'" . utility_helper::getDateNow() . "',1," . $inObj->comment->repliedCommentId . ")");
+        }
+
         $this->db->query("update blogPost set lastModifiedDate='" . utility_helper::getDateNow() . "' where id=$postId");
         $outObj->success = true;
 
@@ -227,15 +239,13 @@ class SoftwareEngineerBlog extends CI_Controller {
         $outObj = (object)['success' => false, 'message' => null, 'data' => null];
 
         if ($editCategoryKey !== EDIT_CATEGORY_KEY) { // edit post key check
-            utility_helper::returnJson($outObj);
-            return;
+            utility_helper::returnJsonAndExit($outObj);
         }
 
         if ($inObj->whatToDo == "category_update") {
             if (!$this->canXbeYsChild($inObj->category->id, $inObj->category->parentId)) {
                 $outObj->message = $inObj->category->id . " cannot be " . $inObj->category->parentId . "'s child category.";
-                utility_helper::returnJson($outObj);
-                return;
+                utility_helper::returnJsonAndExit($outObj);
             }
             $this->db->query("update postCategory set name='" . $inObj->category->name . "', parentId=" . utility_helper::nullableStrValForSql($inObj->category->parentId) . ", sortNo=" . $inObj->category->sortNo . " where id=" . $inObj->category->id);
         }
@@ -272,7 +282,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         $getPageResult = $this->getPagePosts($page, $this->defaultPageSize, $sortBy, $filter);
 
         $blogData = (object)[
-            "blogViewName" => "index_view",
+            "blogViewName" => "list_posts_view",
             "activeTabIndex" => 0,
             "blogTitle" => 'Blog Category: ' . $categoryName,
             "categoryName" => $categoryName,
@@ -289,6 +299,44 @@ class SoftwareEngineerBlog extends CI_Controller {
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
             "blogData" => $blogData
         ));
+    }
+
+    public function addCommentToPost($postId)
+    {
+        $inObj = json_decode(file_get_contents('php://input'));
+        $outObj = (object)['success' => false, 'message' => null, 'data' => null];
+
+        foreach ($inObj as $key => $value) {
+            if (gettype($value) == "string") $inObj->$key = trim($value);
+        }
+
+        $errors = [];
+        if (!isset($inObj->commenterFullName) || !$inObj->commenterFullName) $errors[] = (object)["colname" => "commenterFullName", "errorType" => "required"];
+        if (!isset($inObj->commenterEmail) || !$inObj->commenterEmail) $errors[] = (object)["colname" => "commenterEmail", "errorType" => "required"];
+        else if (!filter_var($inObj->commenterEmail, FILTER_VALIDATE_EMAIL)) $errors[] = (object)["colname" => "commenterEmail", "errorType" => "invalid"];
+        if (!isset($inObj->commentText) || !$inObj->commentText) $errors[] = (object)["colname" => "commentText", "errorType" => "required"];
+
+        if (count($errors) == 0) {
+            $this->db->query("insert into postComment (blogPostId,commenterFullName,commenterEmail,commentText,commentedDatetime) values " .
+                "($postId,'" . $inObj->commenterFullName . "','" . $inObj->commenterEmail . "'," . utility_helper::nullableStrValForSql($inObj->commentText) . ",'" . utility_helper::getDateNow() . "')");
+
+            $outObj->success = true;
+        } else {
+            $outObj->message = "Some form errors occured above. Please fix them and try again.";
+        }
+        $outObj->errors = $errors;
+        utility_helper::returnJson($outObj);
+    }
+
+    public function likePost($postId)
+    {
+        $inObj = json_decode(file_get_contents('php://input'));
+        $outObj = (object)['success' => false, 'message' => null, 'data' => null];
+
+        $this->db->query("update blogPost set likedCount=likedCount+1 where id=$postId");
+
+        $outObj->success = true;
+        utility_helper::returnJson($outObj);
     }
 
     // HELPER FUNCTIONS - BEGIN
@@ -322,7 +370,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             $post->images = $this->getImagesOfPost($post->id);
             $post->category = $this->getCategoryById($post->categoryId);
             $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
-            $post->comments = [];
+            $post->commentsCount = $this->countCommentsOfPost($post->id);
             $post->tags = $this->normalizeTags($post->tagsJson);
         }
 
@@ -345,6 +393,27 @@ class SoftwareEngineerBlog extends CI_Controller {
     {
         $images = $this->db->query("select * from postImage where blogPostId=$id order by sortNo desc,id")->result();
         return $images;
+    }
+
+    private function getCommentsOfPost($id, $onlyPublished = true)
+    {
+        $comments = $this->db->query("select * from postComment where blogPostId=$id and repliedCommentId is null " . ($onlyPublished ? 'and isPublished=1' : '') . " order by commentedDatetime desc")->result();
+        foreach ($comments as $comment) {
+            $comment->replies = $this->getRepliesOfAComment($comment->id);
+        }
+        return $comments;
+    }
+
+    private function getRepliesOfAComment($commentId, $onlyPublished = true)
+    {
+        $replies = $this->db->query("select * from postComment where repliedCommentId=$commentId " . ($onlyPublished ? 'and isPublished=1' : '') . " order by commentedDatetime desc")->result();
+        return $replies;
+    }
+
+    private function countCommentsOfPost($id, $onlyPublished = true)
+    {
+        $commentsCount = intval($this->db->query("select count(*) count from postComment where blogPostId=$id  and repliedCommentId is null " . ($onlyPublished ? 'and isPublished=1' : ''))->result()[0]->count);
+        return $commentsCount;
     }
 
     private function getPrevNextLinksOfPost($post, $postSet, $filter)

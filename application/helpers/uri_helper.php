@@ -32,7 +32,7 @@ class uri_helper
 
         if (!$clean) $clean = "unknown";
 
-        return $clean;
+        return trim($clean, "-");
     }
 
     // LINK GENERATIONS - BEGIN
