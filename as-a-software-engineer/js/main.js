@@ -728,6 +728,7 @@ jQuery(document).ready(function($) {
                         success: function (result) {
                             log(result);
                             if (result.success) { // success
+                                if (data.whatToDo == "post_add") window.open(siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + 'post-' + result.newPostId + '/some-value.html?edit_post_key=' + result.editPostKey, '_blank');
                                 location.reload();
                             }
                         }
@@ -809,6 +810,35 @@ jQuery(document).ready(function($) {
                 } else {
                     /*log("unlike");
                     $(this).removeAttr('status');*/
+                }
+            });
+
+            // Content Type:2
+            $("div[content-type-id=2] div[name=image-slider-wrapper]").each(function () {
+                var wrapperDiv = $(this), images = wrapperDiv.find("div[name=image-slider-item]");
+                if (images.length == 0) return;
+                if (images.filter(".active").length == 0) images.first().addClass('active');
+
+                function updateIndexOnView() {
+                    navWrapper.find(".image-slider-nav-numbers span[name=current-index]").text(images.index(images.filter(".active")) + 1);
+                }
+
+                if (images.length > 1) {
+                    var navWrapper = $("<div>").html('<span style="display: inline-block; background-color: rgba(255, 255, 255, .7); padding: 0px 8px; border-radius: 0px 0px 8px 8px;"></span>').addClass('image-slider-nav-info-wrapper').prependTo(wrapperDiv);
+                    $("<span>").addClass('image-slider-nav-prev').html('<i class="fa fa-chevron-left"></i>&nbsp; Prev').appendTo(navWrapper.find((">span"))).click(function () {
+                        var indexToShow = (images.index(images.filter(".active")) - 1) % images.length;
+                        images.removeClass('active').eq(indexToShow).addClass('active');
+                        updateIndexOnView();
+                    });
+                    navWrapper.find((">span")).append("&nbsp; | &nbsp;");
+                    $("<span>").addClass('image-slider-nav-numbers').html('<span name="current-index"></span> / ' + images.length).appendTo(navWrapper.find((">span")));
+                    navWrapper.find((">span")).append("&nbsp; | &nbsp;");
+                    $("<span>").addClass('image-slider-nav-next').html('Next &nbsp;<i class="fa fa-chevron-right"></i>').appendTo(navWrapper.find((">span"))).click(function () {
+                        var indexToShow = (images.index(images.filter(".active")) + 1) % images.length;
+                        images.removeClass('active').eq(indexToShow).addClass('active');
+                        updateIndexOnView();
+                    });
+                    updateIndexOnView();
                 }
             });
 
@@ -990,13 +1020,33 @@ jQuery(document).ready(function($) {
             });
 
             $("button[name=btnSaveContent]").click(function () {
-                var contentDiv = $(this).closest("div[content-id]");
+                var contentDiv = $(this).closest("div[content-id]"), contentTypeId = contentDiv.attr('content-type-id'), text = null;
+                if (contentTypeId == 1) {
+                    text = $.trim(contentDiv.find("textarea").val());
+                } else if (contentTypeId == 2) {
+                    var images = [];
+                    contentDiv.find("div[name=images-wrapper] > div[name=image-wrapper]").each(function () {
+                        var imgUrl = $.trim($(this).find("input[name=tbxImageUrl]").val());
+                        if (imgUrl) {
+                            var image = {url: imgUrl};
+                            image.caption = $.trim($(this).find("input[name=tbxImageCaption]").val());
+                            images.push(image);
+                        }
+                    });
+                    text = JSON.stringify({images: images});
+                }
+                if (!text) return;
+                if (text.length > 3000) {
+                    console.error("Error: Content longer than maximum (3000 chars)");
+                    return;
+                }
+                //log(text);return;
                 callEditPost({
                     whatToDo: "content_update",
                     content: {
                         id: contentDiv.attr('content-id'),
-                        typeId: contentDiv.attr('content-type-id'),
-                        text: $.trim(contentDiv.find("textarea").val())
+                        typeId: contentTypeId,
+                        text: text
                     }
                 });
             });
@@ -1027,6 +1077,27 @@ jQuery(document).ready(function($) {
                         whatToDo: "contents_sort",
                         contents: contents
                     });
+                }
+            });
+
+            // Content Type:1
+            $("div[content-type-id=1] textarea").on("keyup blur", function () { // textarea remaining calculation
+                var remaining = $(this).attr('maxlength') - $(this).val().length;
+                $(this).parent().find("span[name=remaining-chars]").text(remaining + " remaining");
+            }).trigger("blur");
+
+            // Content Type:2
+            $("div[content-type-id=2] button[name=btnAddImageUrlTextbox]").click(function () {
+                $('<div name="image-wrapper"><input type="text" name="tbxImageUrl" /><input type="text" name="tbxImageCaption" /><button name="btnDeleteImageDiv">Del</button><span name="content-type-2-span-move" style="cursor: move;">Move</span></div>').appendTo($(this).siblings("div[name=images-wrapper]"));
+            });
+            $("div[content-type-id=2] div[name=images-wrapper]").on("click", "button[name=btnDeleteImageDiv]", function () {
+                $(this).closest("div[name=image-wrapper]").remove();
+            });
+            $("div[content-type-id=2] div[name=images-wrapper]").sortable({
+                items: "div[name=image-wrapper]",
+                handle: "span[name=content-type-2-span-move]",
+                update: function () {
+                    log("image sort changed");
                 }
             });
 
@@ -1085,7 +1156,98 @@ jQuery(document).ready(function($) {
 
         }
 
+        if ($blogPageType == 'upload-images') {
+            // file input change event
+            $("input[name=fileInput]").change(function () {
+                log("file input change event");
+            });
 
+            // image paste event
+            $("input[name=tbxToPasteImg]").on("paste", function (e) {
+                e.preventDefault();
+                log("tbx paste event");
+                var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                console.log(JSON.stringify(items)); // will give you the mime types
+                for (index in items) {
+                    var item = items[index];
+                    if (item.kind === 'file') {
+                        var blob = item.getAsFile();
+                        if (!blob.type || blob.type.indexOf("image/") != 0) return; // support for only image paste
+                        //log("blob:", blob);return;
+                        if (blob) {
+                            pastedImage = blob;
+                            $("button[name=btnUploadImages]").trigger("click");
+                        }
+                    }
+                }
+            });
+
+            // Yükle button click event
+            $("button[name=btnUploadImages]").click(function () {
+                log("yükle button click");
+                var files = typeof pastedImage === "undefined" ? $("input[name=fileInput]")[0].files : [pastedImage]; // get pasted image (if exists)
+                if (files.length == 0) return;
+
+                var formData = new FormData();
+                formData.append('whatToDo', "uploadImages");
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('image-' + i, files[i]);
+                }
+                formData.append('isPasted', typeof pastedImage === "undefined" ? "0" : "1");
+
+                var xhr = new XMLHttpRequest();
+                xhr.upload.onprogress = function (evt) {
+                    var percentLoaded = parseInt((evt.loaded / evt.total) * 100);
+                    $("button[name=btnUploadImages]").text(percentLoaded != 100 ? 'Yükleniyor... (' + percentLoaded + '%)' : 'İşleniyor...');
+                }
+                xhr.onreadystatechange = function (evt) {
+                    if (xhr.readyState == 4) { // request completed
+                        if (xhr.status == 200) { // success
+                            var o = JSON.parse(xhr.response); // parsing JSON result
+                            log("upload SUCCESS", o);
+                            $("button[name=btnUploadImages]").text('Tamamlandı!');
+                            if (o.success) location.reload();
+                        } else { // failure
+                            log("upload FAILURE", xhr, xhr.response);
+                            $("button[name=btnUploadImages]").text('!! Yüklemede Hata !!');
+                        }
+                    }
+                }
+                xhr.open("POST", "");
+                $("button[name=btnUploadImages]").prop('disabled', true).text('Yükleniyor... (0%)');
+                xhr.send(formData);
+            });
+
+            $("div.upload-image-delete").click(function (e) {
+                e.stopPropagation();
+                var imgName = $(this).closest(".upload-image-wrapper").find("input[name=tbxImgFileName]").val();
+                var dataJson = $(this).closest(".upload-image-wrapper").attr('grouped-imgs-data');
+                if (!confirm("Del Image: " + imgName + " ?")) return;
+
+                var formData = new FormData();
+                formData.append('whatToDo', "deleteImage");
+                formData.append('delete_images_json', dataJson);
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function (evt) {
+                    if (xhr.readyState == 4) { // request completed
+                        if (xhr.status == 200) { // success
+                            var o = JSON.parse(xhr.response); // parsing JSON result
+                            log("delete SUCCESS", o);
+                            if (o.success) location.reload();
+                        } else { // failure
+                            log("delete FAILURE", xhr, xhr.response);
+                        }
+                    }
+                }
+                xhr.open("POST", "");
+                xhr.send(formData);
+            });
+
+            $("input[name=tbxImgFileName]").click(function (e) {
+                e.stopPropagation();
+            });
+        }
 
     }
 

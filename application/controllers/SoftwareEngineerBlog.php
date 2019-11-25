@@ -151,7 +151,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             $this->db->query("update blogPost set isPublished=" . ($inObj->post->isPublished ? '1' : '0') . " where id=$postId");
         }
         if ($inObj->whatToDo == "post_updateTitle") {
-            $this->db->query("update blogPost set title='" . $inObj->post->title . "' where id=$postId");
+            $this->db->query("update blogPost set title=" . utility_helper::nullableStrValForSql($inObj->post->title) . " where id=$postId");
         }
         if ($inObj->whatToDo == "post_updateTagsJson") {
             $this->db->query("update blogPost set tagsJson=" . utility_helper::nullableStrValForSql($inObj->post->tagsJson) . " where id=$postId");
@@ -181,9 +181,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             $this->db->query("insert into postContent (blogPostId,contentTypeId) values ($postId," . $inObj->content->typeId . ")");
         }
         if ($inObj->whatToDo == "content_update") {
-            if ($inObj->content->typeId == "1") {
-                $this->db->query("update postContent set content='" . str_replace("'", "''", $inObj->content->text) . "' where id=" . $inObj->content->id);
-            }
+            $this->db->query("update postContent set content=" . utility_helper::nullableStrValForSql($inObj->content->text) . " where id=" . $inObj->content->id);
         }
         if ($inObj->whatToDo == "content_delete") {
             $this->db->query("delete from postContent where id=" . $inObj->content->id);
@@ -258,6 +256,8 @@ class SoftwareEngineerBlog extends CI_Controller {
         if ($inObj->whatToDo == "post_add") {
             $now = utility_helper::getDateNow();
             $this->db->query("insert into blogPost (categoryId,createDate,lastModifiedDate) values (" . $inObj->post->categoryId . ",'" . $now . "','" . $now . "')");
+            $outObj->newPostId = $this->db->insert_id();
+            $outObj->editPostKey = EDIT_POST_KEY;
         }
 
         $outObj->success = true;
@@ -337,6 +337,72 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         $outObj->success = true;
         utility_helper::returnJson($outObj);
+    }
+
+    public function uploadImages()
+    {
+        if (!(isset($_GET['upload_images_key']) && $_GET['upload_images_key'] === UPLOAD_IMAGES_KEY)) exit("Key needed to access this page");
+
+        $imagePoolPath = $_SERVER["DOCUMENT_ROOT"] . SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH;
+
+        if (strtoupper($_SERVER['REQUEST_METHOD']) === "POST") {
+            $outObj = (object)['success' => false, 'message' => null, 'data' => null];
+            if (!isset($_POST['whatToDo']) || !$_POST['whatToDo']) utility_helper::returnJsonAndExit($outObj);
+            $isPasted = (!isset($_POST['isPasted']) || $_POST['isPasted'] == "1");
+
+            // SAVING UPLOADED IMAGES HERE
+            if ($_POST['whatToDo'] === "uploadImages") {
+                $outObj->data = [];
+                $this->load->helper('image');
+                for ($i = 0; $i < count($_FILES); $i++) {
+                    //$outObj->data [] = image_helper::saveUploadedImage($_FILES['image-' . $i], $imagePoolPath); // to save file directly (without processing)
+                    $outObj->data [] = image_helper::processUploadedImage_forBlog($_FILES['image-' . $i], $imagePoolPath, $isPasted ? 'jpg' : ''); // process for blog image
+                }
+                //$outObj->data = $_FILES; // to debug
+                $outObj->success = true;
+            }
+
+            // DELETING IMAGE (all sizes of an image)
+            if ($_POST['whatToDo'] === "deleteImage") {
+                $deleteImages = json_decode($_POST['delete_images_json']);
+                foreach ($deleteImages as $delImg) {
+                    unlink($imagePoolPath . $delImg->name);
+                }
+                $outObj->success = true;
+            }
+
+            utility_helper::returnJsonAndExit($outObj);
+        }
+
+        // get folder contents
+        $this->load->helper('filesystem');
+        $getFolderResult = \filesystem_helper::getFolderContents($imagePoolPath, ["index.html"]);
+        if (!$getFolderResult->success || !is_array($getFolderResult->data)) exit("Error occured while reading files.");
+
+        $images = $getFolderResult->data;
+        $imagesGrouped = [];
+        foreach ($images as $image) {
+            $image->name = str_replace($imagePoolPath, "", $image->name);
+            $baseFileName = substr($image->name, 0, 20);
+            if (empty($imagesGrouped[$baseFileName])) $imagesGrouped[$baseFileName] = [];
+            $imagesGrouped[$baseFileName] [] = $image;
+        }
+
+        $blogData = (object)[
+            "blogViewName" => "upload_images_view",
+            "activeTabIndex" => 0,
+            "blogTitle" => 'Blog: Upload Images Page',
+            "images" => $images,
+            "imagesGrouped" => $imagesGrouped,
+        ];
+        //echo json_encode($blogData);return; // CHECK OBJECT
+
+        $this->load->view('SoftwareEngineer/index_view', array(
+            "data" => $this->data,
+            "isBlog" => true,
+            "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "blogData" => $blogData
+        ));
     }
 
     // HELPER FUNCTIONS - BEGIN

@@ -57,7 +57,7 @@
                                     <?php } ?>
                                 <?php } ?>
 
-                                <button type="button" name="btnAddNewImage">+ Add New Image</button>
+                                <button type="button" name="btnAddNewImage">+ Add New Image (Top Banner)</button>
                             </div>
 
                             <div class="title_content">
@@ -78,12 +78,34 @@
                                 <?php if (isset($post->contents) && is_array($post->contents)) { ?>
                                     <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
 
-                                        <div content-id="<?= $post->contents[$i]->id ?>" content-type-id="<?= $post->contents[$i]->contentTypeId ?>" style="margin-bottom: 10px;">
+                                        <div content-id="<?= $post->contents[$i]->id ?>" content-type-id="<?= $post->contents[$i]->contentTypeId ?>">
                                             <div class="left" style="width: 92%">
 
                                                 <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
 
                                                     <textarea style="width: 100%; height: 180px; resize: vertical;" maxlength="3000"><?= $post->contents[$i]->content ?></textarea>
+                                                    <span name="remaining-chars" style="font-size: 11px;"></span>
+
+                                                <?php } ?>
+
+                                                <?php if ($post->contents[$i]->contentTypeId == "2") {
+                                                    $jsonObj = json_decode($post->contents[$i]->content);
+                                                    if (!$jsonObj) $jsonObj = (object)[];
+                                                    ?>
+
+                                                    <div name="images-wrapper">
+                                                        <?php if (isset($jsonObj->images) && is_array($jsonObj->images)) { ?>
+                                                            <?php foreach ($jsonObj->images as $image) { ?>
+                                                                <div name="image-wrapper">
+                                                                    <input type="text" name="tbxImageUrl" value="<?= htmlspecialchars($image->url, ENT_QUOTES) ?>" />
+                                                                    <input type="text" name="tbxImageCaption" value="<?= htmlspecialchars($image->caption, ENT_QUOTES) ?>" />
+                                                                    <button name="btnDeleteImageDiv">Del</button>
+                                                                    <span name="content-type-2-span-move" style="cursor: move;">Move</span>
+                                                                </div>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <button type="button" name="btnAddImageUrlTextbox">+ Add New Image (Content)</button>
 
                                                 <?php } ?>
 

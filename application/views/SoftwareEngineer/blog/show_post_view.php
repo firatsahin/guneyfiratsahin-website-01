@@ -83,17 +83,45 @@
                                 <div class="clear"></div>
                             </div>
 
-                            <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
-                                <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
+                            <div class="contents-wrapper">
 
-                                    <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
-                                        <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= str_replace("\n", "<br />", $post->contents[$i]->content) ?></p>
+                                <?php if (isset($post->contents) && is_array($post->contents) && count($post->contents) > 0) { ?>
+                                    <?php for ($i = 0; $i < count($post->contents); $i++) { ?>
+
+                                        <div content-id="<?= $post->contents[$i]->id ?>" content-type-id="<?= $post->contents[$i]->contentTypeId ?>">
+
+                                            <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
+
+                                                <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= str_replace("\n", "<br />", $post->contents[$i]->content) ?></p>
+
+                                            <?php } ?>
+
+                                            <?php if ($post->contents[$i]->contentTypeId == "2") {
+                                                $jsonObj = json_decode($post->contents[$i]->content);
+                                                if (!$jsonObj) $jsonObj = (object)[];
+                                                ?>
+
+                                                <?php if (isset($jsonObj->images) && is_array($jsonObj->images) && count($jsonObj->images) > 0) { ?>
+                                                    <div name="image-slider-wrapper">
+                                                        <?php foreach ($jsonObj->images as $index => $image) { ?>
+                                                            <div name="image-slider-item">
+                                                                <img src="<?= htmlspecialchars(SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $image->url, ENT_QUOTES) ?>"/>
+                                                                <span name="image-slider-img-caption"><?= isset($image->caption) && $image->caption ? $image->caption : '&nbsp;' ?></span>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                <?php } ?>
+
+                                            <?php } ?>
+
+                                        </div>
+
                                     <?php } ?>
-
+                                <?php } else { ?>
+                                    <p>No content yet.</p>
                                 <?php } ?>
-                            <?php } else { ?>
-                                <p>No content yet.</p>
-                            <?php } ?>
+
+                            </div>
 
                             <div class="col-md-12 first">
                                 <div class="info">
