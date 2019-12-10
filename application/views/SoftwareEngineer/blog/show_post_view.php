@@ -56,11 +56,11 @@
 
                                                     </div>
 
-                                                    <a class="left carousel-control" href="#carousel-<?= $post->id ?>" data-slide="prev">
+                                                    <a class="left carousel-control" href="#carousel-<?= $post->id ?>" data-slide="prev" rel="nofollow">
                                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                                     </a>
 
-                                                    <a class="right carousel-control" href="#carousel-<?= $post->id ?>" data-slide="next">
+                                                    <a class="right carousel-control" href="#carousel-<?= $post->id ?>" data-slide="next" rel="nofollow">
                                                         <span class="glyphicon glyphicon-chevron-right"></span>
                                                     </a>
 
@@ -92,7 +92,9 @@
 
                                             <?php if ($post->contents[$i]->contentTypeId == "1") { ?>
 
-                                                <p <?= $i == 0 ? 'class="caps"' : '' ?>><?= str_replace("\n", "<br />", $post->contents[$i]->content) ?></p>
+                                                <?php /*<p <?= $i == 0 ? 'class="caps"' : '' ?>><?= str_replace("\n", "<br />", $post->contents[$i]->content) ?></p>*/ ?>
+
+                                                <?= str_replace("\n", "<br />", $post->contents[$i]->content) ?>
 
                                             <?php } ?>
 
@@ -105,7 +107,7 @@
                                                     <div name="image-slider-wrapper">
                                                         <?php foreach ($jsonObj->images as $index => $image) { ?>
                                                             <div name="image-slider-item">
-                                                                <img src="<?= htmlspecialchars(SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $image->url, ENT_QUOTES) ?>"/>
+                                                                <img lazy-src="<?= htmlspecialchars(SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $image->url, ENT_QUOTES) ?>" alt="<?= isset($image->caption) && $image->caption ? $image->caption : '' ?>" />
                                                                 <span name="image-slider-img-caption"><?= isset($image->caption) && $image->caption ? $image->caption : '&nbsp;' ?></span>
                                                             </div>
                                                         <?php } ?>
@@ -113,6 +115,18 @@
                                                 <?php } ?>
 
                                             <?php } ?>
+
+                                            <?php if ($post->contents[$i]->contentTypeId == "3") { ?>
+
+                                                <pre><code><?= $post->contents[$i]->content ?></code></pre>
+
+                                            <?php } ?>
+
+                                            <?php if ($post->contents[$i]->contentTypeId == "4") {
+                                                $jsonObj = json_decode($post->contents[$i]->content);
+                                                if (!$jsonObj) $jsonObj = (object)[];
+                                                if (isset($jsonObj->headerType) && $jsonObj->headerType && isset($jsonObj->headerText) && $jsonObj->headerText) echo '<' . $jsonObj->headerType . '>' . $jsonObj->headerText . '</' . $jsonObj->headerType . '>';
+                                            } ?>
 
                                         </div>
 

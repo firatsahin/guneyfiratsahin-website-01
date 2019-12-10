@@ -24,7 +24,7 @@ function readHashAsObject() {
     });
     return hashObj;
 }
-function writeObjectToHash(hashObj) {
+function writeObjectToHash(hashObj, replace) {
     if (!jQuery.isPlainObject(hashObj)) return;
     var hashVal = "#!";
     var i = 0;
@@ -35,7 +35,7 @@ function writeObjectToHash(hashObj) {
         }
     }
     //log(hashVal);
-    location.href = hashVal;
+    if (replace) window.history.replaceState({}, document.title, hashVal); else location.href = hashVal;
 }
 
 function getFormData($form) {
@@ -251,7 +251,7 @@ jQuery(document).ready(function($) {
             log("hash changed to: " + location.hash);
 
             if (!hashHasData()) {
-                writeObjectToHash(defaultHashObj);
+                writeObjectToHash(defaultHashObj, true);
                 return;
             } // hash shouldn't be empty AND should start with #! AND shouldn't be exactly "#!"
 
@@ -813,7 +813,7 @@ jQuery(document).ready(function($) {
                 }
             });
 
-            // Content Type:2
+            // Content Type:2 (My Custom Image Slider Implementation)
             $("div[content-type-id=2] div[name=image-slider-wrapper]").each(function () {
                 var wrapperDiv = $(this), images = wrapperDiv.find("div[name=image-slider-item]");
                 if (images.length == 0) return;
@@ -822,6 +822,10 @@ jQuery(document).ready(function($) {
                 function updateIndexOnView() {
                     navWrapper.find(".image-slider-nav-numbers span[name=current-index]").text(images.index(images.filter(".active")) + 1);
                 }
+                function loadImgIfNotLoaded(index) {
+                    var imgToLoad = images.find("> img").eq(index);
+                    if (imgToLoad.attr('lazy-src')) imgToLoad.attr('src', imgToLoad.attr('lazy-src')).removeAttr('lazy-src');
+                }
 
                 if (images.length > 1) {
                     var navWrapper = $("<div>").html('<span style="display: inline-block; background-color: rgba(255, 255, 255, .7); padding: 0px 8px; border-radius: 0px 0px 8px 8px;"></span>').addClass('image-slider-nav-info-wrapper').prependTo(wrapperDiv);
@@ -829,6 +833,7 @@ jQuery(document).ready(function($) {
                         var indexToShow = (images.index(images.filter(".active")) - 1) % images.length;
                         images.removeClass('active').eq(indexToShow).addClass('active');
                         updateIndexOnView();
+                        loadImgIfNotLoaded(indexToShow);
                     });
                     navWrapper.find((">span")).append("&nbsp; | &nbsp;");
                     $("<span>").addClass('image-slider-nav-numbers').html('<span name="current-index"></span> / ' + images.length).appendTo(navWrapper.find((">span")));
@@ -837,9 +842,11 @@ jQuery(document).ready(function($) {
                         var indexToShow = (images.index(images.filter(".active")) + 1) % images.length;
                         images.removeClass('active').eq(indexToShow).addClass('active');
                         updateIndexOnView();
+                        loadImgIfNotLoaded(indexToShow);
                     });
                     updateIndexOnView();
                 }
+                loadImgIfNotLoaded(0);
             });
 
 
@@ -964,7 +971,7 @@ jQuery(document).ready(function($) {
             });
 
             $("button[name=btnDeleteImage]").click(function () {
-                if (!confirm("Del Image ? (File stays, Mapping goes away)")) return;
+                if (!confirm("Del Image ? (File stays, Mapping will be deleted)")) return;
                 var imgDiv = $(this).closest("div[post-image-id]");
                 callEditPost({
                     whatToDo: "image_delete",
@@ -997,6 +1004,15 @@ jQuery(document).ready(function($) {
                     whatToDo: "post_updateTitle",
                     post: {
                         title: $("input[name=tbxPostTitle]").val().trim()
+                    }
+                });
+            });
+
+            $("button[name=btnSaveDescription]").click(function () {
+                callEditPost({
+                    whatToDo: "post_updateDescription",
+                    post: {
+                        description: $("input[name=tbxPostDescription]").val().trim()
                     }
                 });
             });
@@ -1034,6 +1050,13 @@ jQuery(document).ready(function($) {
                         }
                     });
                     text = JSON.stringify({images: images});
+                } else if (contentTypeId == 3) {
+                    text = $.trim(contentDiv.find("textarea").val());
+                } else if (contentTypeId == 4) {
+                    text = JSON.stringify({
+                        headerType: contentDiv.find("select[name=ddlHeaderType]").val(),
+                        headerText: $.trim(contentDiv.find("input[name=tbxHeaderText]").val())
+                    });
                 }
                 if (!text) return;
                 if (text.length > 3000) {
@@ -1081,7 +1104,7 @@ jQuery(document).ready(function($) {
             });
 
             // Content Type:1
-            $("div[content-type-id=1] textarea").on("keyup blur", function () { // textarea remaining calculation
+            $("div[content-type-id=1],div[content-type-id=3]").find("textarea").on("keyup blur", function () { // textarea remaining calculation
                 var remaining = $(this).attr('maxlength') - $(this).val().length;
                 $(this).parent().find("span[name=remaining-chars]").text(remaining + " remaining");
             }).trigger("blur");
@@ -1216,6 +1239,10 @@ jQuery(document).ready(function($) {
                 xhr.open("POST", "");
                 $("button[name=btnUploadImages]").prop('disabled', true).text('Yükleniyor... (0%)');
                 xhr.send(formData);
+            });
+
+            $("a[name=each-month-titles-toggle]").click(function () {
+                $("div[name=each-month-title]").toggle();
             });
 
             $("div.upload-image-delete").click(function (e) {

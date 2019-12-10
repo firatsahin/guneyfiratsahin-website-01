@@ -72,6 +72,7 @@ $route['as-a-musician/(:any).html'] = "Musician/$1";
 // as a human part
 $route['as-a-human/(:any).html'] = "Human/$1";
 
+$route['sitemap.xml'] = 'home/showSitemap';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 

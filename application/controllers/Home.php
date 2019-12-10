@@ -51,4 +51,68 @@ class Home extends CI_Controller {
         //echo '<pre>'.json_encode($_SERVER).'</pre><br />';
     }
 
+    public function showSitemap()
+    {
+        $this->load->database();
+        header('Content-type: text/xml');
+        echo '<?xml version="1.0" encoding="UTF-8" ?>';
+        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+        $siteUrl = trim(utility_helper::getSiteUrl(), "/");
+
+        $postSets = ["recent-posts", "most-clicked-posts"];
+        $posts = $this->db->query("select * from blogPost where isPublished=true order by createDate desc limit 0,10000")->result();
+        $categories = $this->db->query("select * from postCategory where isActive=true order by sortNo desc,name limit 0,10000")->result();
+
+        echo '<url>';
+        echo '<loc>' . $siteUrl . '</loc>';
+        $lastMod = utility_helper::getLastModOfAFile('/application/views/home/index_view.php');
+        if ($lastMod) echo '<lastmod>' . substr($lastMod, 0, 10) . '</lastmod>';
+        echo '</url>';
+
+        echo '<url>';
+        echo '<loc>' . $siteUrl . SOFTWARE_ENGINEER_ROOT_URI . 'index.html</loc>';
+        $lastMod = utility_helper::getLastModOfAFile('/application/views/SoftwareEngineer/index_view.php');
+        if ($lastMod) echo '<lastmod>' . substr($lastMod, 0, 10) . '</lastmod>';
+        echo '</url>';
+
+        foreach ($postSets as $postSet) {
+            echo '<url>';
+            echo '<loc>' . $siteUrl . SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . $postSet . '/page-1.html</loc>';
+            echo '<lastmod>' . substr($posts[0]->lastModifiedDate, 0, 10) . '</lastmod>';
+            echo '</url>';
+        }
+
+        foreach ($posts as $post) {
+            echo '<url>';
+            echo '<loc>' . $siteUrl . uri_helper::generateRouteLink('showBlogPostDetail', [$post->id, $post->title]) . '</loc>';
+            echo '<lastmod>' . substr($post->lastModifiedDate, 0, 10) . '</lastmod>';
+            echo '</url>';
+        }
+
+        echo '<url>';
+        echo '<loc>' . $siteUrl . SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . 'categories/index.html</loc>';
+        $lastMod = utility_helper::getLastModOfAFile('/application/views/SoftwareEngineer/blog/list_categories_view.php');
+        if ($lastMod) echo '<lastmod>' . substr($lastMod, 0, 10) . '</lastmod>';
+        echo '</url>';
+
+        foreach ($categories as $category) {
+            foreach ($postSets as $postSet) {
+                echo '<url>';
+                echo '<loc>' . $siteUrl . uri_helper::generateRouteLink('listCategoryPosts', [$category->id, $category->name, $postSet, 1]) . '</loc>';
+                echo '</url>';
+            }
+        }
+
+        echo '<url>';
+        echo '<loc>' . $siteUrl . '/as-a-musician/index.html</loc>';
+        echo '</url>';
+
+        echo '<url>';
+        echo '<loc>' . $siteUrl . '/as-a-human/index.html</loc>';
+        echo '</url>';
+
+        echo '</urlset>';
+    }
+
 }

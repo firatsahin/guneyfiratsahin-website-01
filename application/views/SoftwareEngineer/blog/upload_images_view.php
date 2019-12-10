@@ -25,16 +25,36 @@
                     <div class="clear"></div>
                 </div>
 
+                <a href="#" name="each-month-titles-toggle" style="display: inline-block; margin-bottom: 20px;">Grouped by Month <-> All</a>
+
                 <div id="upload-images-wrapper">
 
-                    <?php foreach ($blogData->imagesGrouped as $key => $value) { ?>
+                    <?php foreach ($blogData->imagesGroupedByYearMonth as $key1 => $value1) { ?>
+
+                        <div class="title_content" name="each-month-title">
+                            <div class="text_content"><?= DateTime::createFromFormat('!m', substr($key1, 4, 2))->format('F') . ' ' . substr($key1, 0, 4) ?> (<?= count($value1) ?>)</div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <?php foreach ($value1 as $images) { ?>
+
+                            <div class="upload-image-wrapper" grouped-imgs-data="<?= htmlspecialchars(json_encode($images), ENT_QUOTES) ?>" onclick="window.open('<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . (isset($images[1]) ? $images[1]->name : $images[0]->name) ?>','_blank')" style="background-image: url('<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $images[0]->name ?>')">
+                                <input type="text" name="tbxImgFileName" value="<?= htmlspecialchars(isset($images[1]) ? $images[1]->name : $images[0]->name, ENT_QUOTES) ?>" />
+                                <div class="upload-image-delete">X</div>
+                            </div>
+
+                        <?php } ?>
+
+                    <?php } ?>
+
+                    <?php /*foreach ($blogData->imagesGrouped as $key => $value) { ?>
 
                         <div class="upload-image-wrapper" grouped-imgs-data="<?= htmlspecialchars(json_encode($value), ENT_QUOTES) ?>" onclick="window.open('<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . (isset($value[1]) ? $value[1]->name : $value[0]->name) ?>','_blank')" style="background-image: url('<?= SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH . $value[0]->name ?>')">
                             <input type="text" name="tbxImgFileName" value="<?= htmlspecialchars(isset($value[1]) ? $value[1]->name : $value[0]->name, ENT_QUOTES) ?>" />
                             <div class="upload-image-delete">X</div>
                         </div>
 
-                    <?php } ?>
+                    <?php }*/ ?>
 
                 </div>
 

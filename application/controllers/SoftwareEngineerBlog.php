@@ -21,6 +21,7 @@ class SoftwareEngineerBlog extends CI_Controller {
 
     private $data;
     private $pageTitleBase;
+    private $pageDescriptionBase;
     private $postFilterBase;
     private $defaultPageSize = 3;
 
@@ -37,7 +38,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         }
 
         $this->pageTitleBase = $this->data->personalInfo->name->local . ' ' . $this->data->personalInfo->surname->local . ' ' . $this->data->personalInfo->title . ' | Personal Blog';
-
+        $this->pageDescriptionBase = "This is the blog part of " . $this->data->personalInfo->name->local . ' ' . $this->data->personalInfo->surname->local . ' ' . $this->data->personalInfo->title . " which includes his personal posts, experiences, traveled places and also code samples & solutions for some specific problems.";
         $this->postFilterBase = "isPublished=true";
 
         $this->load->database();
@@ -66,6 +67,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "data" => $this->data,
             "isBlog" => true,
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "metaDescription" => $this->pageDescriptionBase,
             "blogData" => $blogData
         ));
     }
@@ -134,6 +136,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "data" => $this->data,
             "isBlog" => true,
             "pageTitle" => 'Post: ' . $blogData->post->title . ' | ' . $this->pageTitleBase,
+            "metaDescription" => $blogData->post->description ? $blogData->post->description : $this->pageDescriptionBase,
             "blogData" => $blogData
         ));
     }
@@ -152,6 +155,9 @@ class SoftwareEngineerBlog extends CI_Controller {
         }
         if ($inObj->whatToDo == "post_updateTitle") {
             $this->db->query("update blogPost set title=" . utility_helper::nullableStrValForSql($inObj->post->title) . " where id=$postId");
+        }
+        if ($inObj->whatToDo == "post_updateDescription") {
+            $this->db->query("update blogPost set description=" . utility_helper::nullableStrValForSql($inObj->post->description) . " where id=$postId");
         }
         if ($inObj->whatToDo == "post_updateTagsJson") {
             $this->db->query("update blogPost set tagsJson=" . utility_helper::nullableStrValForSql($inObj->post->tagsJson) . " where id=$postId");
@@ -227,6 +233,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "data" => $this->data,
             "isBlog" => true,
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "metaDescription" => $this->pageDescriptionBase,
             "blogData" => $blogData
         ));
     }
@@ -297,6 +304,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "data" => $this->data,
             "isBlog" => true,
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "metaDescription" => $this->pageDescriptionBase,
             "blogData" => $blogData
         ));
     }
@@ -348,7 +356,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         if (strtoupper($_SERVER['REQUEST_METHOD']) === "POST") {
             $outObj = (object)['success' => false, 'message' => null, 'data' => null];
             if (!isset($_POST['whatToDo']) || !$_POST['whatToDo']) utility_helper::returnJsonAndExit($outObj);
-            $isPasted = (!isset($_POST['isPasted']) || $_POST['isPasted'] == "1");
+            $isPasted = (isset($_POST['isPasted']) && $_POST['isPasted'] == "1");
 
             // SAVING UPLOADED IMAGES HERE
             if ($_POST['whatToDo'] === "uploadImages") {
@@ -381,11 +389,17 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         $images = $getFolderResult->data;
         $imagesGrouped = [];
-        foreach ($images as $image) {
+        foreach ($images as $image) { // group by timestamp (to eliminate different sizes for same image)
             $image->name = str_replace($imagePoolPath, "", $image->name);
             $baseFileName = substr($image->name, 0, 20);
             if (empty($imagesGrouped[$baseFileName])) $imagesGrouped[$baseFileName] = [];
             $imagesGrouped[$baseFileName] [] = $image;
+        }
+        $imagesGroupedByYearMonth = [];
+        foreach ($imagesGrouped as $key => $value) {
+            $groupName = substr($key, 0, 6);
+            if (empty($imagesGroupedByYearMonth[$groupName])) $imagesGroupedByYearMonth[$groupName] = [];
+            $imagesGroupedByYearMonth[$groupName] [] = $value;
         }
 
         $blogData = (object)[
@@ -394,6 +408,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "blogTitle" => 'Blog: Upload Images Page',
             "images" => $images,
             "imagesGrouped" => $imagesGrouped,
+            "imagesGroupedByYearMonth" => $imagesGroupedByYearMonth,
         ];
         //echo json_encode($blogData);return; // CHECK OBJECT
 
@@ -401,6 +416,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             "data" => $this->data,
             "isBlog" => true,
             "pageTitle" => $blogData->blogTitle . ' | ' . $this->pageTitleBase,
+            "metaDescription" => $this->pageDescriptionBase,
             "blogData" => $blogData
         ));
     }

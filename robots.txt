@@ -1,0 +1,3 @@
+Sitemap: https://www.guneyfiratsahin.com/sitemap.xml
+User-agent: *
+Disallow:

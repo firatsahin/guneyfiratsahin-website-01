@@ -67,11 +67,11 @@
 
                                                         </div>
 
-                                                        <a class="left carousel-control" href="#carousel-<?= $post->id ?>" data-slide="prev">
+                                                        <a class="left carousel-control" href="#carousel-<?= $post->id ?>" data-slide="prev" rel="nofollow">
                                                             <span class="glyphicon glyphicon-chevron-left"></span>
                                                         </a>
 
-                                                        <a class="right carousel-control" href="#carousel-<?= $post->id ?>" data-slide="next">
+                                                        <a class="right carousel-control" href="#carousel-<?= $post->id ?>" data-slide="next" rel="nofollow">
                                                             <span class="glyphicon glyphicon-chevron-right"></span>
                                                         </a>
 

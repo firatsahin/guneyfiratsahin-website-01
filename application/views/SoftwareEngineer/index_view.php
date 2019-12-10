@@ -11,7 +11,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-        <meta name="description" content="<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?> <?= $data->personalInfo->title ?> Personal Web Page" />
+        <!-- seo -->
+        <meta name="description" content="<?= isset($metaDescription) && $metaDescription ? $metaDescription : '' ?>"/>
+        <link rel="canonical" href="<?= trim(utility_helper::getSiteUrl(), "/") . strtok($_SERVER["REQUEST_URI"], '?') ?>"/>
 
         <!-- CSS | bootstrap -->
         <!-- Credits: http://getbootstrap.com/ -->
@@ -74,7 +76,7 @@
     <body>
 
         <!--[if lt IE 7]>
-                <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+                <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" rel="nofollow">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <!-- Laoding page -->
@@ -131,13 +133,8 @@
         <!-- Name -->
          <div id="profile_social">
             <h6>My Social Profiles</h6>
-            <?php /*<a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-dribbble"></i></a>
-            <a href="#"><i class="fa fa-foursquare"></i></a>*/ ?>
              <?php foreach ($data->personalInfo->socialProfiles as $p) { ?>
-                 <a href="<?= $p->link ? $p->link : '#' ?>" target="_blank" title="Visit my <?= $p->nameFancy ?> profile"><i class="fa fa-<?= $p->faIcon ?>"></i></a>
+                 <a href="<?= $p->link ? $p->link : '#' ?>" target="_blank" title="Visit my <?= $p->nameFancy ?> profile" rel="nofollow"><i class="fa fa-<?= $p->faIcon ?>"></i></a>
              <?php } ?>
             <div class="clear"></div>
         </div>
@@ -181,6 +178,7 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="blog" title="Blog Site">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-pencil icon_menu"></i>
+                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>" class="hidden">Blog Site</a>
                                                 </li>
 
                                             <?php } else { ?>
@@ -188,11 +186,13 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-pencil icon_menu <?= $blogData->activeTabIndex == 0 ? 'icon_menu_active' : '' ?>"></i>
+                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>" class="hidden">Blog Site</a>
                                                 </li>
 
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog categories" title="Blog Categories">
                                                     <span class="tite-list">blog categories</span>
                                                     <i class="fa fa-tasks icon_menu <?= $blogData->activeTabIndex == 1 ? 'icon_menu_active' : '' ?>"></i>
+                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . 'categories/index.html' ?>" class="hidden">Blog Categories</a>
                                                 </li>
 
                                                 <!-- /////////////////////////////////////////// -->
@@ -200,12 +200,13 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="home" title="Back to Home Site">
                                                     <span class="tite-list">home</span>
                                                     <i class="fa fa-home icon_menu"></i>
+                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . 'index.html' ?>" class="hidden">Home Site</a>
                                                 </li>
 
                                             <?php } ?>
 
-                                            <a href="#" id="print" style="display: none;"><i class="fa fa-print icon_print"></i> </a>
-                                            <a href="#" id="downlowd" style="display: none;"><i class="fa fa-download icon_print"></i> </a>
+                                            <a href="#" id="print" style="display: none;" rel="nofollow"><i class="fa fa-print icon_print"></i> </a>
+                                            <a href="#" id="downlowd" style="display: none;" rel="nofollow"><i class="fa fa-download icon_print"></i> </a>
                                         </ul>
                                         <!-- /resp-tabs-list -->
 
@@ -241,21 +242,21 @@
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-user"></i>
                                                                     <label>Name</label>
-                                                                    <span class="value" title="Click to search me on Google"><a href="https://www.google.com/search?q=%22<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?>%22" target="_blank"><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?></a>&nbsp; <span style="font-size: 10px;">(original)</span></span>
+                                                                    <span class="value" title="Click to search me on Google"><a href="https://www.google.com/search?q=%22<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?>%22" target="_blank" rel="nofollow"><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?></a>&nbsp; <span style="font-size: 10px;">(original)</span></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-calendar"></i>
                                                                     <label>Date of birth</label>
-                                                                    <span class="value" title="Click to check what happened on <?= $data->personalInfo->birthDate->formatted ?>"><a href="https://www.google.com/search?q=What happened on <?= $data->personalInfo->birthDate->formatted ?>" target="_blank"><?= $data->personalInfo->birthDate->formatted ?></a></span>
+                                                                    <span class="value" title="Click to check what happened on <?= $data->personalInfo->birthDate->formatted ?>"><a href="https://www.google.com/search?q=What happened on <?= $data->personalInfo->birthDate->formatted ?>" target="_blank" rel="nofollow"><?= $data->personalInfo->birthDate->formatted ?></a></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-map-marker"></i>
                                                                     <label>Location</label>
-                                                                    <span class="value" title="Click to see where <?= $data->personalInfo->city ?> is"><a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a></span>
+                                                                    <span class="value" title="Click to see where <?= $data->personalInfo->city ?> is"><a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank" rel="nofollow"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
@@ -271,14 +272,14 @@
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-comment"></i>
                                                                     <label>Skype</label>
-                                                                    <span class="value" title="Click to add me as a contact on Skype"><a href="skype:<?= $data->contactInfo->skype ?>?userinfo"><?= $data->contactInfo->skype ?></a></span>
+                                                                    <span class="value" title="Click to add me as a contact on Skype"><a href="skype:<?= $data->contactInfo->skype ?>?userinfo" rel="nofollow"><?= $data->contactInfo->skype ?></a></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-globe"></i>
                                                                     <label>GitHub</label>
-                                                                    <span class="value" title="Click to take a look at my GitHub account"><a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank">github.com/<?= $data->contactInfo->github ?></a></span>
+                                                                    <span class="value" title="Click to take a look at my GitHub account"><a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
@@ -325,7 +326,7 @@
                                                             </p>
                                                         <?php } ?>
 
-                                                        <a class="download" href="#!tab=contact">
+                                                        <a class="download" href="#!tab=contact" rel="nofollow">
                                                             <span data-hover="Hire me / Get services from me"><i class="glyphicon glyphicon-user"></i> &nbsp;&nbsp;Hire me / Get services from me</span>
                                                         </a>
                                                     </div>
@@ -333,7 +334,7 @@
                                                     <div class="clear"></div>
 
 
-                                                    <div class="row" id="services" style="display: none;">
+                                                    <?php /*<div class="row" id="services">
                                                         <div class="col-md-12">
                                                             <div class="title_content">
                                                                 <div class="text_content">My Services 1</div>
@@ -369,13 +370,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div><!-- End Services -->
+                                                    </div>
+                                                    <div class="clear"></div>*/ ?>
 
-
-                                                    <div class="clear"></div>
-                                                    <div class="border-list" style="display: none;"></div>
-
-                                                    <div class="row" style="display: none;">
+                                                    <?php /*<div class="border-list"></div>
+                                                    <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="bottom-p">
                                                                 <div class="title_content">
@@ -387,7 +386,7 @@
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading">
                                                                             <h4 class="panel-title">
-                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapse_tabs">
+                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapse_tabs" rel="nofollow">
                                                                                     Making Money
                                                                                     <i class="glyphicon glyphicon-chevron-up" style="float: right;font-size: 13px;"></i>
                                                                                 </a>
@@ -402,7 +401,7 @@
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading">
                                                                             <h4 class="panel-title">
-                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapse_tabs">
+                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapse_tabs" rel="nofollow">
                                                                                     Easy to Customize
                                                                                     <i class="glyphicon glyphicon-chevron-down" style="float: right;font-size: 13px;"></i>
                                                                                 </a>
@@ -417,7 +416,7 @@
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading">
                                                                             <h4 class="panel-title">
-                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapse_tabs">
+                                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapse_tabs" rel="nofollow">
                                                                                     Moving Let Us Help
                                                                                     <i class="glyphicon glyphicon-chevron-down" style="float: right;font-size: 13px;"></i>
                                                                                 </a>
@@ -434,9 +433,9 @@
                                                             </div>
                                                         </div>
 
-
                                                     </div>
-                                                    <div class="clear"></div>
+                                                    <div class="clear"></div>*/ ?>
+
                                                 </div>
                                                 <!-- End .profile -->
 
@@ -558,7 +557,7 @@
                                                             <!-- /.title_content -->
 
                                                             <!-- .download_resume -->
-                                                            <a class="download" style="margin:0;float: left;" href="#">
+                                                            <a class="download" style="margin:0;float: left;" href="#" rel="nofollow">
                                                                 <span data-hover="Download My Resume"><i class="glyphicon glyphicon-download-alt"></i> Download My Resume</span>
                                                             </a>
                                                             <!-- /.download_resume -->
@@ -640,11 +639,11 @@
                                                                 <div class="portfolio <?= implode(" ", $p->categories) ?>" data-cat="<?= implode(" ", $p->categories) ?>" project-id="<?= $p->id ?>" data-project="<?= htmlspecialchars(json_encode($p), ENT_QUOTES) ?>">
                                                                     <!-- .portfolio-wrapper -->
                                                                     <div class="portfolio-wrapper">
-                                                                        <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" rel="portfolio" title="<?= $p->name ?>">
+                                                                        <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" title="<?= $p->name ?>" rel="nofollow">
                                                                             <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? SOFTWARE_ENGINEER_ROOT_URI . $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="alt text" />
                                                                             <div class="label">
                                                                                 <div class="label-text">
-                                                                                    <a class="text-title"><?= $p->name ?></a>
+                                                                                    <a href="#" class="text-title" rel="nofollow"><?= $p->name ?></a>
                                                                                     <span class="text-category"><?= $p->startDate ?> – <?= $p->endDate ?></span>
                                                                                 </div>
                                                                                 <div class="label-bg"></div>
@@ -666,7 +665,7 @@
                                                     <!-- .container-portfolio-detail -->
                                                     <div class="container-portfolio-detail" style="display: none;">
                                                         <div>
-                                                            <a href="#" class="portfolio-backbutton">< Back to List</a>
+                                                            <a href="#" class="portfolio-backbutton" rel="nofollow">< Back to List</a>
                                                             <span name="project-share">
                                                             <b>Project Share: </b>
                                                             <span project-share-val="team">Team Project<br /><span style="color: #AAA; font-size: 11px;">(developed with other team members)</span></span>
@@ -679,7 +678,7 @@
                                                             <div class="clear"></div>
                                                         </div>
                                                         <div entity="project" column="description"></div>
-                                                        <a href="#" target="_blank" class="portfolio-seeprojectbutton">See project &nbsp;<i class="fa fa-external-link color"></i></a>
+                                                        <a href="#" target="_blank" class="portfolio-seeprojectbutton" rel="nofollow">See project &nbsp;<i class="fa fa-external-link color"></i></a>
                                                         <div name="images-wrapper">
                                                             <div class="title_content">
                                                                 <div class="text_content" style="text-transform: unset;">Images of this project</div>
@@ -730,20 +729,20 @@
 
                                                                         <ul>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-map-marker"></i>&nbsp; Location:&nbsp;
-                                                                    <a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank" title="Click to see where <?= $data->personalInfo->city ?> is"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a>
+                                                                    <a href="https://www.google.com/maps/place/<?= $data->personalInfo->city ?>" target="_blank" title="Click to see where <?= $data->personalInfo->city ?> is" rel="nofollow"><?= $data->personalInfo->city ?>, <?= $data->personalInfo->country ?></a>
                                                                     <br /><br />
                                                                 </span></li>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-envelope"></i>&nbsp; Email:&nbsp;
                                                                                     <span class="span-mt-link" title="Click to e-mail me" mt-link="<?= base64_encode($data->contactInfo->email . '' . '?subject=E-mail from ' . $data->siteInfo->domainName->short . ' visitor&body=Hey ' . $data->personalInfo->preferredName->global . '! I just visited your web site and I would like to talk to you about...') ?>">Click to e-mail me</span>
                                                                 </span></li>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-comment"></i>&nbsp; Skype:&nbsp;
-                                                                    <a href="skype:<?= $data->contactInfo->skype ?>?userinfo" title="Click to add me as a contact on Skype"><?= $data->contactInfo->skype ?></a>
+                                                                    <a href="skype:<?= $data->contactInfo->skype ?>?userinfo" title="Click to add me as a contact on Skype" rel="nofollow"><?= $data->contactInfo->skype ?></a>
                                                                 </span></li>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
-                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account">github.com/<?= $data->contactInfo->github ?></a>
+                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a>
                                                                 </span></li>
                                                                             <li><span class="span-info"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
-                                                                    <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank" title="Click to take a look at my LinkedIn account">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
+                                                                    <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank" title="Click to take a look at my LinkedIn account" rel="nofollow">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
                                                                 </span></li>
                                                                         </ul>
                                                                     </div>
@@ -760,13 +759,8 @@
 
 
                                                                     <div id="profile_social" style="display: block !important; margin-bottom: 30px;">
-                                                                        <?php /*<a href="#"><i class="fa fa-facebook"></i></a>
-                                                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                                                <a href="#"><i class="fa fa fa-dribbble"></i></a>
-                                                                <a href="#"><i class="fa fa-foursquare"></i></a>*/ ?>
                                                                         <?php foreach ($data->personalInfo->socialProfiles as $p) { ?>
-                                                                            <a href="<?= $p->link ? $p->link : '#' ?>" target="_blank" title="Visit my <?= $p->nameFancy ?> profile"><i class="fa fa-<?= $p->faIcon ?>"></i></a>
+                                                                            <a href="<?= $p->link ? $p->link : '#' ?>" target="_blank" title="Visit my <?= $p->nameFancy ?> profile" rel="nofollow"><i class="fa fa-<?= $p->faIcon ?>"></i></a>
                                                                         <?php } ?>
                                                                         <div class="clear"></div>
                                                                     </div>

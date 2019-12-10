@@ -27,11 +27,13 @@
                                 <button type="button" name="btnChangePublishStatus" is-published="<?= $blogData->post->isPublished ?>"><?= $blogData->post->isPublished ? 'Unpublish' : 'Publish' ?> Post</button>
                                 &nbsp;&nbsp;
                                 <a href="?edit_post_key=<?= $_GET['edit_post_key'] ?>&preview=1" target="_blank">Preview Post</a>
+                                <span name="post-id" style="display: none;"><?= $blogData->post->id ?></span>
+                                <span name="edit-post-key" style="display: none;"><?= $_GET['edit_post_key'] ?></span>
                             </div>
 
                             <div class="title_content">
                                 <div class="text_content">
-                                    Images of the Post
+                                    Banner Images of the Post
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -61,18 +63,27 @@
                             </div>
 
                             <div class="title_content">
-                                <div class="text_content">
-                                    Title:
-                                    <input type="text" name="tbxPostTitle" value="<?= htmlspecialchars($blogData->post->title, ENT_QUOTES) ?>" maxlength="100" />
-                                    <button type="button" name="btnSaveTitle">Save Title</button>
-                                </div>
+                                <div class="text_content">Post Title</div>
                                 <div class="clear"></div>
                             </div>
+                            <div>
+                                <input type="text" name="tbxPostTitle" value="<?= htmlspecialchars($blogData->post->title, ENT_QUOTES) ?>" maxlength="100" style="width: calc(100% - 50px);" />
+                                <button type="button" name="btnSaveTitle">Save</button>
+                            </div>
 
-                            Post ID: <span name="post-id"><?= $blogData->post->id ?></span>
-                            <br>
-                            Edit Post Key: <span name="edit-post-key"><?= $_GET['edit_post_key'] ?></span>
+                            <div class="title_content">
+                                <div class="text_content">Post Description</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div>
+                                <input type="text" name="tbxPostDescription" value="<?= htmlspecialchars($blogData->post->description, ENT_QUOTES) ?>" maxlength="250" style="width: calc(100% - 50px);" />
+                                <button type="button" name="btnSaveDescription">Save</button>
+                            </div>
 
+                            <div class="title_content" style="margin-top: 20px;">
+                                <div class="text_content">Post Contents</div>
+                                <div class="clear"></div>
+                            </div>
                             <div class="contents-wrapper" style="margin-bottom: 20px;">
 
                                 <?php if (isset($post->contents) && is_array($post->contents)) { ?>
@@ -106,6 +117,29 @@
                                                         <?php } ?>
                                                     </div>
                                                     <button type="button" name="btnAddImageUrlTextbox">+ Add New Image (Content)</button>
+
+                                                <?php } ?>
+
+                                                <?php if ($post->contents[$i]->contentTypeId == "3") { ?>
+
+                                                    <textarea style="width: 100%; height: 180px; resize: vertical; font-family: monospace;" maxlength="3000"><?= $post->contents[$i]->content ?></textarea>
+                                                    <span name="remaining-chars" style="font-size: 11px;"></span>
+
+                                                <?php } ?>
+
+                                                <?php if ($post->contents[$i]->contentTypeId == "4") {
+                                                    $jsonObj = json_decode($post->contents[$i]->content);
+                                                    if (!$jsonObj) $jsonObj = (object)[];
+                                                    ?>
+
+                                                    <select name="ddlHeaderType">
+                                                        <option value="">-- Select Header Type --</option>
+                                                        <?php for ($k = 1; $k <= 6; $k++) { ?>
+                                                            <option <?= isset($jsonObj->headerType) && $jsonObj->headerType === 'h' . $k ? 'selected' : '' ?> >h<?= $k ?></option>
+                                                        <?php } ?>
+                                                    </select> type header
+                                                    <br /><br />
+                                                    <input type="text" name="tbxHeaderText" value="<?= isset($jsonObj->headerText) ? htmlspecialchars($jsonObj->headerText, ENT_QUOTES) : '' ?>" placeholder="Header Text" style="width: 100%;" />
 
                                                 <?php } ?>
 

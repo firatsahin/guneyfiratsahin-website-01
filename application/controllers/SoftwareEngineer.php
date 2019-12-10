@@ -48,7 +48,8 @@ class SoftwareEngineer extends CI_Controller {
         $this->load->view('SoftwareEngineer/index_view', array(
             "data" => $data,
             "isBlog" => false,
-            "pageTitle" => $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local . ' | ' . $data->personalInfo->title . ' Personal Web Page'
+            "pageTitle" => $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local . ' | ' . $data->personalInfo->title . ' Personal Web Page',
+            "metaDescription" => 'This is ' . $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local . ' ' . $data->personalInfo->title . '\'s personal web page. You can find details of his professional carreer, contact and also hire him (as an employee or a freelancer) by using this page.',
         ));
     }
 

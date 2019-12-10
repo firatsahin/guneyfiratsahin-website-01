@@ -51,6 +51,22 @@ class utility_helper
         return null;
     }
 
+    // get full site domain (considering https too) (with a trailing slash)
+    public static function getSiteUrl()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $domainName = $_SERVER['HTTP_HOST'] . '/';
+        return $protocol . $domainName;
+    }
+
+    public static function getLastModOfAFile($filePath)
+    {
+        $serverPath = $_SERVER["DOCUMENT_ROOT"] . $filePath;
+        if (file_exists($serverPath)) {
+            return date('Y-m-d H:i:s.u', filemtime($serverPath));
+        } else return null;
+    }
+
     public static function sendMail($recipientAddress,$subject,$mailBody)
     {
         $result = false;

@@ -10,9 +10,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <?php if (isset($data->landingPageInfo->description) && $data->landingPageInfo->description) { ?>
-        <meta name="description" content="<?= $data->landingPageInfo->description ?>" />
-    <?php } ?>
+    <!-- seo -->
+    <meta name="description" content="<?= isset($data->landingPageInfo->description) && $data->landingPageInfo->description ? $data->landingPageInfo->description : '' ?>" />
+    <link rel="canonical" href="<?= utility_helper::getSiteUrl() ?>"/>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="/img/frt-favicon.png"/>
@@ -38,6 +38,7 @@
 
         <?php foreach ($data->landingPageInfo->sections as $section) { ?>
             <div class="landing-box-div <?= $section->linkActive ? 'has-link' : '' ?>" <?= $section->linkActive ? 'link="/' . $section->id . '/index.html" title="Go to [' . $section->title . '] section"' : '' ?> link-target="<?= $section->linkTarget ?>">
+                <a href="<?= $section->linkActive ? '/' . $section->id . '/index.html' : '#' ?>" class="hidden">Go to [<?= $section->title ?>] section</a>
                 <div class="landing-box-div-background" style="<?= isset($section->backgroundImg) && $section->backgroundImg ? 'background-image:url(\'' . $section->backgroundImg . '\');' : '' ?>"></div>
                 <div class="landing-box-div-inner">
                     <div class="box-title-container"><?= $section->title ?></div>
@@ -46,7 +47,7 @@
 
                     <div class="socmed-icons-container">
                         <?php foreach ($section->socialLinks as $sl) { ?>
-                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->preferredName->global ?>'s <?= $sl->nameFancy ?> profile"></a>
+                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->preferredName->global ?>'s <?= $sl->nameFancy ?> profile" rel="nofollow"></a>
                         <?php } ?>
                     </div>
 
