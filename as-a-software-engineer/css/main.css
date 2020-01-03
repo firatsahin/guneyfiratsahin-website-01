@@ -644,6 +644,12 @@ h2.resp-accordion:hover {
     overflow:hidden;
 }
 
+@media (min-width: 1450px) {
+    #portfoliolist .portfolio {
+        width: 23%;
+    }
+}
+
 .portfolio-wrapper {
     overflow:hidden;
     position: relative !important;

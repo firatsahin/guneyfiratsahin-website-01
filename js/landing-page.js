@@ -48,6 +48,11 @@ $(function () {
         }
     });
 
+    // section links click event > prevent default bc outer event redirects already
+    $("div.landing-box-div.has-link a.link-to-section").click(function (e) {
+        e.preventDefault();
+    });
+
     // social media links click
     $("div.landing-box-div div.landing-box-div-inner div.socmed-icons-container a.socmed-link").click(function (e) {
         e.stopPropagation();

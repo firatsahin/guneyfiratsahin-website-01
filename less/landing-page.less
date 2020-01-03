@@ -104,11 +104,16 @@ body > div.root-div {
       border-right: 1px lightgrey dashed;
     }
 
-    &.has-link{
+    &.has-link {
       cursor: pointer;
-      &:hover{
+      &:hover {
         div.box-title-container {
           //text-decoration: underline;
+          a.link-to-section {
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
       }
     }
