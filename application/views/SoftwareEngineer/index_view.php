@@ -17,29 +17,29 @@
 
         <!-- CSS | bootstrap -->
         <!-- Credits: http://getbootstrap.com/ -->
-        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/bootstrap.min.css" />
 
         <!-- CSS | font-awesome -->
         <!-- Credits: http://fortawesome.github.io/Font-Awesome/icons/ -->
-        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/font-awesome.min.css" />
 
         <!-- CSS | animate -->
         <!-- Credits: http://daneden.github.io/animate.css/ -->
-        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/animate.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/animate.min.css" />
 
         <!-- CSS | Normalize -->
         <!-- Credits: http://manos.malihu.gr/jquery-custom-content-scroller -->
-        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/jquery.mCustomScrollbar.css" />
+        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/jquery.mCustomScrollbar.css" />
        	
         <!-- CSS | Colors -->
-        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_ROOT_URI . 'css/colors/DarkBlue.css') ?>" id="colors-style" /><!-- [DarkBlue,lightseagreen] -->
+        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_SITE_ROOT_URL . 'css/colors/DarkBlue.css') ?>" id="colors-style" /><!-- [DarkBlue,lightseagreen] -->
         
         <!-- CSS | Style -->
-        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_ROOT_URI . 'css/main.css') ?>" />
+        <link rel="stylesheet" type="text/css" href="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_SITE_ROOT_URL . 'css/main.css') ?>" />
 
         <!-- CSS | prettyPhoto -->
         <!-- Credits: http://www.no-margin-for-errors.com/ -->
-        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/prettyPhoto.css"/>
+        <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/prettyPhoto.css"/>
 
 		<!-- CSS | Google Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
@@ -48,7 +48,7 @@
         <link rel="shortcut icon" type="image/png" href="/img/frt-favicon.png"/>
 
         <!--[if IE 7]>
-                <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_ROOT_URI ?>css/icons/font-awesome-ie7.min.css"/>
+                <link rel="stylesheet" type="text/css" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>css/icons/font-awesome-ie7.min.css"/>
         <![endif]-->
 
         <style>
@@ -88,6 +88,12 @@
             <!--- .Content --> 
             <section class="tab-content">
                 <div class="container">
+
+                    <div class="seo-links-container">
+                        <a href="<?= uri_helper::generateRouteLink('softwareEngineerHome') ?>">Home Site</a>
+                        <span> | </span>
+                        <a href="<?= uri_helper::generateRouteLink('softwareEngineerBlogHome') ?>">Blog Site</a>
+                    </div>
 
                     <div class="row">
 
@@ -178,7 +184,7 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="blog" title="Blog Site">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-pencil icon_menu"></i>
-                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>" class="hidden">Blog Site</a>
+                                                     <?php /*FRTNOTE: PUT HERE LINK FOR SEO BUT SIDE-EFFECTED TO MOBILE MODE NAVIGATION, SO DON'T!*/ ?>
                                                 </li>
 
                                             <?php } else { ?>
@@ -186,13 +192,11 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog" title="Blog">
                                                     <span class="tite-list">blog</span>
                                                     <i class="fa fa-pencil icon_menu <?= $blogData->activeTabIndex == 0 ? 'icon_menu_active' : '' ?>"></i>
-                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>" class="hidden">Blog Site</a>
                                                 </li>
 
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a" data-tab-name="blog categories" title="Blog Categories">
                                                     <span class="tite-list">blog categories</span>
                                                     <i class="fa fa-tasks icon_menu <?= $blogData->activeTabIndex == 1 ? 'icon_menu_active' : '' ?>"></i>
-                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . 'categories/index.html' ?>" class="hidden">Blog Categories</a>
                                                 </li>
 
                                                 <!-- /////////////////////////////////////////// -->
@@ -200,7 +204,6 @@
                                                 <li class="tabs-blog hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a put-downside" data-tab-name="home" title="Back to Home Site">
                                                     <span class="tite-list">home</span>
                                                     <i class="fa fa-home icon_menu"></i>
-                                                    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . 'index.html' ?>" class="hidden">Home Site</a>
                                                 </li>
 
                                             <?php } ?>
@@ -242,7 +245,7 @@
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-user"></i>
                                                                     <label>Name</label>
-                                                                    <span class="value" title="Click to search me on Google"><a href="https://www.google.com/search?q=%22<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?>%22" target="_blank" rel="nofollow"><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?></a>&nbsp; <span style="font-size: 10px;">(original)</span></span>
+                                                                    <span class="value" title="Click to search me on Google"><a href="https://www.google.com/search?q=%22<?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?>%22" target="_blank" rel="nofollow"><?= $data->personalInfo->name->local . ' ' . $data->personalInfo->surname->local ?></a>&nbsp; <span style="font-size: 10px; display: none;">(original)</span></span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
@@ -296,10 +299,17 @@
 
                                                         <div class="col-md-6 profile-r">
 
-                                                            <div class="cycle-slideshow">
-                                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>images/img-profile/about_1.jpg" alt="" />
-                                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>images/img-profile/about_2.jpg" alt="" />
-                                                                <img src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>images/img-profile/about_3.jpg" alt="" />
+                                                            <div class="cycle-slideshow"
+                                                                 data-cycle-fx="scrollHorz"
+                                                                 data-cycle-timeout="5000"
+                                                                 data-cycle-caption="#profile-cycle-caption"
+                                                                 data-cycle-caption-template="{{alt}}">
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt_01_2.jpg" alt="At the Office &nbsp;|&nbsp; La Habra, CA, USA &nbsp;|&nbsp; 2013 ~ 2014" />
+                                                                <?php /*<img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_1.jpg" alt="" />*/ ?>
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_2.jpg" alt="Remote Coding & Software Engineering Services" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_3.jpg" alt="Remote Coding & Software Engineering Services" />
+                                                                <!-- empty element for caption -->
+                                                                <div id="profile-cycle-caption"></div>
                                                             </div>
 
                                                         </div>
@@ -551,14 +561,16 @@
 
                                                             <!-- .title_content -->
                                                             <div class="title_content" style="float: none;">
-                                                                <div class="text_content">My Resume</div>
+                                                                <div class="text_content">More About Firat</div>
                                                                 <div class="clear"></div>
                                                             </div>
                                                             <!-- /.title_content -->
 
                                                             <!-- .download_resume -->
-                                                            <a class="download" style="margin:0;float: left;" href="#" rel="nofollow">
-                                                                <span data-hover="Download My Resume"><i class="glyphicon glyphicon-download-alt"></i> Download My Resume</span>
+                                                            <a class="download" style="margin:0;float: left;" href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX ?>" rel="nofollow">
+                                                                <span data-hover="&nbsp;&nbsp;&nbsp;Visit My Blog Page">
+                                                                    <i class="fa fa-pencil"></i>&nbsp; Visit My Blog Page
+                                                                </span>
                                                             </a>
                                                             <!-- /.download_resume -->
 
@@ -640,7 +652,7 @@
                                                                     <!-- .portfolio-wrapper -->
                                                                     <div class="portfolio-wrapper">
                                                                         <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" title="<?= $p->name ?>" rel="nofollow">
-                                                                            <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? SOFTWARE_ENGINEER_ROOT_URI . $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="alt text" />
+                                                                            <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="alt text" />
                                                                             <div class="label">
                                                                                 <div class="label-text">
                                                                                     <a href="#" class="text-title" rel="nofollow"><?= $p->name ?></a>
@@ -833,6 +845,7 @@
                                                                                     <option>per hour</option>
                                                                                     <option>per month</option>
                                                                                     <option>per year</option>
+                                                                                    <option>for the project</option>
                                                                                 </select>
                                                                             </p>
                                                                             <p class="form-group" column="message">
@@ -935,15 +948,15 @@
  		
         <!-- Js | bootstrap -->
         <!-- Credits: http://getbootstrap.com/ -->
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/bootstrap.min.js"></script>
         
         <!-- Js | jquery.cycle -->
         <!-- Credits: https://github.com/malsup/cycle2 -->
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/jquery.cycle2.min.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/jquery.cycle2.min.js"></script>
         
         <!-- jquery | rotate and portfolio -->
         <!-- Credits: http://jquery.com -->
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/jquery.mixitup.min.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/jquery.mixitup.min.js"></script>
 
         <!-- Js | easyResponsiveTabs -->
         <!-- Credits: http://webtrendset.com/demo/easy-responsive-tabs/Index.html -->
@@ -953,15 +966,15 @@
                 tab_icons.push($(this).find("i").attr("class"));
             });
         </script>
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/easyResponsiveTabs.min.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/easyResponsiveTabs.min.js"></script>
 
         <!-- Js | mCustomScrollbar -->
         <!-- Credits: http://manos.malihu.gr/jquery-custom-content-scroller -->
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/jquery.mCustomScrollbar.concat.min.js"></script>
 
         <!-- jquery | prettyPhoto -->
         <!-- Credits: http://www.no-margin-for-errors.com/ -->
-        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_ROOT_URI ?>js/jquery.prettyPhoto.js"></script>
+        <script type="text/javascript" src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>js/jquery.prettyPhoto.js"></script>
 
  		<!-- Js | Js -->
         <script type="text/javascript">
@@ -969,14 +982,13 @@
                 isBlog:<?=isset($isBlog) && $isBlog ? 'true' : 'false' ?>,
                 softwareEngineerRootUri: "<?= SOFTWARE_ENGINEER_ROOT_URI ?>",
                 blogSiteSuffix: "<?= SOFTWARE_ENGINEER_BLOG_SUFFIX ?>",
-                blogSiteDefaultPath: "<?= SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH ?>",
                 <?php if(isset($blogData)) { ?>
                 blogActiveTabIndex: <?= $blogData->activeTabIndex ?>,
                 <?php } ?>
             };
             console.log("siteData: ", siteData);
         </script>
-        <script type="text/javascript" src="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_ROOT_URI . 'js/main.js') ?>"></script>
+        <script type="text/javascript" src="<?= utility_helper::includeVersionedReference(SOFTWARE_ENGINEER_SITE_ROOT_URL . 'js/main.js') ?>"></script>
 
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

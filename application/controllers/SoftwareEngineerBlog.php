@@ -24,6 +24,7 @@ class SoftwareEngineerBlog extends CI_Controller {
     private $pageDescriptionBase;
     private $postFilterBase;
     private $defaultPageSize = 3;
+    private $defaultPostSet = 'recent-posts';
 
     public function __construct()
     {
@@ -44,11 +45,20 @@ class SoftwareEngineerBlog extends CI_Controller {
         $this->load->database();
     }
 
-    public function index($postSet = 'recent-posts', $page = 1)
+    public function index()
     {
+        $page = 1;
+        if (isset($_GET['p']) && $_GET['p'] !== '') { // "p" has value
+            if (!is_numeric($_GET['p'])) utility_helper::redirectAndExit(uri_helper::generateURIWithQueryString(['p' => null])); // invalid "p"
+            $page = intval($_GET['p']);
+        }
+        $postSet = $this->defaultPostSet;
+        if (isset($_GET['s']) && $_GET['s'] !== '') { // "s" has value
+            $postSet = $_GET['s'];
+        }
         $sortBy = $this->getSortByOf($postSet); // get sort by value by 'postSet' param
 
-        if ($page < 1) utility_helper::redirectAndExit("page-1.html");
+        if ($page < 1) utility_helper::redirectAndExit(uri_helper::generateURIWithQueryString(['p' => null]));
 
         $getPageResult = $this->getPagePosts($page, $this->defaultPageSize, $sortBy, "");
 
@@ -72,17 +82,29 @@ class SoftwareEngineerBlog extends CI_Controller {
         ));
     }
 
-    public function showPost($id = -1, $postSet = 'recent-posts')
+    public function showPost($id = -1)
     {
         $filter = "";
 
-        // get values from get array's from param
-        if (isset($_GET['from']) && $_GET['from']) {
-            $fromUriSegments = explode("/", $_GET['from']);
-            $postSet = $fromUriSegments[count($fromUriSegments) - 2];
+        $postSet = $this->defaultPostSet;
 
-            if (strpos($fromUriSegments[0], "category-") === 0) {
-                $catId = intval(str_replace("category-", "", $fromUriSegments[0]));
+        // get values from get array's from param's query string part
+        if (isset($_GET['from']) && $_GET['from']) {
+            $qmIndex = strpos($_GET['from'], '?');
+            if ($qmIndex !== false) {
+                $fromUriPath = substr($_GET['from'], 0, $qmIndex);
+                $fromUriQueryObj = [];
+                foreach (explode('&', substr($_GET['from'], $qmIndex + 1)) as $kvStr) {
+                    $kv = explode('=', $kvStr);
+                    if ($kv[0]) $fromUriQueryObj[$kv[0]] = $kv[1];
+                }
+                if (isset($fromUriQueryObj['s']) && $fromUriQueryObj['s']) $postSet = $fromUriQueryObj['s'];
+            } else $fromUriPath = $_GET['from'];
+
+            // from category case > add cate ID to filter (for prev-next links)
+            if (strpos($fromUriPath, '/blog-category/') !== false) {
+                $allDashIndexes = utility_helper::findAllOccurenceIndexes($fromUriPath, "-");
+                $catId = intval(substr($fromUriPath, $allDashIndexes[count($allDashIndexes) - 1] + 1));
                 $catIds = [$catId];
                 $this->addSubCategoryIdsOf($catId, true, $catIds);
                 $filter = "categoryId in (" . implode(",", $catIds) . ")";
@@ -96,18 +118,18 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         // get post
         $posts = $this->db->query("select * from blogPost where id=" . $id)->result();
-        if (count($posts) == 0 || (!$posts[0]->isPublished && !$editMode)) utility_helper::redirectAndExit(SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH);
+        if (count($posts) == 0 || (!$posts[0]->isPublished && !$editMode)) utility_helper::redirectAndExit(SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX);
 
         $post = $posts[0];
 
         // correct URI if it's wrong
-        uri_helper::correctMalformedURI(uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]));
+        uri_helper::correctMalformedURI(uri_helper::generateRouteLink("showBlogPostDetail", [$post->title, $post->id]));
 
         // get post details
         $post->contents = $this->getContentsOfPost($id);
         $post->images = $this->getImagesOfPost($id);
         $post->category = $this->getCategoryById($post->categoryId);
-        $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
+        $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->name, $post->category->id]);
         $post->comments = $this->getCommentsOfPost($post->id, (!$editMode || $isPreview));
         $post->commentsCount = count($post->comments, (!$editMode || $isPreview));
         $post->tags = $this->normalizeTags($post->tagsJson);
@@ -271,16 +293,25 @@ class SoftwareEngineerBlog extends CI_Controller {
         utility_helper::returnJson($outObj);
     }
 
-    public function listCategoryPosts($categoryId, $postSet = 'recent-posts', $page = 1)
+    public function listCategoryPosts($categoryId)
     {
+        $page = 1;
+        if (isset($_GET['p']) && $_GET['p'] !== '') { // "p" has value
+            if (!is_numeric($_GET['p'])) utility_helper::redirectAndExit(uri_helper::generateURIWithQueryString(['p' => null])); // invalid "p"
+            $page = intval($_GET['p']);
+        }
+        $postSet = $this->defaultPostSet;
+        if (isset($_GET['s']) && $_GET['s'] !== '') { // "s" has value
+            $postSet = $_GET['s'];
+        }
         $sortBy = $this->getSortByOf($postSet); // get sort by value by 'postSet' param
 
-        if ($page < 1) utility_helper::redirectAndExit("page-1.html");
+        if ($page < 1) utility_helper::redirectAndExit(uri_helper::generateURIWithQueryString(['p' => null]));
 
         $categoryName = $this->getCategoryById($categoryId)->name;
 
         // correct URI if it's wrong
-        uri_helper::correctMalformedURI(uri_helper::generateRouteLink('listCategoryPosts', [$categoryId, $categoryName, $postSet, $page]));
+        uri_helper::correctMalformedURI(uri_helper::generateRouteLink('listCategoryPosts', [$categoryName, $categoryId]));
 
         $categoryIds = [$categoryId];
         $this->addSubCategoryIdsOf($categoryId, true, $categoryIds);
@@ -443,7 +474,7 @@ class SoftwareEngineerBlog extends CI_Controller {
         $returnObj->pageCount = ceil($returnObj->postsCount / $pageSize);
         if ($returnObj->pageCount == 0) $returnObj->pageCount = 1;
 
-        if ($page > $returnObj->pageCount) utility_helper::redirectAndExit("page-$returnObj->pageCount.html");
+        if ($page > $returnObj->pageCount) utility_helper::redirectAndExit(uri_helper::generateURIWithQueryString(['p' => $returnObj->pageCount]));
 
         // get posts here
         $returnObj->posts = $this->db->query("select * from blogPost where $filter order by $sortBy->col $sortBy->direction limit " . (($page - 1) * $pageSize) . ",$pageSize")->result();
@@ -451,7 +482,7 @@ class SoftwareEngineerBlog extends CI_Controller {
             $post->contents = $this->getFirstParagraphContentOfPost($post->id);
             $post->images = $this->getImagesOfPost($post->id);
             $post->category = $this->getCategoryById($post->categoryId);
-            $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->id, $post->category->name, 'recent-posts', 1]);
+            $post->category->link = uri_helper::generateRouteLink('listCategoryPosts', [$post->category->name, $post->category->id]);
             $post->commentsCount = $this->countCommentsOfPost($post->id);
             $post->tags = $this->normalizeTags($post->tagsJson);
         }
@@ -509,8 +540,8 @@ class SoftwareEngineerBlog extends CI_Controller {
 
         $prevPost = $this->db->query("select * from blogPost where $sortBy->col = (select " . ($sortBy->direction == "desc" ? "min" : "max") . "($sortBy->col) from blogPost where $filter and $sortBy->col" . ($sortBy->direction == "desc" ? ">" : "<") . "'$val')")->result();
         $nextPost = $this->db->query("select * from blogPost where $sortBy->col = (select " . ($sortBy->direction == "desc" ? "max" : "min") . "($sortBy->col) from blogPost where $filter and $sortBy->col" . ($sortBy->direction == "desc" ? "<" : ">") . "'$val')")->result();
-        if (count($prevPost) > 0) $returnObj->prevLink = uri_helper::generateRouteLink("showBlogPostDetail", [$prevPost[0]->id, $prevPost[0]->title]);
-        if (count($nextPost) > 0) $returnObj->nextLink = uri_helper::generateRouteLink("showBlogPostDetail", [$nextPost[0]->id, $nextPost[0]->title]);
+        if (count($prevPost) > 0) $returnObj->prevLink = uri_helper::generateRouteLink("showBlogPostDetail", [$prevPost[0]->title, $prevPost[0]->id]);
+        if (count($nextPost) > 0) $returnObj->nextLink = uri_helper::generateRouteLink("showBlogPostDetail", [$nextPost[0]->title, $nextPost[0]->id]);
 
         return $returnObj;
     }

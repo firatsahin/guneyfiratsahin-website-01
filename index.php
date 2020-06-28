@@ -311,10 +311,10 @@ require_once 'sensitive_data.php';
 
 // SUPER GLOBALS (available anywhere)
 // constant
-define('SOFTWARE_ENGINEER_ROOT_URI', '/as-a-software-engineer/');
-define('SOFTWARE_ENGINEER_BLOG_SUFFIX', 'blog/');
-define('SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH', 'recent-posts/page-1.html');
-define('SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH', SOFTWARE_ENGINEER_ROOT_URI . 'images/blog/uploads/');
+define('SOFTWARE_ENGINEER_SITE_ROOT_URL', '/site-software-engineer/'); // physical folder not URI
+define('SOFTWARE_ENGINEER_ROOT_URI', '/as-a-software-engineer');
+define('SOFTWARE_ENGINEER_BLOG_SUFFIX', '/blog');
+define('SOFTWARE_ENGINEER_BLOG_IMG_UPLOAD_PATH', SOFTWARE_ENGINEER_SITE_ROOT_URL . 'images/blog/uploads/'); // physical path
 // variable
 //$GLOBALS['someKey'] = "someVal"; // it can be changed during the app flow
 

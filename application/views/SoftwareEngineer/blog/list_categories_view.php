@@ -19,7 +19,7 @@ function writeCategories($categories, $level, $blogData)
             echo $c->name;
         }
         echo '</span>';
-        echo '<a href="' . uri_helper::generateRouteLink('listCategoryPosts', [$c->id, $c->name, 'recent-posts', 1]) . '" class="cat-link" title="Blog Category: ' . $c->name . '">See ' . (isset($c->postCount) ? $c->postCount : '') . ' Post' . ($c->postCount == 1 ? '' : 's') . '</a>';
+        echo '<a href="' . uri_helper::generateRouteLink('listCategoryPosts', [$c->name, $c->id]) . '" class="cat-link" title="Blog Category: ' . $c->name . '">See ' . (isset($c->postCount) ? $c->postCount : '') . ' Post' . ($c->postCount == 1 ? '' : 's') . '</a>';
         if ($blogData->editMode) {
             echo '<span class="right"><a href="#" name="lnkAddNewPost">+ Add New Post</a> |&nbsp;</span>';
         }

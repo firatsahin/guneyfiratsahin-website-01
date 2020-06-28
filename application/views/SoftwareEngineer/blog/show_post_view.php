@@ -3,7 +3,7 @@
 <h1 class="h-bloc">Blog Post: <?= $post->title ?></h1>
 
 <div>
-    <a href="<?= SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX . (isset($_GET['from']) && $_GET['from'] ? $_GET['from'] : SOFTWARE_ENGINEER_BLOG_DEFAULT_PATH) ?>" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Back to Post List</a>
+    <a href="<?= (isset($_GET['from']) && $_GET['from']) ? $_GET['from'] : SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX  ?>" class="readmore" style="float: unset;"><i class="glyphicon glyphicon-chevron-left"></i>&nbsp; Back to Post List</a>
 </div>
 
 <div class="col-md-12">
@@ -192,7 +192,7 @@
                                                         <?php foreach ($post->comments[$i]->replies as $commentReply) { ?>
 
                                                             <div class="comment sub">
-                                                                <img src="/as-a-software-engineer/images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
                                                                 <div class="text">
                                                                     <div class="name"><?= $data->personalInfo->name->global . ' ' . $data->personalInfo->surname->global ?></div>
                                                                     <div class="date"><?= substr($commentReply->commentedDatetime, 0, 19) ?></div>
@@ -208,7 +208,7 @@
 
                                             <?php } ?>
                                         <?php } else { ?>
-                                            <p style="margin-bottom: 10px;">No comments to this post yet.</p>
+                                            <p style="margin-bottom: 10px;">No comments left to this post yet.</p>
                                         <?php } ?>
 
                                     </div><!-- .post_comments -->

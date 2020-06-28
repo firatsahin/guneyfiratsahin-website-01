@@ -1,4 +1,4 @@
-<h1 class="h-bloc" style="height: 39px;">
+<h1 class="h-bloc" <?php /*style="height: 39px;"*/?>>
     <div style="position: relative; top: -6px;">
 
         <span name="blog-title-prefix">Blog:</span>
@@ -8,7 +8,7 @@
         </select>
 
         <?php if (isset($blogData->categoryName) && $blogData->categoryName) { ?>
-            <span name="category-span">&nbsp; of [<?= $blogData->categoryName ?>]</span>
+            <span name="category-span">&nbsp; of <span style="font-weight: 400;"><i><?= $blogData->categoryName ?></i></span></span>
         <?php } ?>
 
     </div>
@@ -97,7 +97,6 @@
 
                                             <div class="title_content">
                                                 <div class="text_content">
-                                                    <?php /*<a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>"><?= $post->title ?></a>*/ ?>
                                                     <?= $post->title ?>
                                                 </div>
                                                 <div class="clear"></div>
@@ -121,7 +120,7 @@
                                         </div>
                                     </div>
 
-                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->id, $post->title]) ?>?from=<?= urlencode(str_replace(SOFTWARE_ENGINEER_ROOT_URI . SOFTWARE_ENGINEER_BLOG_SUFFIX, "", $_SERVER['REDIRECT_URL'])) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
+                                    <a href="<?= uri_helper::generateRouteLink("showBlogPostDetail", [$post->title, $post->id]) ?>?from=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="read_m pull-right">Read More <i class='glyphicon glyphicon-chevron-right'></i></a>
 
                                 </div>
                             </div>
@@ -144,11 +143,11 @@
                     <div class="col-md-12 post_content"  style="padding: 10px 15px 0px 15px; text-align: center;">
 
                         <?php if ($blogData->page > 1) { ?>
-                            <a href="<?= 'page-' . ($blogData->page - 1) . '.html' ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i> <?= $blogData->postSet == 'recent-posts' ? 'Newer Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'More Clicked Posts' : '') ?></a>
+                            <a href="<?= uri_helper::generateURIWithQueryString(["p" => $blogData->page - 1 > 1 ? $blogData->page - 1 : null]) ?>" class="readmore" style="float: left;"><i class="glyphicon glyphicon-chevron-left"></i> <?= $blogData->postSet == 'recent-posts' ? 'Newer Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'More Clicked Posts' : '') ?></a>
                         <?php } ?>
 
                         <?php if ($blogData->page < $blogData->pageCount) { ?>
-                            <a href="<?= 'page-' . ($blogData->page + 1) . '.html' ?>" class="readmore" style="float: right;"><?= $blogData->postSet == 'recent-posts' ? 'Older Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'Less Clicked Posts' : '') ?> <i class="glyphicon glyphicon-chevron-right"></i></a>
+                            <a href="<?= uri_helper::generateURIWithQueryString(["p" => $blogData->page + 1]) ?>" class="readmore" style="float: right;"><?= $blogData->postSet == 'recent-posts' ? 'Older Posts' : ($blogData->postSet == 'most-clicked-posts' ? 'Less Clicked Posts' : '') ?> <i class="glyphicon glyphicon-chevron-right"></i></a>
                         <?php } ?>
 
                     </div>

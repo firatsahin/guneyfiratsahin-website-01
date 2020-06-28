@@ -38,6 +38,7 @@ function writeObjectToHash(hashObj, replace) {
     if (replace) window.history.replaceState({}, document.title, hashVal); else location.href = hashVal;
 }
 
+// form data collection function
 function getFormData($form) {
     var unindexed_array = $form.serializeArray();
     var indexed_array = {};
@@ -49,6 +50,7 @@ function getFormData($form) {
     return indexed_array;
 }
 
+// content scroll helpers
 function getContentScroll() {
     return getViewMode() != 1 ? Math.abs(parseInt($(".content_2:visible .mCSB_container").css("top"))) : null;
 }
@@ -57,6 +59,31 @@ function setContentScroll(scrollTop) {
         $(".content_2:visible .mCSB_container").css("top", -scrollTop);
         $(".content_2:visible").mCustomScrollbar("update");
     }
+}
+
+// query string helper functions
+function generateURIWithQueryString(o) {
+    var qStr = '', qsObj = {};
+    if (location.search !== '' && location.search !== '?') {
+        location.search.substring(1).split("&").forEach(function (val) {
+            var kv = val.split("=");
+            if (kv[0]) qsObj[kv[0]] = kv[1];
+        });
+    }
+    for (var key in o) {
+        qsObj[key] = o[key];
+    }
+    log(qsObj);
+    var i = 0;
+    for (var key in qsObj) {
+        if (qsObj[key] === null) continue;
+        qStr += (i > 0 ? '&' : '') + key + "=" + qsObj[key];
+        i++;
+    }
+    qStr = '?' + qStr.trim();
+    log(qStr);
+    if (qStr === '?') return location.pathname;
+    return qStr;
 }
 // GLOBAL HELPER FUNCTIONS - END
 
@@ -135,8 +162,8 @@ jQuery(document).ready(function($) {
             if (siteData.isBlog && siteData.blogActiveTabIndex == index) { // blog site tabs
                 log("same tab");
                 switch (index) {
-                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
-                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html"; break;
+                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix; break;
+                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "/categories"; break;
                 }
             }
             if (urlToGo) location.href = urlToGo;
@@ -145,14 +172,14 @@ jQuery(document).ready(function($) {
             log("middle clicked to tab:" + index);
             if (siteData.isBlog) { // blog site tabs
                 switch (index) {
-                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
-                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html"; break;
-                    case 2: urlToGo = siteData.softwareEngineerRootUri + "index.html"; break;
+                    case 0: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix; break;
+                    case 1: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "/categories"; break;
+                    case 2: urlToGo = siteData.softwareEngineerRootUri; break;
                 }
             } else { // main site tabs
                 switch (index) {
                     case 0: case 1: case 2: case 3: urlToGo = location.pathname + "#!tab=" + $(this).attr('data-tab-name'); break;
-                    case 4: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath; break;
+                    case 4: urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix; break;
                 }
             }
             if (urlToGo) window.open(urlToGo);
@@ -210,7 +237,7 @@ jQuery(document).ready(function($) {
             var tabName = $(this).attr('data-tab-name');
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix;
                 return;
             }
 
@@ -236,7 +263,7 @@ jQuery(document).ready(function($) {
             var tabName = $(this).find("span.tite-list-resp").text().trim();
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix;
                 return;
             }
 
@@ -363,7 +390,7 @@ jQuery(document).ready(function($) {
         $contactform.find("button[name=btnSubmit]").prop('disabled', true).text('SENDING MESSAGE...');
         $.ajax({
             type: "POST",
-            url: "contact.html",
+            url: siteData.softwareEngineerRootUri + "/contact",
             //data: $(this).serialize(),
             data: JSON.stringify(contactFormData),
             contentType: "application/json",
@@ -620,19 +647,19 @@ jQuery(document).ready(function($) {
             var tabName = $(this).attr('data-tab-name');
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix;
                 return;
             }
 
             if (tabName == "blog categories") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html";
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "/categories";
                 return;
             }
 
             ////////////////////////////////////////////////////////////////////
 
             if (tabName == "home") {
-                location.href = siteData.softwareEngineerRootUri + "index.html";
+                location.href = siteData.softwareEngineerRootUri;
                 return;
             }
 
@@ -648,19 +675,19 @@ jQuery(document).ready(function($) {
             var tabName = $(this).find("span.tite-list-resp").text().trim();
 
             if (tabName == "blog") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + siteData.blogSiteDefaultPath;
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix;
                 return;
             }
 
             if (tabName == "blog categories") {
-                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "categories/index.html";
+                location.href = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + "/categories";
                 return;
             }
 
             ////////////////////////////////////////////////////////////////////
 
             if (tabName == "home") {
-                location.href = siteData.softwareEngineerRootUri + "index.html";
+                location.href = siteData.softwareEngineerRootUri;
                 return;
             }
         });
@@ -674,16 +701,15 @@ jQuery(document).ready(function($) {
 
             // DDL: Post Set > change event and initial value set
             $("div#blog select[name=post-set-ddl]").change(function () {
-                var categoryStr = '';
-                var uriAfterBlogRoot = location.pathname.replace(siteData.softwareEngineerRootUri + siteData.blogSiteSuffix, '');
-                if (uriAfterBlogRoot.indexOf("category-") == 0) {
-                    var segments = uriAfterBlogRoot.split("/");
-                    categoryStr = segments[0] + "/" + segments[1] + "/";
-                }
-                var urlToGo = siteData.softwareEngineerRootUri + siteData.blogSiteSuffix + categoryStr + this.value + '/page-1.html';
+                var sVal = this.value;
+                if ($(this).find("option").first().val() === this.value) sVal = null;
+                var urlToGo = generateURIWithQueryString({p: null, s: sVal});
                 log(urlToGo);
                 location.href = urlToGo;
-            }).val($("div#blog select[name=post-set-ddl]").attr('post-set'));
+            });
+            setTimeout(function () { // this timeout needed somehow.. (to update ddl val on initial load) (especially on history nav case)
+                $("div#blog select[name=post-set-ddl]").val($("div#blog select[name=post-set-ddl]").attr('post-set'));
+            });
 
             // write first 300 chars of post's first paragraph
             $("div#blog_page").find("article[id^=post-]").each(function () {

@@ -42,15 +42,12 @@ $(function () {
 
     // landing box link action to the related inner page
     $("div.landing-box-div.has-link").click(function () {
-        var linkToGo = $(this).attr('link'), target = $(this).attr('link-target');
+        var innerA = $(this).find("a.link-to-section"),
+            linkToGo = innerA.attr('href'),
+            target = innerA.attr('target');
         if (linkToGo) {
             if (target == '_blank') window.open(linkToGo); else location.href = linkToGo;
         }
-    });
-
-    // section links click event > prevent default bc outer event redirects already
-    $("div.landing-box-div.has-link a.link-to-section").click(function (e) {
-        e.preventDefault();
     });
 
     // social media links click

@@ -50,35 +50,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-// routes that can be used in URL(link) generation logic inside the app
-$GLOBALS['linkableRoutes'] = [];
-
-// default route
+// default route / sitemap / 404 etc.
 $route['default_controller'] = 'home';
-
-// as a software engineer part
-$route['as-a-software-engineer/(:any).html'] = "SoftwareEngineer/$1";
-$route['as-a-software-engineer/blog/(:any)/page-(:num).html'] = "SoftwareEngineerBlog/index/$1/$2";
-
-// as a software engineer > blog part
-$GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'showBlogPostDetail', 'key' => 'as-a-software-engineer/blog/post-(:num)/(:any).html', 'value' => 'SoftwareEngineerBlog/showPost/$1'];
-$route['as-a-software-engineer/blog/categories/index.html'] = "SoftwareEngineerBlog/listCategories";
-$GLOBALS['linkableRoutes'] [] = (object)['routeName' => 'listCategoryPosts', 'key' => 'as-a-software-engineer/blog/category-(:num)/(:any)/(:any)/page-(:num).html', 'value' => 'SoftwareEngineerBlog/listCategoryPosts/$1/$3/$4'];
-$route['as-a-software-engineer/blog/upload-images/index.html'] = "SoftwareEngineerBlog/uploadImages";
-
-// as a musician part
-$route['as-a-musician/(:any).html'] = "Musician/$1";
-
-// as a human part
-$route['as-a-human/(:any).html'] = "Human/$1";
-
 $route['sitemap.xml'] = 'home/showSitemap';
-$route['404_override'] = '';
+$route['404_override'] = 'home/handle404';
 $route['translate_uri_dashes'] = FALSE;
 
+// routes that can be used in URL(link) generation logic inside the app (FRT TIP: Upper rule has priority)
+global $linkableRoutes;
+$linkableRoutes = [
+    // example
+    //(object)['routeName' => 'NAME', 'key' => 'KEY', 'value' => 'VAL'],
+
+    // as a software engineer part
+    (object)['routeName' => 'softwareEngineerHome', 'key' => 'as-a-software-engineer', 'value' => 'SoftwareEngineer'],
+    (object)['routeName' => 'softwareEngineerBlogHome', 'key' => 'as-a-software-engineer/blog', 'value' => 'SoftwareEngineerBlog'],
+    (object)['routeName' => 'softwareEngineerAny', 'key' => 'as-a-software-engineer/(:any)', 'value' => 'SoftwareEngineer/$1'],
+
+    // as a software engineer > blog part
+    (object)['routeName' => 'showBlogPostDetail', 'key' => 'as-a-software-engineer/blog-post/(:any)-(:num)', 'value' => 'SoftwareEngineerBlog/showPost/$2'],
+    (object)['routeName' => 'listBlogCategories', 'key' => 'as-a-software-engineer/blog/categories', 'value' => 'SoftwareEngineerBlog/listCategories'],
+    (object)['routeName' => 'listCategoryPosts', 'key' => 'as-a-software-engineer/blog-category/(:any)-(:num)', 'value' => 'SoftwareEngineerBlog/listCategoryPosts/$2'],
+    (object)['routeName' => 'blogUploadImages', 'key' => 'as-a-software-engineer/blog/upload-images', 'value' => 'SoftwareEngineerBlog/uploadImages'],
+
+    // as a musician part
+    (object)['routeName' => 'musicianHome', 'key' => 'as-a-musician', 'value' => 'Musician'],
+    (object)['routeName' => 'musicianAny', 'key' => 'as-a-musician/(:any)', 'value' => 'Musician/$1'],
+
+    // as a human part
+    (object)['routeName' => 'humanHome', 'key' => 'as-a-human', 'value' => 'Human'],
+    (object)['routeName' => 'humanAny', 'key' => 'as-a-human/(:any)', 'value' => 'Human/$1'],
+];
+
 // add linkable routes to routes array too
-foreach ($GLOBALS['linkableRoutes'] as $lr) {
+foreach ($linkableRoutes as $lr) {
     $route[$lr->key] = $lr->value;
 }
 
-//echo json_encode($route);exit();
+//die(json_encode($route));

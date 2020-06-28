@@ -37,8 +37,12 @@ class SoftwareEngineer extends CI_Controller {
             if (isset($p->relatedExperienceId) && $p->relatedExperienceId) $p->relatedExperience = utility_helper::getArrayItemById($data->resume->experience, $p->relatedExperienceId);
             if (isset($p->relatedEducationId) && $p->relatedEducationId) $p->relatedEducation = utility_helper::getArrayItemById($data->resume->education, $p->relatedEducationId);
             if (isset($p->images) && is_array($p->images)) {
-                foreach ($p->images as $img) { // get thumb img from big img prop (if doesn't exist)
-                    if ((!isset($img->thumbImg) || !$img->thumbImg) && isset($img->bigImg) && $img->bigImg) $img->thumbImg = $img->bigImg;
+                foreach ($p->images as $img) {
+                    if (isset($img->bigImg) && $img->bigImg) { // if there is big img
+                        $img->bigImg = SOFTWARE_ENGINEER_SITE_ROOT_URL . $img->bigImg; // put prefix to big img
+                        if (!isset($img->thumbImg) || !$img->thumbImg) $img->thumbImg = $img->bigImg; // get thumb img from big img (if thumb doesn't exist)
+                    }
+                    if (isset($img->thumbImg) && $img->thumbImg) $img->thumbImg = SOFTWARE_ENGINEER_SITE_ROOT_URL . $img->thumbImg; // if there is thumb img > put prefix to thumb img
                 }
             }
         }

@@ -37,11 +37,11 @@
     <div class="root-div">
 
         <?php foreach ($data->landingPageInfo->sections as $section) { ?>
-            <div class="landing-box-div <?= $section->linkActive ? 'has-link' : '' ?>" <?= $section->linkActive ? 'link="/' . $section->id . '/index.html" title="Go to [' . $section->title . '] section"' : '' ?> link-target="<?= $section->linkTarget ?>">
+            <div class="landing-box-div <?= $section->linkActive ? 'has-link' : '' ?>" <?= $section->linkActive ? 'title="Go to [' . $section->title . '] section"' : '' ?>>
                 <div class="landing-box-div-background" style="<?= isset($section->backgroundImg) && $section->backgroundImg ? 'background-image:url(\'' . $section->backgroundImg . '\');' : '' ?>"></div>
                 <div class="landing-box-div-inner">
                     <div class="box-title-container">
-                        <a href="<?= $section->linkActive ? '/' . $section->id . '/index.html' : '#' ?>" class="link-to-section"><?= $section->title ?></a>
+                        <a href="<?= $section->linkActive ? '/' . $section->id : '#' ?>" target="<?= $section->linkTarget ?>" class="link-to-section"><?= $section->title ?></a>
                     </div>
 
                     <div style="height: 25px;"></div>

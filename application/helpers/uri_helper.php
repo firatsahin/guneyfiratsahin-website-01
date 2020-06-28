@@ -39,7 +39,8 @@ class uri_helper
     public static function generateRouteLink($routeName, $params = [])
     { // FRT WARNING: Works for maximum 10 parameters (which means index range [0-9])
         $url = '';
-        foreach ($GLOBALS['linkableRoutes'] as $lr) {
+        global $linkableRoutes;
+        foreach ($linkableRoutes as $lr) {
             if ($lr->routeName == $routeName) {
                 $anyPositions = \utility_helper::findAllOccurenceIndexes($lr->key, '(:any)');
                 $numPositions = \utility_helper::findAllOccurenceIndexes($lr->key, '(:num)');
@@ -71,4 +72,32 @@ class uri_helper
         }
     }
     // LINK GENERATIONS - END
+
+    // QUERY STRING GENERATIONS - BEGIN
+    public static function generateQueryString($o = [], $overwriteCurrent = true)
+    {
+        $queryString = '';
+        $qsArray = [];
+        if ($overwriteCurrent) {
+            foreach ($_GET as $key => $value) { // get values from $_GET array first
+                $qsArray[$key] = $value;
+            }
+        }
+        foreach ($o as $key => $value) { // overwrite our values to get object
+            if ($value !== null) $qsArray[$key] = $value; else unset($qsArray[$key]);
+        }
+        $i = 0;
+        foreach ($qsArray as $key => $value) { // generate query string from our array
+            $queryString .= ($i > 0 ? '&' : '') . $key . '=' . $value;
+            $i++;
+        }
+        return '?' . trim($queryString);
+    }
+    public static function generateURIWithQueryString($o = [], $overwriteCurrent = true)
+    { // with question mark (?) fix (used for clean urls)
+        $queryString = self::generateQueryString($o, $overwriteCurrent);
+        if ($queryString === '?') return str_replace('?' . $_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
+        return $queryString;
+    }
+    // QUERY STRING GENERATIONS - END
 }

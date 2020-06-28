@@ -280,7 +280,7 @@
 
                                             <?php } ?>
                                         <?php } else { ?>
-                                            <p style="margin-bottom: 10px;">No comments to this post yet.</p>
+                                            <p style="margin-bottom: 10px;">No comments left to this post yet.</p>
                                         <?php } ?>
 
                                     </div><!-- .post_comments -->
