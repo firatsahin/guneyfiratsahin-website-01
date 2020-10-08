@@ -18,6 +18,20 @@ $(window).resize(function () {
     }
     $("body").attr("view-mode", mode).removeClass("frt-cloak");
 
+    // my rept logo positioning
+    var myReptLogoTop = 0, myReptLogoLeft = 0;
+    if (mode !== 1) { // non-mobile mode
+        myReptLogoTop = (($(window).height() - $(".landing-box-div-inner").first().height()) / 2) - $(".my-rept-logo-container").height() - 60;
+        myReptLogoLeft = (width / 3) - ($(".my-rept-logo-container").width() / 2);
+    } else { // mobile mode
+        myReptLogoTop = 62 + ($(window).height() / 3) - ($(".my-rept-logo-container").width() / 2);
+        myReptLogoLeft = -63 + $(window).width() - 45;
+    }
+    $(".my-rept-logo-container").css({
+        top: myReptLogoTop >= 0 ? myReptLogoTop : 0,
+        left: myReptLogoLeft,
+    });
+
     // dynamic min-height assignment (for mobile mode)
     $(".landing-box-div").each(function (i, elm) {
         var borderH = i != $(".landing-box-div").length - 1 ? 1 : 0;

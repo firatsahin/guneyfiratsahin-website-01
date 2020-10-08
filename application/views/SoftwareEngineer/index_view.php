@@ -288,6 +288,10 @@
 
                                                             </ul>
 
+                                                            <a class="download" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>docs/GuneyFiratSahin_resume_en.pdf" target="_blank" rel="nofollow" style="margin: 12px 0px 20px 0px">
+                                                                <span data-hover="Download My Resume"><i class="glyphicon glyphicon-download-alt"></i> &nbsp;&nbsp;Download My Resume</span>
+                                                            </a>
+
                                                             <?php foreach ($data->personalInfo->aboutMeText->left as $a) { ?>
                                                                 <p style="margin-bottom:20px">
                                                                     <i class="fa fa-quote-left"></i>&nbsp;&nbsp;<?= $a ?>

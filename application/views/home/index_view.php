@@ -34,6 +34,13 @@
 </head>
 
 <body class="frt-cloak">
+
+    <div class="my-rept-logo-container">
+        <div class="my-rept-arrow-l"></div>
+        <a href="https://www.myrepertuar.com" target="_blank" class="my-rept-logo-link"></a>
+        <div class="my-rept-arrow-r"></div>
+    </div>
+
     <div class="root-div">
 
         <?php foreach ($data->landingPageInfo->sections as $section) { ?>
