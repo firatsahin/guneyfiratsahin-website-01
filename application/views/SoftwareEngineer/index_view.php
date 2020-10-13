@@ -289,7 +289,7 @@
                                                             </ul>
 
                                                             <a class="download" href="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>docs/GuneyFiratSahin_resume_en.pdf" target="_blank" rel="nofollow" style="margin: 12px 0px 20px 0px">
-                                                                <span data-hover="Download My Resume"><i class="glyphicon glyphicon-download-alt"></i> &nbsp;&nbsp;Download My Resume</span>
+                                                                <span data-hover="My PDF Resume"><i class="glyphicon glyphicon-download-alt"></i> &nbsp;&nbsp;My PDF Resume</span>
                                                             </a>
 
                                                             <?php foreach ($data->personalInfo->aboutMeText->left as $a) { ?>
@@ -303,15 +303,50 @@
 
                                                         <div class="col-md-6 profile-r">
 
+                                                            <div class="cycle-slideshow-frt-title-outer">
+                                                                <div class="cycle-slideshow-frt-title">Some Great Memories from US &nbsp;|&nbsp; 2013 ~ 2014</div>
+                                                            </div>
+
                                                             <div class="cycle-slideshow"
                                                                  data-cycle-fx="scrollHorz"
-                                                                 data-cycle-timeout="5000"
+                                                                 data-cycle-timeout="7000"
                                                                  data-cycle-caption="#profile-cycle-caption"
                                                                  data-cycle-caption-template="{{alt}}">
-                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt_01_2.jpg" alt="At the Office &nbsp;|&nbsp; La Habra, CA, USA &nbsp;|&nbsp; 2013 ~ 2014" />
-                                                                <?php /*<img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_1.jpg" alt="" />*/ ?>
-                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_2.jpg" alt="Remote Coding & Software Engineering Services" />
-                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_3.jpg" alt="Remote Coding & Software Engineering Services" />
+
+                                                                <!-- prev/next links -->
+                                                                <div class="cycle-prev">&laquo;</div>
+                                                                <div class="cycle-next">&raquo;</div>
+
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt28_2.jpg" alt="My Very First Times (w/my bike) &nbsp;|&nbsp; La Habra, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt03_3.jpg" alt="At the Office &nbsp;|&nbsp; La Habra, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt05_3.jpg" alt="On Lunch Break &nbsp;|&nbsp; La Habra, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt06_3.jpg" alt="On Lunch Break &nbsp;|&nbsp; La Habra, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt17_2.jpg" alt="The amount of work I've completed (~ 1 year) &nbsp;|&nbsp; La Habra, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt30_2.jpg" alt="My Neighbourhood &nbsp;|&nbsp; La Mirada, Orange County, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt07_2.jpg" alt="Downtown LA View from Griffith Observatory &nbsp;|&nbsp; Los Angeles, CA" />
+                                                                <?php /*<img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt08_2.jpg" alt="Hollywood Sign from Griffith Obs. &nbsp;|&nbsp; Los Angeles, CA" />*/ ?>
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt12_2.jpg" alt="Universal CityWalk &nbsp;|&nbsp; Hollywood, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt09_2.jpg" alt="Wet After Jurassic Park Ride 🙂 &nbsp;|&nbsp; Universal Studios, Hollywood, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt32_2.jpg" alt="Dodgers Baseball Game &nbsp;|&nbsp; Dodger Stadium, Los Angeles, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt13_2.jpg" alt="Downtown Disneyland District &nbsp;|&nbsp; Anaheim, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt14_2.jpg" alt="Disneyland Esplanade &nbsp;|&nbsp; Anaheim, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt27_2.jpg" alt="Downtown Disneyland &nbsp;|&nbsp; Anaheim, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt20_2.jpg" alt="Weekend Trip with Amtrak &nbsp;|&nbsp; San Diego, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt15_2.jpg" alt="Downtown LA at Night &nbsp;|&nbsp; Los Angeles, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt16_2.jpg" alt="Lakers must have lost the game that night 🙂 &nbsp;|&nbsp; Los Angeles, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt18_2.jpg" alt="Vegas Trip &nbsp;|&nbsp; Las Vegas, NV" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt19_2.jpg" alt="Vegas from Stratosphere Tower (~ 350m high) &nbsp;|&nbsp; Las Vegas, NV" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt31_2.jpg" alt="Grand Canyon National Park &nbsp;|&nbsp; Grand Canyon Village, AZ"/>
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt21_2.jpg" alt="Stanford University &nbsp;|&nbsp; Stanford, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt22_2.jpg" alt="The Iconic Lombard Street &nbsp;|&nbsp; San Francisco, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt24_2.jpg" alt="A Foggy 😒 Golden Gate Bridge &nbsp;|&nbsp; San Francisco, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt25_2.jpg" alt="Downtown SF View from Twin Peaks &nbsp;|&nbsp; San Francisco, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt29_2.jpg" alt="Last Night Before Going Back &nbsp;|&nbsp; Hermosa Beach, CA" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/frt26_2.jpg" alt="End of Story / Going Back to Turkey &nbsp;|&nbsp; LAX Airport, CA" />
+
+                                                                <?php /*<img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_1.jpg" alt="" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_2.jpg" alt="Software Engineering & Development Services" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/img-profile/about_3.jpg" alt="Software Engineering & Development Services" />*/ ?>
                                                                 <!-- empty element for caption -->
                                                                 <div id="profile-cycle-caption"></div>
                                                             </div>
@@ -340,8 +375,8 @@
                                                             </p>
                                                         <?php } ?>
 
-                                                        <a class="download" href="#!tab=contact" rel="nofollow">
-                                                            <span data-hover="Hire me / Get services from me"><i class="glyphicon glyphicon-user"></i> &nbsp;&nbsp;Hire me / Get services from me</span>
+                                                        <a class="download" href="#!tab=portfolio" rel="nofollow">
+                                                            <span data-hover="Check my works &raquo;"><i class="glyphicon glyphicon-briefcase"></i> &nbsp;&nbsp;Check my works &raquo;</span>
                                                         </a>
                                                     </div>
 
@@ -633,7 +668,7 @@
                                                 <div id="portfolio" class="content_2">
 
                                                     <!-- .title -->
-                                                    <h1 class="h-bloc">Portfolio - My Works</h1>
+                                                    <h1 class="h-bloc">Portfolio - My Works (<?= count($data->portfolio->projects) ?>)</h1>
 
                                                     <!-- .container-portfolio -->
                                                     <div class="container-portfolio">
@@ -656,7 +691,7 @@
                                                                     <!-- .portfolio-wrapper -->
                                                                     <div class="portfolio-wrapper">
                                                                         <a href="<?= $p->projectLink ? $p->projectLink : "#" ?>" title="<?= $p->name ?>" rel="nofollow">
-                                                                            <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="alt text" />
+                                                                            <img src="<?= isset($p->images) && is_array($p->images) && count($p->images) > 0 && isset($p->images[0]->thumbImg) && $p->images[0]->thumbImg ? $p->images[0]->thumbImg : '/img/no-img.jpg' ?>" alt="<?= $p->name ?>" />
                                                                             <div class="label">
                                                                                 <div class="label-text">
                                                                                     <a href="#" class="text-title" rel="nofollow"><?= $p->name ?></a>
@@ -670,6 +705,24 @@
                                                                 </div>
                                                                 <!-- /.portfolio -->
                                                             <?php } ?>
+
+                                                            <!-- .portfolio new -->
+                                                            <div class="portfolio <?php foreach ($data->portfolio->filters as $f) { echo $f->key . ' '; } ?>" data-cat="<?php foreach ($data->portfolio->filters as $f) { echo $f->key . ' '; } ?>" project-id="-1" data-project="{}">
+                                                                <!-- .portfolio-wrapper -->
+                                                                <div class="portfolio-wrapper">
+                                                                    <a href="#" title="+ New Project" rel="nofollow">
+                                                                        <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/arrows-h3/arrow-DarkBlue-h3.png" alt="+ New Project" />
+                                                                        <div class="label">
+                                                                            <div class="label-text">
+                                                                                <a href="#" class="text-title" rel="nofollow">+ New Project</a>
+                                                                                <span class="text-category">Hire Me / Get Services From Me</span>
+                                                                            </div>
+                                                                            <div class="label-bg"></div>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                                <!-- /.portfolio-wrapper -->
+                                                            </div>
 
                                                             <div class="clear"></div>
 

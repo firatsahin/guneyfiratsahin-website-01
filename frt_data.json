@@ -440,9 +440,112 @@
       {
         "key": "contentManagement",
         "value": "Content Management"
+      },
+      {
+        "key": "wordpressDev",
+        "value": "WordPress Development"
       }
     ],
     "projects": [
+      {
+        "id": "recycling-corporate",
+        "name": "Recycling Company Corporate Web Site (Freelance Project)",
+        "startDate": "02.2020",
+        "endDate": "06.2020",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/recycling-corporate/01_thumb.jpg",
+            "bigImg": "images/portfolio/recycling-corporate/01_big.jpg"
+          },
+          {
+            "thumbImg": "images/portfolio/recycling-corporate/02_thumb.jpg",
+            "bigImg": "images/portfolio/recycling-corporate/02_big.jpg"
+          }
+        ],
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "apiDev",
+          "uiUxDesign",
+          "contentManagement",
+          "wordpressDev"
+        ],
+        "description": [
+          "I developed a new corporate web site for recycling company Degsan as they find their old web site unmodern and outdated. They asked me to make a modern, responsive & manageable one as they will want to update/manage their web site content regularly in the future.",
+          "For this purpose, I wanted to use a CMS background since coding an admin panel from scratch is too much work and not a cost-efficient approach. So, I decided to use WordPress in the background but the challenge I set to myself in this project was; developing the theme logic by myself and using WordPress features on demand manually (kind of headless-CMS usage).",
+          "I coded the theme logic from the zero point, so I needed to deep-dive into the WordPress core codes to understand its structure. I also developed some additional features by myself (like menu systems, multiple language support, e-bulletin subscription logic, custom widgets and content editing screens on the real site after the admin login).",
+          "Lastly, applied the common SEO practices to the website after it was completed in order to increase its search engine rank as much as possible. That web site is live on https://www.degsan.com.tr address."
+        ],
+        "projectLink": "https://www.degsan.com.tr",
+        "projectShare": "individual"
+      },
+      {
+        "id": "guneyfiratsahin-web",
+        "name": "Personal Portfolio Website for myself (Side Project)",
+        "startDate": "10.2019",
+        "endDate": "01.2020",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/guneyfiratsahin-web/01_thumb.jpg",
+            "bigImg": "images/portfolio/guneyfiratsahin-web/01_big.jpg"
+          },
+          {
+            "thumbImg": "images/portfolio/guneyfiratsahin-web/02_thumb.jpg",
+            "bigImg": "images/portfolio/guneyfiratsahin-web/02_big.jpg"
+          }
+        ],
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "maintenance",
+          "contentManagement"
+        ],
+        "description": [
+          "I have developed a personal portfolio web site for myself as a side project in order to express my programmer, musician and human personas on the web.",
+          "The landing page was designed & developed by me from scratch. The software engineer site was based on a static front-end template. Its back-end logic (and also blog part background) was coded by me. Some front-end improvements were implemented too (like maximize-minimize feature etc).",
+          "You are already checking this project right now. 😊"
+        ],
+        "projectLink": "https://www.guneyfiratsahin.com",
+        "projectShare": "individual"
+      },
+      {
+        "id": "my-repertuar",
+        "name": "Repertory Management System for Musicians (Non-profit / Side Project)",
+        "startDate": "2018",
+        "endDate": "2020",
+        "images": [
+          {
+            "thumbImg": "images/portfolio/my-repertuar/01_thumb.jpg",
+            "bigImg": "images/portfolio/my-repertuar/01_big.jpg"
+          }
+        ],
+        "categories": [
+          "frontEndDev",
+          "backEndDev",
+          "databaseDev",
+          "apiDev",
+          "projectManagement",
+          "softwareArchitecture",
+          "maintenance",
+          "uiUxDesign"
+        ],
+        "description": [
+          "This project is basically developed by me focusing on musicians’ needs (as I am one of them). I used to prepare hard-copy repertories for my performances by printing many pages but after a while physical file gets very heavy and also finding a song becomes a really hard task.",
+          "For solving that problem, I prepared a digital repertory as a simple offline web page for myself and used it for a while. Then, I converted that simple front-end app to a multi-user web project that anyone can sign up and start to use as a service.",
+          "The database has artists->songs->lyrics tables in a related way. For creating the song data, I coded and ran a web crawling process for collecting song data from the web regularly. Song library data was created in a structured way and also some normalizations done (camel-casing the names, avoiding/merging duplicate records etc).",
+          "After the library creation, any user can create their repertories and add songs to them from the song library. Many customizations can be done on the added song (like customizing its lyrics, setting tone, chord, tempo, capo position, bpm, ready status and also adding custom tags).",
+          "Final and the best part for us musicians is; we got able to access our song list anywhere/anytime by using any device (w/an internet connection) and our user credentials. Then we can filter our songs by many different criteria. I’m using it actively on my musical performances & also on my repertory studies.",
+          "If you are interested, you can also sign up and try it out on its live address which is https://www.myrepertuar.com. Unfortunately, it’s only available in Turkish language right now. (Maybe you can use a website translator tool)",
+          "TECH STACK:",
+          "On the front end; I used AngularJS & Less frameworks to ease and speed up the JS/CSS development. I also developed my own responsive design framework for this project (instead of Bootstrap etc).",
+          "On the back end side; I used CodeIgniter framework on PHP 7.x with MVC coding structure. Also designed a JSON API for XHR requests coming from Angular side.",
+          "For the database; I used MySQL/MariaDB to create the relational database tables. I designed all db table structure, views and maintenance functions."
+        ],
+        "projectLink": "https://www.myrepertuar.com",
+        "projectShare": "individual"
+      },
       {
         "id": "mobile-app-development",
         "name": "Mobile App Development Projects (Hybrid & Native Apps)",

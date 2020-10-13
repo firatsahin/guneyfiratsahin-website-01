@@ -494,10 +494,16 @@ jQuery(document).ready(function($) {
     // each portfolio item click
     $("#portfolio .portfolio").click(function (e) {
         e.preventDefault();
+        var projectId = $(this).attr('project-id');
+        if (!projectId) return; // no project id
+        if (projectId === '-1') { // new project > go to contact tab
+            writeObjectToHash({tab: "contact"});
+            return;
+        }
 
         // add project id to hash
         var hashObj = readHashAsObject();
-        hashObj.projectId = $(this).attr('project-id');
+        hashObj.projectId = projectId;
         writeObjectToHash(hashObj);
     });
 
