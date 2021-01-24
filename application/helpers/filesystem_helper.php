@@ -25,13 +25,15 @@ class filesystem_helper
             if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') $dirPath .= '/';
             // FRT NOTE: glob() doesn't read .htaccess files, so used readdir()
             $items = [];
-            foreach (scandir($dirPath, SORT_DESC) as $file) {
-                if (($file == '.') || ($file == '..') || in_array($file, $excluded)) continue;
-                $items[] = (object)[
-                    "name" => $dirPath . $file,
-                    "type" => filetype($dirPath . $file),
-                    "extension" => pathinfo($dirPath . $file, PATHINFO_EXTENSION)
-                ];
+            if (is_dir($dirPath)) {
+                foreach (scandir($dirPath, SORT_DESC) as $file) {
+                    if (($file == '.') || ($file == '..') || in_array($file, $excluded)) continue;
+                    $items[] = (object)[
+                        "name" => $dirPath . $file,
+                        "type" => filetype($dirPath . $file),
+                        "extension" => pathinfo($dirPath . $file, PATHINFO_EXTENSION)
+                    ];
+                }
             }
             $result->data = $items;
             $result->success = true;

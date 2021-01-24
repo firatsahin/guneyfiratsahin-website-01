@@ -107,8 +107,8 @@
     <!-- Profile Image -->
     <div class="col-lg-12 col-md-12 col-sm-3 col-xs-12 ">
         
-        <!-- style for simple image profile -->		
-   		<div class="circle-img" id="pic_prof_2" style="display:block"></div>
+        <!-- style for simple image profile -->
+   		<a href="/" class="circle-img" id="pic_prof_2" title="Back to Landing Page (<?= $data->siteInfo->domainName->short ?>)"></a>
     
     </div>
     <!-- End Profile Image -->
@@ -282,7 +282,10 @@
                                                                 <li>
                                                                     <i class="glyphicon glyphicon-globe"></i>
                                                                     <label>GitHub</label>
-                                                                    <span class="value" title="Click to take a look at my GitHub account"><a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a></span>
+                                                                    <span class="value">
+                                                                        <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" rel="nofollow" title="Click to take a look at my GitHub account">github.com/<?= $data->contactInfo->github ?></a>
+                                                                        <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" title="Click to take a look at my GitHub Pages Website (Code Examples)">firatsahin.github.io</a>
+                                                                    </span>
                                                                     <div class="clear"></div>
                                                                 </li>
 
@@ -808,7 +811,8 @@
                                                                     <a href="skype:<?= $data->contactInfo->skype ?>?userinfo" title="Click to add me as a contact on Skype" rel="nofollow"><?= $data->contactInfo->skype ?></a>
                                                                 </span></li>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
-                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a>
+                                                                                    <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a>
+                                                                                    <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" title="Click to take a look at my GitHub Pages Website (Code Examples)" style="margin-left: 69px;">firatsahin.github.io</a>
                                                                 </span></li>
                                                                             <li><span class="span-info"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
                                                                     <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank" title="Click to take a look at my LinkedIn account" rel="nofollow">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
@@ -886,7 +890,7 @@
                                                                                     <option>I want to hire you (as an employee of my company)</option>
                                                                                 </select>
                                                                                 <span style="color: darkblue; font-size: 12px;">
-                                                                        <span for-option="0">...which means you'll get services from me and make payment. That's it!</span>
+                                                                        <span for-option="0">...which means you'll get services from me and make payment for it.</span>
                                                                         <span for-option="1">...which means you are making me a "Job Offer" for a permanent job.</span>
                                                                     </span>
                                                                             </p>

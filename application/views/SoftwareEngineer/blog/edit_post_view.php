@@ -264,7 +264,7 @@
                                                         <?php foreach ($post->comments[$i]->replies as $commentReply) { ?>
 
                                                             <div class="comment sub">
-                                                                <img src="/as-a-software-engineer/images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
+                                                                <img src="<?= SOFTWARE_ENGINEER_SITE_ROOT_URL ?>images/frt-images/frt_profile_pic.jpg" width="100" height="100" alt="img" />
                                                                 <div class="text">
                                                                     <div class="name"><?= $data->personalInfo->name->global . ' ' . $data->personalInfo->surname->global ?></div>
                                                                     <div class="date"><?= substr($commentReply->commentedDatetime, 0, 19) ?></div>

@@ -642,6 +642,7 @@ h2.resp-accordion:hover {
     display:none;
     float:left;
     overflow:hidden;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 1450px) {
@@ -925,6 +926,7 @@ h2.resp-accordion:hover {
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
 }
 @media screen and (min-width: 992px) {
     body:not(.is-maximized) #profile .profile-r .cycle-slideshow-frt-title-outer {
@@ -938,6 +940,7 @@ h2.resp-accordion:hover {
     position: relative;
     left: -8px;
     max-width: 348px;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
 }
 body.is-maximized #profile .cycle-slideshow { /* MAXIMIZED CASE: center the slider */
     margin-left: auto;
@@ -1169,6 +1172,7 @@ ul.about {
     background-image: url('../images/frt-images/frt_profile_pic.jpg');
     margin-top: 25px;
     margin-bottom: 7px;
+    cursor: pointer;
 }
 
 .widget-profil  h1 {
@@ -1298,9 +1302,9 @@ ul.about {
     }
 
     body:not(.is-maximized) #profile_social a{
-        width: 42px;
-        height: 42px;
-        line-height: 42px;
+        width: 40px;
+        height: 40px;
+        line-height: 38px;
     }
 }
 
@@ -1461,11 +1465,11 @@ ul.about {
 
 #resume span.experience-title {
     display: inline-block;
-    width: calc(100% - 136px);
+    width: calc(100% - 148px);
 }
 #resume span.education-title {
     display: inline-block;
-    width: calc(100% - 98px);
+    width: calc(100% - 110px);
 }
 #resume span.duration {
     float: right;
