@@ -3161,6 +3161,9 @@ div.ppt {
 }
 
 /* Blog: Categories */
+#blog-page #blog-categories ul {
+    margin-left: 15px;
+}
 #blog-page #blog-categories ul:not([level='0']) {
     display: none;
 }

@@ -121,8 +121,14 @@ class Home extends CI_Controller {
     public function handle404()
     {
         $this->handle301Redirections();
-        http_response_code(404);
-        die("404 Not Found");
+
+        // show 404 content (or text)
+        /*http_response_code(404);
+        die("404 Not Found");*/
+
+        // redirect to root (landing page)
+        header('Location: /', true, 301);
+        exit();
     }
 
     private function handle301Redirections()

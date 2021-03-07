@@ -24,8 +24,8 @@ $(window).resize(function () {
         myReptLogoTop = (($(window).height() - $(".landing-box-div-inner").first().height()) / 2) - $(".my-rept-logo-container").height() - 60;
         myReptLogoLeft = (width / 3) - ($(".my-rept-logo-container").width() / 2);
     } else { // mobile mode
-        myReptLogoTop = 62 + ($(window).height() / 3) - ($(".my-rept-logo-container").width() / 2);
-        myReptLogoLeft = -63 + $(window).width() - 45;
+        myReptLogoTop = 70 + ($(window).height() / 3) - ($(".my-rept-logo-container").width() / 2);
+        myReptLogoLeft = -63 + $(window).width() - 46;
     }
     $(".my-rept-logo-container").css({
         top: myReptLogoTop >= 0 ? myReptLogoTop : 0,

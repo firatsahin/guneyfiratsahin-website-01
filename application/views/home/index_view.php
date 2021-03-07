@@ -55,7 +55,7 @@
 
                     <div class="socmed-icons-container">
                         <?php foreach ($section->socialLinks as $sl) { ?>
-                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->preferredName->global ?>'s <?= $sl->nameFancy ?> profile" rel="nofollow"></a>
+                            <a href="<?= $sl->link ?>" target="_blank" class="socmed-link<?= isset($sl->customClass) && $sl->customClass ? ' ' . $sl->customClass : '' ?>" style="background-image: url('/img/socmed-icons/<?= $sl->name ?>.png')" title="Go to <?= $data->personalInfo->preferredName->global ?>'s <?= $sl->nameFancy ?> <?= isset($sl->whatIsIt) && $sl->whatIsIt ? $sl->whatIsIt : 'profile' ?>" rel="nofollow"></a>
                         <?php } ?>
                     </div>
 

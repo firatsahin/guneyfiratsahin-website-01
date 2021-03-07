@@ -730,11 +730,6 @@ jQuery(document).ready(function($) {
 
             // Categories part
             var $blogCategories = $("#blog-categories");
-            if ($blogCategories.length > 0) {
-                $blogCategories.find("ul[level]").each(function () {
-                    $(this).css('margin-left', $(this).attr('level') * 15);
-                });
-            }
 
             // sub categories expand-collapse
             $blogCategories.find("ul[level] > li:not([subcat-count='0'])").find("> i" + ($blogPageType == 'list-categories' ? ', > div.category' : '')).click(function (e) {

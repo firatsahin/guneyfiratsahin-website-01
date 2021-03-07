@@ -112,6 +112,13 @@
             "link": "https://github.com/{{username}}"
           },
           {
+            "name": "github",
+            "nameFancy": "GitHub Pages",
+            "link": "https://{{username}}.github.io",
+            "whatIsIt": "website",
+            "customClass": "gh-pages-icon"
+          },
+          {
             "name": "stackoverflow",
             "nameFancy": "StackOverflow",
             "link": "https://stackoverflow.com/cv/{{username}}"
@@ -128,7 +135,8 @@
           {
             "name": "youtube",
             "nameFancy": "YouTube",
-            "link": "https://www.youtube.com/channel/{{username}}"
+            "link": "https://www.youtube.com/channel/{{username}}",
+            "whatIsIt": "channel"
           },
           {
             "name": "soundcloud",

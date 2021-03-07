@@ -284,7 +284,7 @@
                                                                     <label>GitHub</label>
                                                                     <span class="value">
                                                                         <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" rel="nofollow" title="Click to take a look at my GitHub account">github.com/<?= $data->contactInfo->github ?></a>
-                                                                        <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" title="Click to take a look at my GitHub Pages Website (Code Examples)">firatsahin.github.io</a>
+                                                                        <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" style="color: forestgreen;" title="Click to take a look at my GitHub Pages Website (Code Examples)">firatsahin.github.io</a>
                                                                     </span>
                                                                     <div class="clear"></div>
                                                                 </li>
@@ -812,7 +812,7 @@
                                                                 </span></li>
                                                                             <li><span class="span-info" style="margin-bottom: 4px; display: inline-block;"><i class="glyphicon glyphicon-globe"></i>&nbsp; GitHub:&nbsp;
                                                                                     <a href="https://github.com/<?= $data->contactInfo->github ?>" target="_blank" title="Click to take a look at my GitHub account" rel="nofollow">github.com/<?= $data->contactInfo->github ?></a>
-                                                                                    <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" title="Click to take a look at my GitHub Pages Website (Code Examples)" style="margin-left: 69px;">firatsahin.github.io</a>
+                                                                                    <a href="https://firatsahin.github.io" target="_blank" rel="nofollow" title="Click to take a look at my GitHub Pages Website (Code Examples)" style="margin-left: 69px; color: forestgreen;">firatsahin.github.io</a>
                                                                 </span></li>
                                                                             <li><span class="span-info"><i class="glyphicon glyphicon-paperclip"></i>&nbsp; LinkedIn:&nbsp;
                                                                     <a href="https://www.linkedin.com/in/<?= $data->contactInfo->linkedin ?>" target="_blank" title="Click to take a look at my LinkedIn account" rel="nofollow">linkedin.com/in/<?= $data->contactInfo->linkedin ?></a>
