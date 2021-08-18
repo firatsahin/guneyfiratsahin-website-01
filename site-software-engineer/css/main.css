@@ -2134,6 +2134,7 @@ div.btn-like-post-div[status='1'] > span[name=caption]:after {
     margin-right: 15px;
     float: left;
     border-radius: 50px;
+    object-fit: cover;
 }
 
 #blog .post_comments .comment .text{

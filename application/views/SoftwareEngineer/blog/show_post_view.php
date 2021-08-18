@@ -181,7 +181,7 @@
                                             <?php for ($i = 0; $i < count($post->comments); $i++) { ?>
 
                                                 <div class="comment">
-                                                    <img src="https://placehold.it/100x100" width="100" height="100" alt="img" />
+                                                    <img src="/img/no-img.jpg" width="100" height="100" alt="img" />
                                                     <div class="text">
                                                         <div class="name"><?= $post->comments[$i]->commenterFullName ?></div>
                                                         <div class="date"><?= substr($post->comments[$i]->commentedDatetime, 0, 19) ?></div>

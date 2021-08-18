@@ -34,4 +34,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 #-------------------------
 /sensitive_data.php
 /almar_frt_customize/*
+/frt_share/*
 #/site-software-engineer/images/blog/uploads/*

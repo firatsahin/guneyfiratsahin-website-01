@@ -94,13 +94,18 @@ jQuery(document).ready(function($) {
     /* ---------------------------------------------------------------------- */
 
     /*Page Preloading*/
-    $(window).load(function() {
+    $(window).load(function () {
         $('#spinner').fadeOut(200);
         $('#preloader').delay(200).fadeOut('slow');
         $('.wrapper').fadeIn(200);
         //$('#custumize-style').fadeIn(200);
         if (getViewMode() != 1) performTabChangeAnimation();
-        if (localStorage.isSiteMaximized == "1") $("div[name=icon-minimize-maximize]").trigger("click");
+        if (!siteData.isBlog) { // non-blog pages are 'min-max'able
+            if (localStorage.isSiteMaximized == "1") $("div[name=icon-minimize-maximize]").trigger("click");
+        } else { // blog pages are always maximized (can't be changed)
+            $("body").addClass('is-maximized');
+            $("div[name=icon-minimize-maximize]").hide();
+        }
     });
 
     /* ---------------------------------------------------------------------- */
@@ -126,7 +131,7 @@ jQuery(document).ready(function($) {
     // minimize-maximize content
     $("div[name=icon-minimize-maximize]").click(function () {
         $("body").toggleClass('is-maximized');
-        localStorage.isSiteMaximized = ($("body").hasClass('is-maximized') ? 1 : 0); // put miximize setting to local storage
+        localStorage.isSiteMaximized = ($("body").hasClass('is-maximized') ? 1 : 0); // put min-maximize setting to local storage
         redimensionnement();
     });
 
